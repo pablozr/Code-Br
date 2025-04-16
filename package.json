@@ -32,6 +32,7 @@
     "@radix-ui/react-scroll-area": "^1.2.3",
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
+    "@react-three/fiber": "^9.1.2",
     "@tabler/icons-react": "^3.31.0",
     "@tailwindcss/postcss": "4.1.1",
     "@types/node": "^22.14.0",
@@ -59,7 +60,11 @@
     "tailwindcss": "4.1.1",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-react-aria-components": "2.0.0",
+    "three": "^0.175.0",
     "typescript": "^5.8.2",
     "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/three": "^0.175.0"
   }
 }

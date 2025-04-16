@@ -18,8 +18,8 @@ import {
   useMantineTheme
 } from '@mantine/core';
 import { IconCheck, IconArrowRight, IconInfoCircle } from '@tabler/icons-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
 
 // Wrapper components with Framer Motion
 const MotionCard = motion<any>(Card);
@@ -42,6 +42,25 @@ interface PricingUIProps {
 export function PricingUI({ pricingData }: PricingUIProps) {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const theme = useMantineTheme();
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const titleRef = useRef<HTMLDivElement>(null);
+
+  // Spotlight effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (titleRef.current) {
+        const rect = titleRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        mouseX.set(x);
+        mouseY.set(y);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -125,46 +144,88 @@ export function PricingUI({ pricingData }: PricingUIProps) {
         animate="visible"
       >
         <MotionStack
-          gap={40}
+          gap={40} // Reduzido de 60
           align="center"
-          mb={40}
+          mb={60} // Reduzido de 80
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div>
+          <div
+            ref={titleRef}
+            style={{ 
+              position: 'relative',
+              isolation: 'isolate',
+            }} // Removido padding: '2rem'
+          >
+            
             <Title 
               order={1} 
               ta="center"
-              size="2.2rem" 
-              fw={700} 
-              mb="sm"
+              size="3.2rem"
+              fw={800}
+              mb="md" // Reduzido de xl
               style={{ 
-                background: 'linear-gradient(90deg, #fff 0%, #a9a9a9 100%)',
+                background: 'linear-gradient(135deg, #fff 0%, rgba(118,65,192,0.8) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                textShadow: '0 0 30px rgba(255,255,255,0.1)',
-                letterSpacing: '-1px',
+                textShadow: '0 0 30px rgba(118,65,192,0.3)',
+                letterSpacing: '0.5px',
+                fontFamily: 'Manrope, sans-serif',
+                position: 'relative',
               }}
             >
               Nossos Serviços
+              {/* Decorative underline */}
+              <Box
+                style={{
+                  position: 'absolute',
+                  bottom: '-10px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '80px',
+                  height: '4px',
+                  background: 'linear-gradient(90deg, rgba(118,65,192,0.8) 0%, rgba(142,98,204,0.4) 100%)',
+                  borderRadius: '2px',
+                }}
+              />
             </Title>
+            
             <Text 
-              size="lg" 
-              c="gray.3" 
-              maw={600} 
+              size="lg"
+              c="gray.1"
+              maw={700} 
               ta="center"
               style={{
-                lineHeight: 1.6,
-                letterSpacing: '0.3px',
+                fontSize: '1.125rem',
+                lineHeight: 1.7,
+                letterSpacing: '0.2px',
+                fontFamily: 'Inter, sans-serif',
                 fontWeight: 400,
+                color: '#f0f0f5',
+                marginTop: '1rem', // Reduzido de 1.5rem
               }}
             >
-              Escolha o serviço que melhor atenda às necessidades do seu negócio.
-              Todos os planos incluem hospedagem segura na Suíça.
+              Escolha o serviço que melhor atenda às necessidades do seu negócio.{' '}
+              <span style={{ 
+                color: '#fff',
+                fontWeight: 500 
+              }}>
+                Todos os planos incluem hospedagem segura na Suíça
+              </span>.
             </Text>
           </div>
         </MotionStack>
+
+        {/* Visual separator */}
+        <Box
+          mb={60}
+          style={{
+            width: '100%',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent 0%, rgba(118,65,192,0.3) 50%, transparent 100%)',
+          }}
+        />
 
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg">
           {pricingData.map((item, index) => (
@@ -176,18 +237,16 @@ export function PricingUI({ pricingData }: PricingUIProps) {
               onHoverEnd={() => setHoveredCard(null)}
               style={{
                 boxShadow: theme.shadows.md,
-              }}
-              style={{ borderRadius: theme.radius.md }}
-              padding="xl"
-              withBorder
-              style={{
+                borderRadius: theme.radius.md,
                 borderColor: hoveredCard === index ? 'rgba(118,65,192,0.3)' : 'rgba(118,65,192,0.2)',
                 background: 'linear-gradient(145deg, rgba(26,26,26,0.8) 0%, rgba(13,13,13,0.8) 100%)',
                 backdropFilter: 'blur(10px)',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
+                padding: '1.5rem'
               }}
+              withBorder
             >
               <Stack gap="md" style={{ flex: 1 }}>
                 <div>
