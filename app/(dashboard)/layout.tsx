@@ -1,25 +1,33 @@
 'use client';
 
-import Link from 'next/link';
 import { use, useState, Suspense } from 'react';
-import { Button } from '@/components/ui/button';
-import { CircleIcon, Home, LogOut } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useUser } from '@/lib/auth';
 import { signOut } from '@/app/(login)/actions';
-import { useRouter } from 'next/navigation';
+import {
+  AppShell,
+  Container,
+  Flex,
+  Box,
+  Group,
+  Title,
+  ThemeIcon,
+  Text,
+  Button,
+  Avatar,
+  Menu,
+  rem,
+  Divider,
+  useMantineTheme
+} from '@mantine/core';
+import { IconGlobe, IconHome, IconLogout } from '@tabler/icons-react';
 
 function UserMenu() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { userPromise } = useUser();
   const user = use(userPromise);
   const router = useRouter();
+  const theme = useMantineTheme();
 
   async function handleSignOut() {
     await signOut();
@@ -29,76 +37,124 @@ function UserMenu() {
 
   if (!user) {
     return (
-      <>
-        <Link
+      <Group gap="md">
+        <Button
+          component={Link}
           href="/pricing"
-          className="text-sm font-medium text-gray-700 hover:text-gray-900"
+          variant="subtle"
+          color="gray.3"
         >
-          Pricing
-        </Link>
-        <Button asChild className="rounded-full">
-          <Link href="/sign-up">Sign Up</Link>
+          Preços
         </Button>
-      </>
+        <Button
+          component={Link}
+          href="/sign-up"
+          variant="gradient"
+          gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+        >
+          Cadastrar
+        </Button>
+      </Group>
     );
   }
 
   return (
-    <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-      <DropdownMenuTrigger>
-        <Avatar className="cursor-pointer size-9">
-          <AvatarImage alt={user.name || ''} />
-          <AvatarFallback>
-            {user.email
-              .split(' ')
-              .map((n) => n[0])
-              .join('')}
-          </AvatarFallback>
+    <Menu position="bottom-end" shadow="md">
+      <Menu.Target>
+        <Avatar
+          src={null}
+          color="purple"
+          radius="xl"
+          style={{ cursor: 'pointer' }}
+        >
+          {user.email
+            .split(' ')
+            .map((n) => n[0])
+            .join('')}
         </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="flex flex-col gap-1">
-        <DropdownMenuItem className="cursor-pointer">
-          <Link href="/dashboard" className="flex w-full items-center">
-            <Home className="mr-2 h-4 w-4" />
-            <span>Dashboard</span>
-          </Link>
-        </DropdownMenuItem>
-        <form action={handleSignOut} className="w-full">
-          <button type="submit" className="flex w-full">
-            <DropdownMenuItem className="w-full flex-1 cursor-pointer">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Sign out</span>
-            </DropdownMenuItem>
-          </button>
+      </Menu.Target>
+      <Menu.Dropdown bg="dark.8">
+        <Menu.Item
+          leftSection={<IconHome style={{ width: rem(14), height: rem(14) }} />}
+          component={Link}
+          href="/dashboard"
+        >
+          Painel
+        </Menu.Item>
+        <Divider />
+        <form action={handleSignOut}>
+          <Menu.Item
+            leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
+            type="submit"
+            color="red"
+          >
+            Sair
+          </Menu.Item>
         </form>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </Menu.Dropdown>
+    </Menu>
   );
 }
 
 function Header() {
+  const theme = useMantineTheme();
+
   return (
-    <header className="border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center">
-          <CircleIcon className="h-6 w-6 text-orange-500" />
-          <span className="ml-2 text-xl font-semibold text-gray-900">ACME</span>
-        </Link>
-        <div className="flex items-center space-x-4">
-          <Suspense fallback={<div className="h-9" />}>
+    <Box
+      component="header"
+      style={{
+        borderBottom: `1px solid ${theme.colors.dark[6]}`,
+        background: 'linear-gradient(180deg, rgba(13,13,13,0.95) 0%, rgba(26,26,26,0.95) 100%)',
+        backdropFilter: 'blur(10px)',
+      }}
+    >
+      <Container size="xl" py="md">
+        <Group justify="space-between" align="center">
+          <Group>
+            <ThemeIcon
+              size="lg"
+              radius="xl"
+              variant="gradient"
+              gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+            >
+              <IconGlobe size={rem(20)} />
+            </ThemeIcon>
+            <Title order={3} fw={600} c="white">Websites Suíços</Title>
+          </Group>
+
+          <Suspense fallback={<Box h={36} />}>
             <UserMenu />
           </Suspense>
-        </div>
-      </div>
-    </header>
+        </Group>
+      </Container>
+    </Box>
   );
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <section className="flex flex-col min-h-screen">
-      <Header />
-      {children}
-    </section>
+    <AppShell
+      header={{ height: 70 }}
+      padding="md"
+      styles={{
+        main: {
+          background: 'linear-gradient(135deg, rgba(13,13,13,1) 0%, rgba(26,26,26,1) 100%)',
+        },
+      }}
+    >
+      <AppShell.Header>
+        <Header />
+      </AppShell.Header>
+
+      <AppShell.Main pt={90}>
+        <Container size="xl">
+          <Flex direction="column" gap="xl">
+            <Box>
+              {children}
+            </Box>
+          </Flex>
+        </Container>
+      </AppShell.Main>
+    </AppShell>
   );
 }

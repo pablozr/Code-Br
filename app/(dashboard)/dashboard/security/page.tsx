@@ -50,19 +50,19 @@ export default function SecurityPage() {
   };
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium bold text-gray-900 mb-6">
-        Security Settings
+    <section className="flex-1 p-4 lg:p-8 text-white">
+      <h1 className="text-lg lg:text-2xl font-medium bold text-white mb-6">
+        Configurações de Segurança
       </h1>
-      <Card className="mb-8">
+      <Card className="mb-8 bg-gray-900 border-gray-800">
         <CardHeader>
-          <CardTitle>Password</CardTitle>
+          <CardTitle className="text-white">Senha</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handlePasswordSubmit}>
             <div>
               <Label htmlFor="current-password" className="mb-2">
-                Current Password
+                Senha Atual
               </Label>
               <Input
                 id="current-password"
@@ -72,11 +72,12 @@ export default function SecurityPage() {
                 required
                 minLength={8}
                 maxLength={100}
+                className="bg-gray-900 border-gray-700 text-white"
               />
             </div>
             <div>
               <Label htmlFor="new-password" className="mb-2">
-                New Password
+                Nova Senha
               </Label>
               <Input
                 id="new-password"
@@ -86,11 +87,12 @@ export default function SecurityPage() {
                 required
                 minLength={8}
                 maxLength={100}
+                className="bg-gray-900 border-gray-700 text-white"
               />
             </div>
             <div>
               <Label htmlFor="confirm-password" className="mb-2">
-                Confirm New Password
+                Confirmar Nova Senha
               </Label>
               <Input
                 id="confirm-password"
@@ -99,6 +101,7 @@ export default function SecurityPage() {
                 required
                 minLength={8}
                 maxLength={100}
+                className="bg-gray-900 border-gray-700 text-white"
               />
             </div>
             {passwordState.error && (
@@ -109,18 +112,18 @@ export default function SecurityPage() {
             )}
             <Button
               type="submit"
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-purple-600 hover:bg-purple-700 text-white"
               disabled={isPasswordPending}
             >
               {isPasswordPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Updating...
+                  Atualizando...
                 </>
               ) : (
                 <>
                   <Lock className="mr-2 h-4 w-4" />
-                  Update Password
+                  Atualizar Senha
                 </>
               )}
             </Button>
@@ -128,18 +131,18 @@ export default function SecurityPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-gray-900 border-gray-800">
         <CardHeader>
-          <CardTitle>Delete Account</CardTitle>
+          <CardTitle className="text-white">Excluir Conta</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-500 mb-4">
-            Account deletion is non-reversable. Please proceed with caution.
+          <p className="text-sm text-gray-300 mb-4">
+            A exclusão da conta não é reversível. Por favor, prossiga com cuidado.
           </p>
           <form onSubmit={handleDeleteSubmit} className="space-y-4">
             <div>
               <Label htmlFor="delete-password" className="mb-2">
-                Confirm Password
+                Confirmar Senha
               </Label>
               <Input
                 id="delete-password"
@@ -148,6 +151,7 @@ export default function SecurityPage() {
                 required
                 minLength={8}
                 maxLength={100}
+                className="bg-gray-900 border-gray-700 text-white"
               />
             </div>
             {deleteState.error && (
@@ -162,12 +166,12 @@ export default function SecurityPage() {
               {isDeletePending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Deleting...
+                  Excluindo...
                 </>
               ) : (
                 <>
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete Account
+                  Excluir Conta
                 </>
               )}
             </Button>

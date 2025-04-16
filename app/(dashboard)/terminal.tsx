@@ -1,18 +1,20 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Copy, Check } from 'lucide-react';
+import { Box, Group, ActionIcon, Text, Stack, useMantineTheme } from '@mantine/core';
+import { IconCopy, IconCheck } from '@tabler/icons-react';
 
 export function Terminal() {
   const [terminalStep, setTerminalStep] = useState(0);
   const [copied, setCopied] = useState(false);
+  const theme = useMantineTheme();
+
   const terminalSteps = [
-    'git clone https://github.com/nextjs/saas-starter',
-    'pnpm install',
-    'pnpm db:setup',
-    'pnpm db:migrate',
-    'pnpm db:seed',
-    'pnpm dev 🎉',
+    'npm create websites-suicos',
+    'cd meu-site',
+    'npm install',
+    'npm run setup',
+    'npm run dev 🎉',
   ];
 
   useEffect(() => {
@@ -32,37 +34,50 @@ export function Terminal() {
   };
 
   return (
-    <div className="w-full rounded-lg shadow-lg overflow-hidden bg-gray-900 text-white font-mono text-sm relative">
-      <div className="p-4">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex space-x-2">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-          </div>
-          <button
+    <Box
+      w="100%"
+      style={{
+        borderRadius: theme.radius.md,
+        overflow: 'hidden',
+        backgroundColor: '#1a1b26',
+        color: 'white',
+        fontFamily: 'monospace',
+        fontSize: '0.9rem',
+        boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)',
+        border: '1px solid rgba(255,255,255,0.1)',
+      }}
+    >
+      <Box p="md">
+        <Group justify="space-between" mb="md">
+          <Group gap={8}>
+            <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#ff5f57' }} />
+            <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#febc2e' }} />
+            <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#28c840' }} />
+          </Group>
+          <ActionIcon
             onClick={copyToClipboard}
-            className="text-gray-400 hover:text-white transition-colors"
+            variant="subtle"
+            color="gray.5"
             aria-label="Copy to clipboard"
           >
-            {copied ? (
-              <Check className="h-5 w-5" />
-            ) : (
-              <Copy className="h-5 w-5" />
-            )}
-          </button>
-        </div>
-        <div className="space-y-2">
+            {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+          </ActionIcon>
+        </Group>
+        <Stack gap="xs">
           {terminalSteps.map((step, index) => (
-            <div
+            <Text
               key={index}
-              className={`${index > terminalStep ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+              style={{
+                opacity: index > terminalStep ? 0 : 1,
+                transition: 'opacity 300ms ease',
+              }}
+              fz="sm"
             >
-              <span className="text-green-400">$</span> {step}
-            </div>
+              <Text component="span" c="teal.4">$</Text> {step}
+            </Text>
           ))}
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Box>
+    </Box>
   );
 }
