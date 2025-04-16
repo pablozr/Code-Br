@@ -97,39 +97,75 @@ export function PricingUI({ pricingData }: PricingUIProps) {
         width: '100vw',
         marginLeft: 'calc(-50vw + 50%)',
         marginRight: 'calc(-50vw + 50%)',
-        background: 'linear-gradient(135deg, rgba(13,13,13,0.97) 0%, rgba(26,26,26,0.97) 100%)',
+        background: 'radial-gradient(circle at 50% 50%, rgba(18,18,18,1) 0%, rgba(13,13,13,1) 100%)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* Background Effects */}
+      {/* Subtle Modern Background Pattern */}
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 1.5 }}
         >
+          {/* Grade sutil */}
           <Box
             style={{
               position: 'absolute',
-              top: '-30%',
-              right: '-10%',
-              width: '60%',
-              height: '180%',
-              background: 'radial-gradient(circle, rgba(118,65,192,0.1) 0%, rgba(118,65,192,0) 70%)',
-              transform: 'rotate(15deg)',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `
+                linear-gradient(rgba(118,65,192,0.03) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(118,65,192,0.03) 2px, transparent 2px)
+              `,
+              backgroundSize: '80px 80px',
+              opacity: 0.5,
               zIndex: 0,
             }}
           />
+          
+          {/* Gradiente suave superior */}
           <Box
             style={{
               position: 'absolute',
-              bottom: '-20%',
-              left: '-10%',
-              width: '50%',
+              top: '0',
+              left: '0',
+              right: '0',
+              height: '100%',
+              background: 'linear-gradient(180deg, rgba(118,65,192,0.08) 0%, transparent 100%)',
+              zIndex: 0,
+            }}
+          />
+          
+          {/* Efeito de brilho radial */}
+          <Box
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '150%',
               height: '150%',
-              background: 'radial-gradient(circle, rgba(118,65,192,0.08) 0%, rgba(118,65,192,0) 70%)',
-              transform: 'rotate(-15deg)',
+              background: 'radial-gradient(circle at center, rgba(118,65,192,0.05) 0%, transparent 50%)',
+              zIndex: 0,
+              pointerEvents: 'none',
+            }}
+          />
+          
+          {/* Pontos sutis */}
+          <Box
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `radial-gradient(rgba(118,65,192,0.15) 1px, transparent 1px)`,
+              backgroundSize: '40px 40px',
+              opacity: 0.3,
               zIndex: 0,
             }}
           />
