@@ -97,19 +97,19 @@ export function PricingUI({ pricingData }: PricingUIProps) {
         width: '100vw',
         marginLeft: 'calc(-50vw + 50%)',
         marginRight: 'calc(-50vw + 50%)',
-        background: 'radial-gradient(circle at 50% 50%, rgba(18,18,18,1) 0%, rgba(13,13,13,1) 100%)',
+        background: 'radial-gradient(circle at 50% 50%, rgba(25,18,35,1) 0%, rgba(13,13,13,1) 100%)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* Subtle Modern Background Pattern */}
+      {/* Animated Wave Background */}
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
+          transition={{ duration: 2 }}
         >
-          {/* Grade sutil */}
+          {/* Primeira onda de partículas - Mais densa */}
           <Box
             style={{
               position: 'absolute',
@@ -117,60 +117,117 @@ export function PricingUI({ pricingData }: PricingUIProps) {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundImage: `
-                linear-gradient(rgba(118,65,192,0.03) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(118,65,192,0.03) 2px, transparent 2px)
+              background: `
+                radial-gradient(2.5px 2.5px at 40px 60px, rgba(147,112,219,0.3) 50%, transparent),
+                radial-gradient(2.5px 2.5px at 100px 120px, rgba(138,43,226,0.25) 50%, transparent),
+                radial-gradient(2.5px 2.5px at 200px 150px, rgba(147,112,219,0.3) 50%, transparent),
+                radial-gradient(2.5px 2.5px at 300px 200px, rgba(138,43,226,0.25) 50%, transparent),
+                radial-gradient(2.5px 2.5px at 400px 250px, rgba(147,112,219,0.3) 50%, transparent),
+                radial-gradient(2.5px 2.5px at 500px 300px, rgba(138,43,226,0.25) 50%, transparent)
               `,
-              backgroundSize: '80px 80px',
-              opacity: 0.5,
+              backgroundSize: '600px 600px',
+              animation: 'moveWave 25s linear infinite',
+              opacity: 0.8,
               zIndex: 0,
             }}
           />
-          
-          {/* Gradiente suave superior */}
+
+          {/* Segunda onda de partículas - Movimento mais rápido */}
           <Box
             style={{
               position: 'absolute',
-              top: '0',
-              left: '0',
-              right: '0',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(118,65,192,0.08) 0%, transparent 100%)',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: `
+                radial-gradient(2px 2px at 20px 50px, rgba(147,112,219,0.25) 50%, transparent),
+                radial-gradient(2px 2px at 150px 80px, rgba(138,43,226,0.3) 50%, transparent),
+                radial-gradient(2px 2px at 250px 180px, rgba(147,112,219,0.25) 50%, transparent),
+                radial-gradient(2px 2px at 330px 220px, rgba(138,43,226,0.3) 50%, transparent),
+                radial-gradient(2px 2px at 410px 260px, rgba(147,112,219,0.25) 50%, transparent),
+                radial-gradient(2px 2px at 480px 300px, rgba(138,43,226,0.3) 50%, transparent)
+              `,
+              backgroundSize: '500px 500px',
+              animation: 'moveWave 20s linear infinite',
+              opacity: 0.7,
               zIndex: 0,
             }}
           />
-          
-          {/* Efeito de brilho radial */}
+
+          {/* Terceira onda de partículas - Mais próxima */}
+          <Box
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: `
+                radial-gradient(3px 3px at 50px 70px, rgba(147,112,219,0.35) 50%, transparent),
+                radial-gradient(3px 3px at 160px 90px, rgba(138,43,226,0.4) 50%, transparent),
+                radial-gradient(3px 3px at 260px 190px, rgba(147,112,219,0.35) 50%, transparent),
+                radial-gradient(3px 3px at 340px 230px, rgba(138,43,226,0.4) 50%, transparent)
+              `,
+              backgroundSize: '400px 400px',
+              animation: 'moveWave 15s linear infinite',
+              opacity: 0.6,
+              zIndex: 0,
+            }}
+          />
+
+          {/* Efeito de brilho central intensificado */}
           <Box
             style={{
               position: 'absolute',
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: '150%',
-              height: '150%',
-              background: 'radial-gradient(circle at center, rgba(118,65,192,0.05) 0%, transparent 50%)',
+              width: '180%',
+              height: '180%',
+              background: 'radial-gradient(circle at center, rgba(147,112,219,0.15) 0%, transparent 70%)',
               zIndex: 0,
               pointerEvents: 'none',
             }}
           />
-          
-          {/* Pontos sutis */}
-          <Box
+
+          {/* Ondas fluidas mais intensas */}
+          <motion.div
             style={{
               position: 'absolute',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundImage: `radial-gradient(rgba(118,65,192,0.15) 1px, transparent 1px)`,
-              backgroundSize: '40px 40px',
-              opacity: 0.3,
-              zIndex: 0,
+              opacity: 0.6,
+            }}
+            animate={{
+              background: [
+                'linear-gradient(45deg, transparent 60%, rgba(147,112,219,0.2) 70%, transparent 80%)',
+                'linear-gradient(45deg, transparent 50%, rgba(138,43,226,0.2) 60%, transparent 70%)',
+                'linear-gradient(45deg, transparent 60%, rgba(147,112,219,0.2) 70%, transparent 80%)',
+              ],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
             }}
           />
         </motion.div>
       </AnimatePresence>
+
+      {/* Keyframes atualizados */}
+      <style jsx global>{`
+        @keyframes moveWave {
+          0% {
+            background-position: 0 0;
+          }
+          100% {
+            background-position: 600px 600px;
+          }
+        }
+      `}</style>
 
       <MotionContainer
         size="xl"
