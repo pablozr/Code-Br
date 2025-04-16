@@ -148,13 +148,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </AppShell.Header>
 
       <AppShell.Main pt={90}>
-        <Container size="xl">
+        
           <Flex direction="column" gap="xl">
             <Box>
               {children}
             </Box>
           </Flex>
-        </Container>
+       
       </AppShell.Main>
 
       <Footer />
