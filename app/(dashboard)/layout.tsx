@@ -135,10 +135,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AppShell
       header={{ height: 70 }}
-      padding="md"
+      padding={0} // Remover padding
       styles={{
         main: {
           background: 'linear-gradient(135deg, rgba(13,13,13,1) 0%, rgba(26,26,26,1) 100%)',
+          padding: 0, // Remover padding
         },
       }}
     >
@@ -146,14 +147,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Header />
       </AppShell.Header>
 
-      <AppShell.Main pt={90}>
-        <Container size="xl">
-          <Flex direction="column" gap="xl">
-            <Box>
-              {children}
-            </Box>
-          </Flex>
-        </Container>
+      <AppShell.Main>
+        {children}
       </AppShell.Main>
     </AppShell>
   );
