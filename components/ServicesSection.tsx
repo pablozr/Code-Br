@@ -29,7 +29,7 @@ const MotionThemeIcon = motion(ThemeIcon);
 
 export function ServicesSection() {
   const theme = useMantineTheme();
-  
+
   const services = [
     {
       icon: <IconGlobe size={rem(24)} />,
@@ -55,7 +55,7 @@ export function ServicesSection() {
   ];
 
   return (
-    <Box py={100} bg="dark.9">
+    <Box py={120} style={{ background: 'linear-gradient(to bottom, #0A0A0A, #111111)' }}>
       <Container size="xl">
         <Stack spacing={80}>
           <MotionBox
@@ -65,25 +65,22 @@ export function ServicesSection() {
             viewport={{ once: true, margin: "-100px" }}
             ta="center"
           >
-            <Badge 
-              variant="gradient" 
-              gradient={{ from: 'purple.7', to: 'purple.5' }}
-              size="lg"
-              mb="md"
+            <Text
+              c="purple.4"
+              fw={600}
+              tt="uppercase"
+              mb="xs"
+              size="sm"
             >
               Nossos Serviços
-            </Badge>
+            </Text>
             <MotionTitle
               order={2}
               ta="center"
               size="2.5rem"
               fw={700}
-              mb="lg"
-              style={{
-                background: 'linear-gradient(90deg, #fff 0%, #a9a9a9 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
+              mb="md"
+              c="white"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -97,17 +94,17 @@ export function ServicesSection() {
             </Text>
           </MotionBox>
 
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="xl">
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing={40}>
             {services.map((service, index) => (
               <MotionCard
                 key={index}
                 shadow="md"
-                radius="md"
+                radius="lg"
                 padding="xl"
                 withBorder
                 style={{
-                  borderColor: theme.colors.dark[6],
-                  background: 'linear-gradient(145deg, rgba(26,26,26,0.8) 0%, rgba(13,13,13,0.8) 100%)',
+                  borderColor: 'rgba(255,255,255,0.05)',
+                  background: 'linear-gradient(145deg, rgba(20,20,20,0.5) 0%, rgba(15,15,15,0.5) 100%)',
                   backdropFilter: 'blur(10px)',
                   height: '100%',
                   overflow: 'hidden',
@@ -117,9 +114,10 @@ export function ServicesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ 
+                whileHover={{
                   translateY: -5,
-                  boxShadow: '0 20px 30px -10px rgba(0,0,0,0.4)'
+                  boxShadow: '0 20px 30px -10px rgba(0,0,0,0.4)',
+                  borderColor: 'rgba(118,65,192,0.2)',
                 }}
               >
                 {/* Background glow */}
@@ -137,16 +135,34 @@ export function ServicesSection() {
                   }}
                 />
 
+                {/* Gradient overlay */}
+                <Box
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: index === 0
+                      ? 'linear-gradient(135deg, rgba(118,65,192,0.05) 0%, rgba(118,65,192,0) 60%)'
+                      : 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 60%)',
+                    zIndex: 0,
+                  }}
+                />
+
                 <Stack spacing="md" style={{ position: 'relative', zIndex: 1 }}>
                   <MotionThemeIcon
                     size={60}
-                    radius="md"
-                    variant="gradient"
-                    gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+                    radius="xl"
+                    variant="light"
+                    color="purple.5"
                     mb="md"
-                    whileHover={{ 
+                    style={{
+                      backgroundColor: 'rgba(118,65,192,0.15)',
+                    }}
+                    whileHover={{
                       scale: 1.05,
-                      boxShadow: '0 0 20px rgba(118,65,192,0.5)'
+                      backgroundColor: 'rgba(118,65,192,0.2)',
                     }}
                   >
                     {service.icon}
@@ -154,29 +170,29 @@ export function ServicesSection() {
 
                   <Title order={3} fw={600} size="h3" mb="xs" c="white">{service.title}</Title>
 
-                  <Text c="gray.3" size="md" mb="md">
+                  <Text c="gray.4" size="md" mb="md" lh={1.6}>
                     {service.description}
                   </Text>
 
                   <Box>
                     {service.features.map((feature, i) => (
                       <Group key={i} mb="xs" align="center">
-                        <Box 
-                          style={{ 
-                            width: '6px', 
-                            height: '6px', 
-                            borderRadius: '50%', 
-                            backgroundColor: theme.colors.purple[5] 
-                          }} 
+                        <Box
+                          style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            backgroundColor: '#9969E5'
+                          }}
                         />
-                        <Text size="sm" c="gray.4">{feature}</Text>
+                        <Text size="sm" c="gray.5">{feature}</Text>
                       </Group>
                     ))}
                   </Box>
 
-                  <Group 
-                    mt="auto" 
-                    style={{ 
+                  <Group
+                    mt="auto"
+                    style={{
                       justifyContent: 'flex-end',
                       marginTop: '20px'
                     }}

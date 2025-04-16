@@ -16,14 +16,60 @@ const typing = keyframes({
   to: { width: '100%' },
 });
 
+const pulse = keyframes({
+  '0%': { opacity: 0.5, boxShadow: '0 0 5px rgba(153,105,229,0.5)' },
+  '50%': { opacity: 0.9, boxShadow: '0 0 10px rgba(153,105,229,0.8)' },
+  '100%': { opacity: 0.5, boxShadow: '0 0 5px rgba(153,105,229,0.5)' },
+});
+
 const codeLines = [
-  '<div className="hero">',
-  '  <h1>Websites Suíços</h1>',
-  '  <p>Qualidade e Precisão em cada detalhe</p>',
-  '  <Button>',
-  '    Ver nossos serviços',
-  '  </Button>',
-  '</div>'
+  '// Website Builder SaaS - Plataforma Suíça de Criação de Sites',
+  'export function WebsiteBuilder() {',
+  '  const [template, setTemplate] = useState("landing-page");',
+  '  const [theme, setTheme] = useState({',
+  '    colors: { primary: "#7641C0", secondary: "#9969E5", accent: "#6A5ACD" },',
+  '    fonts: { heading: "Manrope", body: "Inter", mono: "JetBrains Mono" },',
+  '    spacing: "comfortable",',
+  '    radius: "medium",',
+  '    mode: "dark"',
+  '  });',
+  '',
+  '  const [components, setComponents] = useState([',
+  '    { id: "hero-1", type: "Hero", content: { title: "Websites Suíços", subtitle: "Qualidade e Precisão" } },',
+  '    { id: "features-1", type: "Features", content: { items: ["Design Personalizado", "SEO Avançado", "Hospedagem Segura"] } },',
+  '    { id: "pricing-1", type: "Pricing", content: { plans: ["Básico", "Profissional", "Enterprise"] } }',
+  '  ]);',
+  '',
+  '  // Configurações de hospedagem na Suíça',
+  '  const hostingConfig = {',
+  '    region: "switzerland",',
+  '    dataProtection: "GDPR compliant",',
+  '    backups: "daily",',
+  '    ssl: "managed",',
+  '    cdn: true',
+  '  };',
+  '',
+  '  return (',
+  '    <EditorLayout>',
+  '      <Sidebar>',
+  '        <ComponentLibrary onDragStart={handleDragStart} />',
+  '        <ThemeSettings theme={theme} onChange={setTheme} />',
+  '        <HostingPanel config={hostingConfig} />',
+  '      </Sidebar>',
+  '      <Canvas>',
+  '        <DragDropContext onDragEnd={handleDragEnd}>',
+  '          <WebsitePreview',
+  '            template={template}',
+  '            theme={theme}',
+  '            components={components}',
+  '            onEdit={handleComponentEdit}',
+  '          />',
+  '        </DragDropContext>',
+  '      </Canvas>',
+  '      <PublishPanel hostingRegion={hostingConfig.region} />',
+  '    </EditorLayout>',
+  '  );',
+  '}'
 ];
 
 const codeColors = {
@@ -187,12 +233,12 @@ export function MacbookSimulator() {
     <Box
       style={{
         width: '100%',
-        maxWidth: 600,
+        maxWidth: 1000, // Aumentado para 1000px para um MacBook maior
         position: 'relative',
-        perspective: '1000px',
+        perspective: '1500px', // Aumentado para melhor efeito 3D
         transformStyle: 'preserve-3d',
         margin: '0 auto',
-        filter: 'drop-shadow(0 30px 30px rgba(0,0,0,0.3))',
+        filter: 'drop-shadow(0 50px 50px rgba(0,0,0,0.5))',
         transition: 'all 0.5s ease',
         cursor: 'pointer',
       }}
@@ -204,33 +250,34 @@ export function MacbookSimulator() {
         style={{
           width: '100%',
           height: 0,
-          paddingBottom: '62%',
+          paddingBottom: '65%', // Aumentado para proporcionar mais espaço para o conteúdo
           backgroundColor: '#1e1e1e',
-          borderRadius: '15px 15px 0 0',
+          borderRadius: '20px 20px 0 0', // Bordas mais arredondadas
           position: 'relative',
           overflow: 'hidden',
           border: '2px solid #333',
-          transform: isHovered ? 'rotateX(10deg)' : 'rotateX(5deg)',
-          transition: 'all 0.3s ease',
+          transform: isHovered ? 'rotateX(12deg)' : 'rotateX(5deg)',
+          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Animação mais suave
           boxShadow: isHovered
-            ? '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(118,65,192,0.3)'
-            : '0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(118,65,192,0.2)',
+            ? '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(118,65,192,0.4), inset 0 0 3px rgba(255,255,255,0.05)'
+            : '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(118,65,192,0.3), inset 0 0 2px rgba(255,255,255,0.03)',
         }}
       >
         {/* Screen bezel */}
         <Box
           style={{
             position: 'absolute',
-            top: '2%',
-            left: '2%',
-            width: '96%',
-            height: '96%',
+            top: '1.5%',
+            left: '1.5%',
+            width: '97%',
+            height: '97%',
             background: 'linear-gradient(145deg, #0f0f0f, #121212)',
-            borderRadius: '8px',
+            borderRadius: '12px', // Bordas mais arredondadas
             padding: '20px',
             boxSizing: 'border-box',
-            boxShadow: 'inset 0 0 10px rgba(0,0,0,0.8)',
+            boxShadow: 'inset 0 0 15px rgba(0,0,0,0.9), inset 0 0 1px rgba(255,255,255,0.1)',
             border: '1px solid #222',
+            overflow: 'hidden', // Garante que o conteúdo não ultrapasse as bordas
           }}
         >
           {/* Menu bar */}
@@ -240,72 +287,89 @@ export function MacbookSimulator() {
               top: 0,
               left: 0,
               width: '100%',
-              height: '25px',
+              height: '30px', // Altura aumentada
               background: 'linear-gradient(to bottom, #1a1a1a, #161616)',
               display: 'flex',
               alignItems: 'center',
-              padding: '0 10px',
+              justifyContent: 'space-between', // Distribui os elementos
+              padding: '0 12px',
               borderBottom: '1px solid #333',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+              zIndex: 10, // Garante que fique acima do conteúdo
             }}
           >
             {/* Traffic lights */}
-            <Box style={{ display: 'flex', gap: '6px' }}>
+            <Box style={{ display: 'flex', gap: '8px' }}>
               <Box
                 style={{
-                  width: '12px',
-                  height: '12px',
+                  width: '14px', // Tamanho aumentado
+                  height: '14px',
                   borderRadius: '50%',
                   backgroundColor: '#ff5f57',
-                  boxShadow: 'inset 0 0 2px rgba(0,0,0,0.2)',
+                  boxShadow: 'inset 0 0 3px rgba(0,0,0,0.2), 0 0 2px rgba(255,95,87,0.4)',
                   border: '0.5px solid rgba(0,0,0,0.1)',
+                  transition: 'all 0.2s ease',
+                  transform: isHovered ? 'scale(1.05)' : 'scale(1)', // Efeito sutil de escala
                 }}
               />
               <Box
                 style={{
-                  width: '12px',
-                  height: '12px',
+                  width: '14px',
+                  height: '14px',
                   borderRadius: '50%',
                   backgroundColor: '#febc2e',
-                  boxShadow: 'inset 0 0 2px rgba(0,0,0,0.2)',
+                  boxShadow: 'inset 0 0 3px rgba(0,0,0,0.2), 0 0 2px rgba(254,188,46,0.4)',
                   border: '0.5px solid rgba(0,0,0,0.1)',
+                  transition: 'all 0.2s ease',
+                  transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                 }}
               />
               <Box
                 style={{
-                  width: '12px',
-                  height: '12px',
+                  width: '14px',
+                  height: '14px',
                   borderRadius: '50%',
                   backgroundColor: '#28c840',
-                  boxShadow: 'inset 0 0 2px rgba(0,0,0,0.2)',
+                  boxShadow: 'inset 0 0 3px rgba(0,0,0,0.2), 0 0 2px rgba(40,200,64,0.4)',
                   border: '0.5px solid rgba(0,0,0,0.1)',
+                  transition: 'all 0.2s ease',
+                  transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                 }}
               />
             </Box>
 
             {/* VS Code icon and title */}
-            <Box style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
-              <IconBrandVscode size={14} color="#0098ff" style={{ filter: 'drop-shadow(0 0 1px rgba(0,150,255,0.3))' }} />
-              <Text size="xs" c="dimmed" ml={5} style={{ textShadow: '0 0 1px rgba(0,0,0,0.5)' }}>
-                index.tsx - Websites Suíços
+            <Box style={{ display: 'flex', alignItems: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+              <IconBrandVscode size={16} color="#0098ff" style={{ filter: 'drop-shadow(0 0 2px rgba(0,150,255,0.4))' }} />
+              <Text size="xs" fw={500} c="gray.4" ml={6} style={{ textShadow: '0 0 1px rgba(0,0,0,0.5)' }}>
+                website-builder.tsx - Websites Suíços
               </Text>
+            </Box>
+
+            {/* Menu items */}
+            <Box style={{ display: 'flex', gap: '15px' }}>
+              <Text size="xs" c="gray.5">File</Text>
+              <Text size="xs" c="gray.5">Edit</Text>
+              <Text size="xs" c="gray.5">View</Text>
+              <Text size="xs" c="gray.5" style={{ color: '#9969E5' }}>Preview</Text>
             </Box>
           </Box>
 
           {/* Code editor */}
           <Box
             style={{
-              marginTop: '25px',
-              height: 'calc(100% - 25px)',
+              marginTop: '30px', // Ajustado para a nova altura da barra de menu
+              height: 'calc(100% - 30px)',
               background: 'linear-gradient(to bottom, #1e1e1e, #1a1a1a)',
               color: '#ABB2BF',
-              fontFamily: 'monospace',
-              fontSize: '14px',
-              padding: '10px',
+              fontFamily: '"JetBrains Mono", monospace', // Fonte de código mais moderna
+              fontSize: '16px',
+              padding: '15px',
               overflow: 'hidden',
               position: 'relative',
               boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.3)',
-              borderRadius: '0 0 4px 4px',
+              borderRadius: '0 0 8px 8px', // Bordas mais arredondadas
+              backgroundImage: 'radial-gradient(circle at 15% 50%, rgba(118,65,192,0.03) 0%, transparent 25%)', // Efeito sutil de gradiente
             }}
           >
             {/* Line numbers */}
@@ -314,13 +378,14 @@ export function MacbookSimulator() {
                 position: 'absolute',
                 left: 0,
                 top: 0,
-                width: '30px',
+                width: '40px', // Mais espaço para números de linha
                 height: '100%',
                 background: 'linear-gradient(to right, #1a1a1a, #252525)',
-                paddingTop: '10px',
+                paddingTop: '15px',
                 textAlign: 'right',
                 borderRight: '1px solid #333',
                 boxShadow: '1px 0 2px rgba(0,0,0,0.2)',
+                zIndex: 5,
               }}
             >
               {codeLines.map((_, i) => (
@@ -329,9 +394,12 @@ export function MacbookSimulator() {
                   size="xs"
                   c="dimmed"
                   style={{
-                    lineHeight: '1.5',
-                    paddingRight: '5px',
+                    lineHeight: '1.6', // Mais espaço entre linhas
+                    paddingRight: '8px',
                     opacity: i < visibleLines ? 1 : 0,
+                    fontFamily: '"JetBrains Mono", monospace',
+                    color: i === cursorPosition.line ? '#9969E5' : '#636363', // Destaque para a linha atual
+                    transition: 'color 0.3s ease',
                   }}
                 >
                   {i + 1}
@@ -340,25 +408,30 @@ export function MacbookSimulator() {
             </Box>
 
             {/* Code content */}
-            <Box style={{ marginLeft: '35px', paddingTop: '10px' }}>
+            <Box style={{ marginLeft: '50px', paddingTop: '15px' }}>
               {codeLines.map((line, i) => (
                 <Box
                   key={i}
                   style={{
-                    lineHeight: '1.5',
+                    lineHeight: '1.6',
                     opacity: i < visibleLines ? 1 : 0,
-                    transition: 'opacity 0.2s',
+                    transition: 'opacity 0.3s, background-color 0.3s',
                     position: 'relative',
                     whiteSpace: 'pre',
                     overflow: 'hidden',
-                    animation: i < visibleLines ? `${typing} 0.5s ease-out` : 'none',
+                    animation: i < visibleLines ? `${typing} 0.6s ease-out` : 'none',
+                    backgroundColor: i === cursorPosition.line ? 'rgba(118,65,192,0.07)' : 'transparent', // Destaque sutil para a linha atual
+                    borderRadius: '3px',
+                    padding: '0 5px',
+                    marginRight: '10px',
                   }}
                 >
                   <Text
                     component="span"
                     style={{
-                      fontFamily: 'monospace',
+                      fontFamily: '"JetBrains Mono", monospace',
                       color: codeColors.text,
+                      letterSpacing: '-0.025em', // Melhor espaçamento entre caracteres
                     }}
                   >
                     {formatCode(line, i)}
@@ -370,14 +443,15 @@ export function MacbookSimulator() {
                       component="span"
                       style={{
                         display: 'inline-block',
-                        width: '2px',
+                        width: '2.5px',
                         height: '1.2em',
-                        background: 'linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
+                        background: 'linear-gradient(to bottom, rgba(153,105,229,1), rgba(118,65,192,0.8))',
                         position: 'absolute',
-                        left: `${cursorPosition.char * 8}px`,
-                        top: '0',
+                        left: `${cursorPosition.char * 9.5}px`, // Ajustado para o novo tamanho da fonte
+                        top: '2px',
                         animation: `${blink} 1s infinite`,
-                        boxShadow: '0 0 3px rgba(255,255,255,0.5)',
+                        boxShadow: '0 0 8px rgba(153,105,229,0.8)',
+                        borderRadius: '1px',
                       }}
                     />
                   )}
@@ -392,46 +466,67 @@ export function MacbookSimulator() {
       <Box
         style={{
           width: '100%',
-          height: '12px',
+          height: '20px', // Aumentado para proporcionalidade
           background: 'linear-gradient(to bottom, #1a1a1a, #0f0f0f)',
-          borderRadius: '0 0 15px 15px',
-          boxShadow: '0 5px 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(118,65,192,0.15)',
+          borderRadius: '0 0 20px 20px', // Bordas mais arredondadas
+          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(118,65,192,0.3)',
           position: 'relative',
-          transform: isHovered ? 'rotateX(10deg) translateZ(-5px)' : 'rotateX(5deg) translateZ(-5px)',
+          transform: isHovered ? 'rotateX(15deg) translateZ(-8px)' : 'rotateX(6deg) translateZ(-5px)',
           transformOrigin: 'top',
           borderLeft: '2px solid #333',
           borderRight: '2px solid #333',
           borderBottom: '2px solid #333',
+          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         }}
       >
         {/* Touchpad */}
         <Box
           style={{
-            width: '40%',
-            height: '4px',
+            width: '45%',
+            height: '6px',
             background: 'linear-gradient(to right, #333, #444, #333)',
             position: 'absolute',
-            top: '4px',
-            left: '30%',
-            borderRadius: '2px',
-            boxShadow: '0 1px 2px rgba(0,0,0,0.3) inset',
+            top: '7px',
+            left: '27.5%',
+            borderRadius: '4px',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.4) inset, 0 0 2px rgba(118,65,192,0.2)',
+            opacity: isHovered ? 0.9 : 0.7,
+            transition: 'opacity 0.3s ease',
           }}
         />
 
-        {/* Apple logo (subtle) */}
+        {/* Indicador LED */}
         <Box
           style={{
-            width: '15px',
-            height: '15px',
+            width: '4px',
+            height: '4px',
+            borderRadius: '50%',
+            backgroundColor: '#9969E5',
             position: 'absolute',
-            bottom: '-10px',
+            right: '15px',
+            top: '8px',
+            boxShadow: '0 0 5px rgba(153,105,229,0.8)',
+            animation: `${pulse} 2s infinite`,
+            opacity: isHovered ? 0.8 : 0.5,
+            transition: 'opacity 0.3s ease',
+          }}
+        />
+
+        {/* Logo personalizado */}
+        <Box
+          style={{
+            width: '20px',
+            height: '20px',
+            position: 'absolute',
+            bottom: '-12px',
             left: '50%',
             transform: 'translateX(-50%)',
-            opacity: 0.1,
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'%3E%3Cpath fill='white' d='M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z'/%3E%3C/svg%3E")`,
+            opacity: 0.15,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239969E5'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E")`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
+            filter: 'drop-shadow(0 0 2px rgba(153,105,229,0.5))',
           }}
         />
       </Box>
@@ -444,10 +539,12 @@ export function MacbookSimulator() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'linear-gradient(135deg, rgba(118,65,192,0.15) 0%, rgba(118,65,192,0) 60%)',
+          background: 'linear-gradient(135deg, rgba(118,65,192,0.3) 0%, rgba(118,65,192,0) 60%)',
           pointerEvents: 'none',
-          borderRadius: '15px',
+          borderRadius: '20px',
           zIndex: 10,
+          opacity: isHovered ? 0.9 : 0.7,
+          transition: 'opacity 0.3s ease',
         }}
       />
 
@@ -459,11 +556,13 @@ export function MacbookSimulator() {
           left: '5%',
           width: '90%',
           height: '60%',
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%)',
           pointerEvents: 'none',
-          borderRadius: '10px',
+          borderRadius: '15px',
           zIndex: 11,
-          opacity: 0.7,
+          opacity: isHovered ? 0.8 : 0.6,
+          transition: 'opacity 0.3s ease',
+          backdropFilter: 'blur(2px)',
         }}
       />
 
@@ -475,12 +574,13 @@ export function MacbookSimulator() {
           left: '10%',
           width: '80%',
           height: '50%',
-          background: 'radial-gradient(ellipse at center, rgba(118,65,192,0.03) 0%, rgba(118,65,192,0) 70%)',
+          background: 'radial-gradient(ellipse at center, rgba(118,65,192,0.05) 0%, rgba(118,65,192,0) 70%)',
           pointerEvents: 'none',
           borderRadius: '50%',
           zIndex: 11,
-          opacity: 0.5,
-          filter: 'blur(10px)',
+          opacity: isHovered ? 0.7 : 0.5,
+          filter: 'blur(15px)',
+          transition: 'opacity 0.3s ease, filter 0.3s ease',
         }}
       />
 
@@ -491,10 +591,31 @@ export function MacbookSimulator() {
           bottom: 0,
           left: '10%',
           width: '80%',
-          height: '1px',
-          background: 'linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(118,65,192,0.3) 50%, rgba(0,0,0,0) 100%)',
+          height: '2px',
+          background: 'linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(118,65,192,0.4) 50%, rgba(0,0,0,0) 100%)',
           pointerEvents: 'none',
           zIndex: 12,
+          boxShadow: '0 0 10px rgba(118,65,192,0.3)',
+          opacity: isHovered ? 1 : 0.7,
+          transition: 'opacity 0.3s ease',
+        }}
+      />
+
+      {/* Efeito de brilho ao redor */}
+      <Box
+        style={{
+          position: 'absolute',
+          width: '120%',
+          height: '120%',
+          top: '-10%',
+          left: '-10%',
+          background: 'radial-gradient(ellipse at center, rgba(118,65,192,0.15) 0%, rgba(118,65,192,0) 70%)',
+          pointerEvents: 'none',
+          opacity: isHovered ? 0.6 : 0,
+          transition: 'opacity 0.5s ease',
+          zIndex: -1,
+          transform: 'translateZ(-50px)',
+          filter: 'blur(20px)',
         }}
       />
     </Box>

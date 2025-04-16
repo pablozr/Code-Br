@@ -34,12 +34,12 @@ const MotionGroup = motion(Group);
 
 export function HostingSection() {
   const theme = useMantineTheme();
-  
+
   return (
     <Box
-      py={100}
+      py={120}
       style={{
-        background: 'linear-gradient(135deg, rgba(26,26,26,1) 0%, rgba(13,13,13,1) 100%)',
+        background: 'linear-gradient(to bottom, #111111, #0A0A0A)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -64,7 +64,7 @@ export function HostingSection() {
           ease: 'easeInOut',
         }}
       />
-      
+
       {/* Server rack illustration */}
       <MotionBox
         style={{
@@ -104,11 +104,7 @@ export function HostingSection() {
                 size="2.5rem"
                 fw={700}
                 mb="md"
-                style={{
-                  background: 'linear-gradient(90deg, #fff 0%, #a9a9a9 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
+                c="white"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -119,8 +115,9 @@ export function HostingSection() {
 
               <MotionText
                 size="lg"
-                c="gray.3"
+                c="gray.4"
                 maw={600}
+                lh={1.7}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -130,7 +127,7 @@ export function HostingSection() {
                 garantindo privacidade de dados, velocidade excepcional e conformidade com
                 as mais rigorosas regulamentações de proteção de dados.
               </MotionText>
-              
+
               <MotionBox
                 mt="xl"
                 initial={{ opacity: 0, y: 20 }}
@@ -144,15 +141,17 @@ export function HostingSection() {
                     href="/pricing"
                     size="lg"
                     radius="xl"
-                    variant="gradient"
-                    gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+                    variant="filled"
+                    color="purple.5"
                     rightSection={<IconArrowRight size={18} />}
-                    sx={{
-                      boxShadow: '0 10px 20px -10px rgba(118,65,192,0.5)',
+                    style={{
+                      boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
                       transition: 'all 0.2s ease',
+                      height: rem(52),
+                      fontWeight: 500,
                       '&:hover': {
                         transform: 'translateY(-2px)',
-                        boxShadow: '0 15px 25px -10px rgba(118,65,192,0.6)',
+                        boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
                       }
                     }}
                   >
@@ -161,7 +160,7 @@ export function HostingSection() {
                 </Group>
               </MotionBox>
             </MotionBox>
-            
+
             {/* Swiss map outline */}
             <MotionBox
               style={{
@@ -190,7 +189,7 @@ export function HostingSection() {
                   backgroundSize: 'contain',
                 }}
               />
-              
+
               {/* Pulsing dot for server location */}
               <MotionBox
                 style={{
@@ -229,17 +228,18 @@ export function HostingSection() {
           >
             <MotionCard
               shadow="lg"
-              radius="md"
+              radius="lg"
               padding="xl"
               withBorder
               style={{
-                borderColor: theme.colors.dark[6],
-                background: 'linear-gradient(145deg, rgba(26,26,26,0.8) 0%, rgba(13,13,13,0.8) 100%)',
+                borderColor: 'rgba(255,255,255,0.05)',
+                background: 'linear-gradient(145deg, rgba(20,20,20,0.5) 0%, rgba(15,15,15,0.5) 100%)',
                 backdropFilter: 'blur(10px)',
                 overflow: 'hidden',
               }}
-              whileHover={{ 
+              whileHover={{
                 boxShadow: '0 20px 30px -10px rgba(0,0,0,0.4)',
+                borderColor: 'rgba(118,65,192,0.2)',
               }}
             >
               {/* Card glow effect */}
@@ -254,7 +254,7 @@ export function HostingSection() {
                   zIndex: 0,
                 }}
               />
-              
+
               <Stack spacing="lg" style={{ position: 'relative', zIndex: 1 }}>
                 <MotionGroup
                   initial={{ opacity: 0, y: 10 }}
@@ -264,19 +264,22 @@ export function HostingSection() {
                 >
                   <ThemeIcon
                     size={50}
-                    radius="md"
-                    variant="gradient"
-                    gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+                    radius="xl"
+                    variant="light"
+                    color="purple.5"
+                    style={{
+                      backgroundColor: 'rgba(118,65,192,0.15)',
+                    }}
                   >
-                    <IconShield size={rem(24)} />
+                    <IconShield size={rem(24)} stroke={1.5} />
                   </ThemeIcon>
                   <div>
                     <Title order={4} fw={600} c="white">Segurança Garantida</Title>
-                    <Text c="gray.3" size="sm">Proteção de dados de nível bancário</Text>
+                    <Text c="gray.4" size="sm">Proteção de dados de nível bancário</Text>
                   </div>
                 </MotionGroup>
 
-                <Divider color="dark.6" />
+                <Divider color="dark.7" opacity={0.5} />
 
                 <MotionGroup
                   initial={{ opacity: 0, y: 10 }}
@@ -286,19 +289,22 @@ export function HostingSection() {
                 >
                   <ThemeIcon
                     size={50}
-                    radius="md"
-                    variant="gradient"
-                    gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+                    radius="xl"
+                    variant="light"
+                    color="purple.5"
+                    style={{
+                      backgroundColor: 'rgba(118,65,192,0.15)',
+                    }}
                   >
-                    <IconRocket size={rem(24)} />
+                    <IconRocket size={rem(24)} stroke={1.5} />
                   </ThemeIcon>
                   <div>
                     <Title order={4} fw={600} c="white">Alta Performance</Title>
-                    <Text c="gray.3" size="sm">Velocidade e estabilidade excepcionais</Text>
+                    <Text c="gray.4" size="sm">Velocidade e estabilidade excepcionais</Text>
                   </div>
                 </MotionGroup>
 
-                <Divider color="dark.6" />
+                <Divider color="dark.7" opacity={0.5} />
 
                 <MotionGroup
                   initial={{ opacity: 0, y: 10 }}
@@ -308,20 +314,23 @@ export function HostingSection() {
                 >
                   <ThemeIcon
                     size={50}
-                    radius="md"
-                    variant="gradient"
-                    gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+                    radius="xl"
+                    variant="light"
+                    color="purple.5"
+                    style={{
+                      backgroundColor: 'rgba(118,65,192,0.15)',
+                    }}
                   >
-                    <IconGlobe size={rem(24)} />
+                    <IconGlobe size={rem(24)} stroke={1.5} />
                   </ThemeIcon>
                   <div>
                     <Title order={4} fw={600} c="white">Conformidade GDPR</Title>
-                    <Text c="gray.3" size="sm">Atende às normas europeias de privacidade</Text>
+                    <Text c="gray.4" size="sm">Atende às normas europeias de privacidade</Text>
                   </div>
                 </MotionGroup>
-                
-                <Divider color="dark.6" />
-                
+
+                <Divider color="dark.7" opacity={0.5} />
+
                 <MotionGroup
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -330,15 +339,18 @@ export function HostingSection() {
                 >
                   <ThemeIcon
                     size={50}
-                    radius="md"
-                    variant="gradient"
-                    gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+                    radius="xl"
+                    variant="light"
+                    color="purple.5"
+                    style={{
+                      backgroundColor: 'rgba(118,65,192,0.15)',
+                    }}
                   >
-                    <IconCloudLock size={rem(24)} />
+                    <IconCloudLock size={rem(24)} stroke={1.5} />
                   </ThemeIcon>
                   <div>
                     <Title order={4} fw={600} c="white">Backups Automáticos</Title>
-                    <Text c="gray.3" size="sm">Seus dados sempre protegidos e recuperáveis</Text>
+                    <Text c="gray.4" size="sm">Seus dados sempre protegidos e recuperáveis</Text>
                   </div>
                 </MotionGroup>
               </Stack>

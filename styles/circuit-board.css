@@ -1,0 +1,173 @@
+/* Circuit Board SVG Animation */
+.circuit-trace {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: circuit-trace-animation 2s ease-in-out forwards;
+  stroke-width: 2px;
+  transition: stroke 0.3s ease, filter 0.3s ease;
+}
+
+.circuit-via {
+  opacity: 0;
+  animation: circuit-via-animation 3s ease-in-out forwards;
+  transition: fill 0.3s ease, filter 0.3s ease;
+}
+
+.circuit-component {
+  opacity: 0;
+  animation: circuit-component-animation 3s ease-in-out forwards;
+  transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
+}
+
+.circuit-pin {
+  opacity: 0;
+  animation: circuit-pin-animation 3s ease-in-out forwards;
+  transition: fill 0.3s ease, filter 0.3s ease;
+}
+
+.circuit-marking {
+  opacity: 0;
+  animation: circuit-marking-animation 3s ease-in-out forwards;
+  transition: fill 0.3s ease, filter 0.3s ease;
+}
+
+.circuit-board {
+  opacity: 0;
+  animation: circuit-board-animation 2s ease-in-out forwards;
+  transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
+}
+
+@keyframes circuit-trace-animation {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes circuit-via-animation {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes circuit-component-animation {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes circuit-pin-animation {
+  0% {
+    opacity: 0;
+  }
+  85% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes circuit-marking-animation {
+  0% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes circuit-board-animation {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Hover Effects */
+.circuit-trace:hover {
+  stroke: #E6E6FA;
+  filter: drop-shadow(0 0 5px rgba(230, 230, 250, 0.8));
+}
+
+.circuit-via:hover,
+.circuit-pin:hover,
+.circuit-marking:hover {
+  fill: #E6E6FA;
+  filter: drop-shadow(0 0 5px rgba(230, 230, 250, 0.8));
+}
+
+.circuit-component:hover {
+  stroke: #E6E6FA;
+  filter: drop-shadow(0 0 5px rgba(230, 230, 250, 0.8));
+}
+
+/* Neon Glow Effect */
+.circuit-board-container {
+  position: relative;
+}
+
+.circuit-board-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(147, 112, 219, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 1;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Mouse Follow Effect */
+.circuit-highlight {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230, 230, 250, 0.2) 0%, rgba(230, 230, 250, 0) 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.circuit-board-container:hover .circuit-highlight {
+  opacity: 1;
+}

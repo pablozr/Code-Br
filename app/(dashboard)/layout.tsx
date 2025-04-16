@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/lib/auth';
 import { signOut } from '@/app/(login)/actions';
+import { Footer } from '@/components/layout/Footer';
 import {
   AppShell,
   Container,
@@ -138,7 +139,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       padding="md"
       styles={{
         main: {
-          background: 'linear-gradient(135deg, rgba(13,13,13,1) 0%, rgba(26,26,26,1) 100%)',
+          background: 'linear-gradient(135deg, rgba(10,10,10,1) 0%, rgba(15,15,15,1) 100%)',
         },
       }}
     >
@@ -155,6 +156,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Flex>
         </Container>
       </AppShell.Main>
+
+      <Footer />
     </AppShell>
   );
 }
