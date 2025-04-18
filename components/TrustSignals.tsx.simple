@@ -1,0 +1,14 @@
+'use client';
+
+import { Box, Container, Text, Title } from '@mantine/core';
+
+export function TrustSignals() {
+  return (
+    <Box py={80}>
+      <Container>
+        <Title>Trust Signals</Title>
+        <Text>Simplified version for testing</Text>
+      </Container>
+    </Box>
+  );
+}

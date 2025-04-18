@@ -314,6 +314,15 @@
   }
 }
 
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -5,8 +5,6 @@ import { Box } from '@mantine/core';
 
 export function GradientNebulaBackground() { // Aurora Neon with Code Simulation
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const codeCanvasRef = useRef<HTMLCanvasElement>(null);
-  const [codeLines, setCodeLines] = useState<string[]>([]);
 
   // Sample code snippets for the simulation
   const codeSamples = [
@@ -34,54 +32,6 @@ export function GradientNebulaBackground() { // Aurora Neon with Code Simulation
     '}',
   ];
 
-  // Code typing animation effect
-  useEffect(() => {
-    let currentLines: string[] = [];
-    let currentLineIndex = 0;
-    let currentCharIndex = 0;
-    let typingInterval: NodeJS.Timeout;
-
-    const typeNextChar = () => {
-      if (currentLineIndex >= codeSamples.length) {
-        // Reset to start typing again
-        currentLines = [];
-        currentLineIndex = 0;
-        currentCharIndex = 0;
-        setCodeLines([]);
-        return;
-      }
-
-      const currentSample = codeSamples[currentLineIndex];
-
-      if (currentCharIndex === 0) {
-        currentLines.push('');
-      }
-
-      if (currentCharIndex < currentSample.length) {
-        // Type next character
-        const updatedLine = currentSample.substring(0, currentCharIndex + 1);
-        currentLines[currentLines.length - 1] = updatedLine;
-        setCodeLines([...currentLines]);
-        currentCharIndex++;
-      } else {
-        // Move to next line
-        currentLineIndex++;
-        currentCharIndex = 0;
-
-        // If we have too many lines, remove the first one
-        if (currentLines.length > 15) {
-          currentLines.shift();
-        }
-      }
-    };
-
-    // Start typing animation
-    typingInterval = setInterval(typeNextChar, 50);
-
-    return () => {
-      clearInterval(typingInterval);
-    };
-  }, []);
 
   // Mouse movement effect
   useEffect(() => {
@@ -176,38 +126,6 @@ export function GradientNebulaBackground() { // Aurora Neon with Code Simulation
           animation: 'aurora-wave-3 20s ease-in-out infinite alternate',
         }}
       />
-
-      {/* Code simulation overlay */}
-      <Box
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '50%', // Only cover the top portion
-          overflow: 'hidden',
-          opacity: 0.15,
-          zIndex: 1,
-          fontFamily: 'monospace',
-          color: '#a0f0ff',
-          fontSize: '14px',
-          padding: '20px',
-          pointerEvents: 'none',
-        }}
-      >
-        {codeLines.map((line, index) => (
-          <Box
-            key={index}
-            style={{
-              marginBottom: '4px',
-              textShadow: '0 0 5px rgba(160, 240, 255, 0.8)',
-              opacity: 1 - (index * 0.05), // Fade out older lines
-            }}
-          >
-            {line}
-          </Box>
-        ))}
-      </Box>
 
       {/* Subtle stars */}
       <Box

@@ -22,10 +22,10 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
-  IconGlobe,
   IconChevronDown,
   IconChevronUp,
-  IconBrandGithub
+  IconBrandGithub,
+  IconCode
 } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -37,7 +37,6 @@ const mainLinks = [
   { label: 'Contato', href: '/contact' },
 ];
 
-const MotionBox = motion(Box);
 
 export function Header() {
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -68,18 +67,70 @@ export function Header() {
         <Container size="xl" h="100%">
           <Group h="100%" justify="space-between">
             <Group>
-              <ThemeIcon
-                size="lg"
-                radius="xl"
-                variant="gradient"
-                gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+              <Box
                 style={{
-                  boxShadow: '0 0 20px rgba(118,65,192,0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  cursor: 'pointer',
                 }}
+                component={Link}
+                href="/"
               >
-                <IconGlobe size={rem(20)} />
-              </ThemeIcon>
-              <Title order={3} fw={600} c="white">Websites Suíços</Title>
+                <Box
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'linear-gradient(135deg, #7641C0, #9969E5)',
+                    borderRadius: '12px',
+                    padding: '8px',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    boxShadow: '0 0 20px rgba(118,65,192,0.3)',
+                  }}
+                >
+                  <Text
+                    fw={700}
+                    size="lg"
+                    style={{
+                      color: 'white',
+                      fontFamily: 'monospace',
+                      letterSpacing: '-0.5px',
+                    }}
+                  >
+                    &lt; /&gt;
+                  </Text>
+
+                  {/* Efeito de brilho */}
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      top: '-50%',
+                      left: '-50%',
+                      width: '200%',
+                      height: '200%',
+                      background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
+                      transform: 'rotate(45deg)',
+                      animation: 'shine 3s infinite',
+                    }}
+                  />
+                </Box>
+
+                <Title
+                  order={3}
+                  fw={700}
+                  c="white"
+                  style={{
+                    letterSpacing: '-0.5px',
+                    background: 'linear-gradient(90deg, #fff, #9969E5)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  CodeBR
+                </Title>
+              </Box>
             </Group>
 
             {/* Desktop navigation */}
@@ -94,29 +145,60 @@ export function Header() {
                       textDecoration: 'none',
                       transition: 'all 0.2s ease',
                       position: 'relative',
-                      '&:hover': { color: '#9969E5' },
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      background: isActive(link.href) ? 'rgba(118, 65, 192, 0.1)' : 'transparent',
+                      '&:hover': {
+                        color: '#9969E5',
+                        background: 'rgba(118, 65, 192, 0.05)',
+                        transform: 'translateY(-2px)'
+                      },
                     }}
                   >
                     <Box
                       style={{
                         position: 'relative',
-                        paddingBottom: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
                       }}
                     >
-                      {link.label}
+                      {/* Indicador de ativo */}
                       {isActive(link.href) && (
                         <Box
                           style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '2px',
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
                             background: 'linear-gradient(90deg, #7641C0, #9969E5)',
-                            borderRadius: '2px',
+                            boxShadow: '0 0 10px rgba(118, 65, 192, 0.5)',
                           }}
                         />
                       )}
+
+                      {link.label}
+
+                      {/* Linha inferior animada no hover */}
+                      <Box
+                        style={{
+                          position: 'absolute',
+                          bottom: '-4px',
+                          left: isActive(link.href) ? '0' : '50%',
+                          width: isActive(link.href) ? '100%' : '0',
+                          height: '2px',
+                          background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                          borderRadius: '2px',
+                          transition: 'all 0.3s ease',
+                          opacity: isActive(link.href) ? 1 : 0,
+                          transform: isActive(link.href) ? 'none' : 'translateX(-50%)',
+                          '&:hover': {
+                            width: '100%',
+                            left: '0',
+                            opacity: 1,
+                            transform: 'none',
+                          },
+                        }}
+                      />
                     </Box>
                   </Text>
                 </Link>
@@ -132,8 +214,18 @@ export function Header() {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                style={{
+                  border: '1px solid rgba(118, 65, 192, 0.2)',
+                  backgroundColor: 'rgba(118, 65, 192, 0.05)',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    backgroundColor: 'rgba(118, 65, 192, 0.1)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 4px 10px -2px rgba(118, 65, 192, 0.2)',
+                  }
+                }}
               >
-                <IconBrandGithub size={rem(18)} />
+                <IconBrandGithub size={rem(18)} color="#9969E5" />
               </ActionIcon>
 
               <Button
@@ -142,19 +234,38 @@ export function Header() {
                 variant="outline"
                 color="gray.0"
                 radius="xl"
+                leftSection={<IconCode size={rem(16)} />}
                 style={{
-                  borderColor: 'rgba(255, 255, 255, 0.1)',
-                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                  borderColor: 'rgba(118, 65, 192, 0.3)',
+                  backgroundColor: 'rgba(118, 65, 192, 0.05)',
                   backdropFilter: 'blur(10px)',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden',
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: 'rgba(118, 65, 192, 0.5)',
+                    backgroundColor: 'rgba(118, 65, 192, 0.1)',
                     transform: 'translateY(-2px)',
+                    boxShadow: '0 4px 12px -2px rgba(118, 65, 192, 0.3)',
                   }
                 }}
               >
-                Cadastrar
+                <Box
+                  style={{
+                    position: 'absolute',
+                    top: '-50%',
+                    left: '-50%',
+                    width: '200%',
+                    height: '200%',
+                    background: 'linear-gradient(45deg, transparent, rgba(118, 65, 192, 0.1), transparent)',
+                    transform: 'rotate(45deg)',
+                    animation: 'shine 4s infinite',
+                    zIndex: 0,
+                  }}
+                />
+                <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
               </Button>
+
               <Button
                 component={Link}
                 href="/login"
@@ -163,14 +274,28 @@ export function Header() {
                 radius="xl"
                 style={{
                   boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden',
                   '&:hover': {
-                    transform: 'translateY(-2px)',
+                    transform: 'translateY(-2px) scale(1.03)',
                     boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
                   }
                 }}
               >
-                Entrar
+                <Box
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
+                    animation: 'shine 3s infinite',
+                    zIndex: 0,
+                  }}
+                />
+                <Text style={{ position: 'relative', zIndex: 1 }}>Entrar</Text>
               </Button>
             </Group>
 
@@ -195,18 +320,67 @@ export function Header() {
         position="right"
         title={
           <Group>
-            <ThemeIcon
-              size="lg"
-              radius="xl"
-              variant="gradient"
-              gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+            <Box
               style={{
-                boxShadow: '0 0 20px rgba(118,65,192,0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
               }}
             >
-              <IconGlobe size={rem(20)} />
-            </ThemeIcon>
-            <Title order={3} fw={600} c="white">Websites Suíços</Title>
+              <Box
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'linear-gradient(135deg, #7641C0, #9969E5)',
+                  borderRadius: '12px',
+                  padding: '8px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: '0 0 20px rgba(118,65,192,0.3)',
+                }}
+              >
+                <Text
+                  fw={700}
+                  size="lg"
+                  style={{
+                    color: 'white',
+                    fontFamily: 'monospace',
+                    letterSpacing: '-0.5px',
+                  }}
+                >
+                  &lt; /&gt;
+                </Text>
+
+                {/* Efeito de brilho */}
+                <Box
+                  style={{
+                    position: 'absolute',
+                    top: '-50%',
+                    left: '-50%',
+                    width: '200%',
+                    height: '200%',
+                    background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
+                    transform: 'rotate(45deg)',
+                    animation: 'shine 3s infinite',
+                  }}
+                />
+              </Box>
+
+              <Title
+                order={3}
+                fw={700}
+                c="white"
+                style={{
+                  letterSpacing: '-0.5px',
+                  background: 'linear-gradient(90deg, #fff, #9969E5)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                CodeBR
+              </Title>
+            </Box>
           </Group>
         }
         styles={{
@@ -227,7 +401,7 @@ export function Header() {
         }}
       >
         <Divider my="xl" color="dark.7" />
-        <Stack spacing="lg">
+        <Stack gap="lg">
           {mainLinks.map((link) => (
             <Button
               key={link.href}
@@ -263,9 +437,28 @@ export function Header() {
             onClick={close}
             style={{
               boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
+              }
             }}
           >
-            Entrar
+            <Box
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
+                animation: 'shine 3s infinite',
+                zIndex: 0,
+              }}
+            />
+            <Text style={{ position: 'relative', zIndex: 1 }}>Entrar</Text>
           </Button>
           <Button
             component={Link}
@@ -275,12 +468,34 @@ export function Header() {
             fullWidth
             size="lg"
             onClick={close}
+            leftSection={<IconCode size={rem(16)} />}
             style={{
-              borderColor: 'rgba(255, 255, 255, 0.1)',
-              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              borderColor: 'rgba(118, 65, 192, 0.3)',
+              backgroundColor: 'rgba(118, 65, 192, 0.05)',
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                borderColor: 'rgba(118, 65, 192, 0.5)',
+                backgroundColor: 'rgba(118, 65, 192, 0.1)',
+                transform: 'translateY(-2px)',
+              }
             }}
           >
-            Cadastrar
+            <Box
+              style={{
+                position: 'absolute',
+                top: '-50%',
+                left: '-50%',
+                width: '200%',
+                height: '200%',
+                background: 'linear-gradient(45deg, transparent, rgba(118, 65, 192, 0.1), transparent)',
+                transform: 'rotate(45deg)',
+                animation: 'shine 4s infinite',
+                zIndex: 0,
+              }}
+            />
+            <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
           </Button>
         </Stack>
       </Drawer>

@@ -1,0 +1,72 @@
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 24px;
+}
+
+.bento-item-large {
+  grid-column: span 6;
+  grid-row: span 1;
+}
+
+.bento-item-medium {
+  grid-column: span 4;
+  grid-row: span 1;
+}
+
+@media (max-width: 992px) {
+  .bento-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .bento-item-large {
+    grid-column: span 6;
+  }
+
+  .bento-item-medium {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 576px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bento-item-large,
+  .bento-item-medium {
+    grid-column: span 1;
+  }
+}
+
+/* Aumentar tamanho das fontes nos mockups */
+.bento-item-large .mantine-Text-root,
+.bento-item-medium .mantine-Text-root {
+  font-size: 1rem !important;
+}
+
+.bento-item-large .mantine-Badge-root,
+.bento-item-medium .mantine-Badge-root {
+  font-size: 0.85rem !important;
+}
+
+/* Aumentar tamanho dos ícones */
+.bento-item-large svg,
+.bento-item-medium svg {
+  transform: scale(1.2);
+}
+
+/* Aumentar espaçamento */
+.bento-item-large .mantine-Flex-root,
+.bento-item-medium .mantine-Flex-root {
+  gap: 10px !important;
+}
+
+/* Aumentar tamanho dos títulos */
+.bento-item-large h3,
+.bento-item-medium h3,
+.bento-item-large .mantine-Title-root,
+.bento-item-medium .mantine-Title-root {
+  font-size: 1.5rem !important;
+}

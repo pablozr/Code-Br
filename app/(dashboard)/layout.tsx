@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, Suspense } from 'react';
+import { use, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/lib/auth';
@@ -13,22 +13,19 @@ import {
   Box,
   Group,
   Title,
-  ThemeIcon,
   Text,
   Button,
   Avatar,
   Menu,
   rem,
-  Divider,
-  useMantineTheme
+  Divider
 } from '@mantine/core';
-import { IconGlobe, IconHome, IconLogout } from '@tabler/icons-react';
+import { IconHome, IconLogout, IconChevronDown, IconSettings, IconLogin } from '@tabler/icons-react';
 
 function UserMenu() {
   const { userPromise } = useUser();
   const user = use(userPromise);
   const router = useRouter();
-  const theme = useMantineTheme();
 
   async function handleSignOut() {
     await signOut();
@@ -41,53 +38,153 @@ function UserMenu() {
       <Group gap="md">
         <Button
           component={Link}
-          href="/pricing"
-          variant="subtle"
-          color="gray.3"
+          href="/login"
+          radius="md"
+          leftSection={<IconLogin size={16} />}
+          style={{
+            background: 'rgba(30, 30, 30, 0.4)',
+            border: '1px solid rgba(153, 105, 229, 0.3)',
+            color: 'white',
+            fontWeight: 500,
+            transition: 'all 0.2s ease',
+            position: 'relative',
+            overflow: 'hidden',
+            '&:hover': {
+              background: 'rgba(40, 40, 40, 0.6)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
+            }
+          }}
         >
-          Preços
+          <Text>Entrar</Text>
         </Button>
+
         <Button
           component={Link}
           href="/sign-up"
-          variant="gradient"
-          gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+          radius="md"
+          style={{
+            background: 'linear-gradient(135deg, rgba(153, 105, 229, 0.1), rgba(153, 105, 229, 0.2))',
+            border: '1px solid rgba(153, 105, 229, 0.3)',
+            color: 'white',
+            fontWeight: 500,
+            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(10px)',
+            transition: 'all 0.2s ease',
+            position: 'relative',
+            overflow: 'hidden',
+            '&:hover': {
+              background: 'linear-gradient(135deg, rgba(153, 105, 229, 0.15), rgba(153, 105, 229, 0.25))',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 6px 15px rgba(0, 0, 0, 0.15)',
+            }
+          }}
         >
-          Cadastrar
+          {/* Efeito de brilho */}
+          <Box
+            style={{
+              position: 'absolute',
+              top: '-50%',
+              left: '-50%',
+              width: '200%',
+              height: '200%',
+              background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
+              transform: 'rotate(45deg)',
+              animation: 'shine 3s infinite',
+              zIndex: 0,
+            }}
+          />
+          <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
         </Button>
       </Group>
     );
   }
 
   return (
-    <Menu position="bottom-end" shadow="md">
+    <Menu position="bottom-end" shadow="md" width={220}>
       <Menu.Target>
-        <Avatar
-          src={null}
-          color="purple"
-          radius="xl"
-          style={{ cursor: 'pointer' }}
+        <Box
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '4px 8px 4px 4px',
+            borderRadius: '8px',
+            background: 'rgba(30, 30, 30, 0.4)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            '&:hover': {
+              background: 'rgba(40, 40, 40, 0.6)',
+            },
+          }}
         >
-          {user.email
-            .split(' ')
-            .map((n) => n[0])
-            .join('')}
-        </Avatar>
+          <Avatar
+            src={null}
+            color="grape"
+            radius="md"
+            size="sm"
+            style={{
+              border: '1px solid rgba(153, 105, 229, 0.3)',
+              background: 'linear-gradient(135deg, #7641C0, #9969E5)',
+            }}
+          >
+            {user.email
+              .split(' ')
+              .map((n) => n[0])
+              .join('')}
+          </Avatar>
+          <IconChevronDown size={14} color="rgba(255, 255, 255, 0.5)" />
+        </Box>
       </Menu.Target>
-      <Menu.Dropdown bg="dark.8">
+      <Menu.Dropdown
+        bg="rgba(20, 20, 20, 0.95)"
+        style={{
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+        }}
+      >
+        <Box p="xs">
+          <Text size="xs" c="dimmed" mb={5}>Conectado como</Text>
+          <Text size="sm" fw={500} c="white" truncate>{user.email}</Text>
+        </Box>
+        <Divider color="dark.6" my="xs" />
         <Menu.Item
-          leftSection={<IconHome style={{ width: rem(14), height: rem(14) }} />}
+          leftSection={<IconHome style={{ width: rem(14), height: rem(14) }} color="#9969E5" />}
           component={Link}
           href="/dashboard"
+          style={{
+            '&:hover': {
+              background: 'rgba(153, 105, 229, 0.1)',
+            }
+          }}
         >
           Painel
         </Menu.Item>
-        <Divider />
+        <Menu.Item
+          leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} color="#9969E5" />}
+          component={Link}
+          href="/dashboard/general"
+          style={{
+            '&:hover': {
+              background: 'rgba(153, 105, 229, 0.1)',
+            }
+          }}
+        >
+          Configurações
+        </Menu.Item>
+        <Divider color="dark.6" my="xs" />
         <form action={handleSignOut}>
           <Menu.Item
-            leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
+            leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} color="#ff6b6b" />}
             type="submit"
             color="red"
+            style={{
+              '&:hover': {
+                background: 'rgba(255, 107, 107, 0.1)',
+              }
+            }}
           >
             Sair
           </Menu.Item>
@@ -98,34 +195,160 @@ function UserMenu() {
 }
 
 function Header() {
-  const theme = useMantineTheme();
 
   return (
     <Box
       component="header"
       style={{
-        borderBottom: `1px solid ${theme.colors.dark[6]}`,
-        background: 'linear-gradient(180deg, rgba(13,13,13,0.95) 0%, rgba(26,26,26,0.95) 100%)',
-        backdropFilter: 'blur(10px)',
+        borderBottom: `1px solid rgba(255,255,255,0.03)`,
+        background: 'rgba(10,10,10,0.8)',
+        backdropFilter: 'blur(12px)',
+        position: 'relative',
+        zIndex: 100,
       }}
     >
-      <Container size="xl" py="md">
+      {/* Linha de destaque superior */}
+      <Box
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent, rgba(153, 105, 229, 0.2), transparent)',
+          zIndex: 1,
+        }}
+      />
+
+      <Container size="xl" py="sm">
         <Group justify="space-between" align="center">
           <Group>
-            <ThemeIcon
-              size="lg"
-              radius="xl"
-              variant="gradient"
-              gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                cursor: 'pointer',
+              }}
+              component={Link}
+              href="/"
             >
-              <IconGlobe size={rem(20)} />
-            </ThemeIcon>
-            <Title order={3} fw={600} c="white">Websites Suíços</Title>
+              <Box
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'rgba(20, 20, 20, 0.8)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  borderRadius: '10px',
+                  padding: '8px 10px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1), inset 0 0 20px rgba(153, 105, 229, 0.05)',
+                }}
+              >
+                <Text
+                  fw={700}
+                  size="lg"
+                  style={{
+                    color: 'white',
+                    fontFamily: 'monospace',
+                    letterSpacing: '-0.5px',
+                    textShadow: '0 0 10px rgba(153, 105, 229, 0.3)',
+                  }}
+                >
+                  &lt;/&gt;
+                </Text>
+
+                {/* Efeito de brilho */}
+                <Box
+                  style={{
+                    position: 'absolute',
+                    top: '-50%',
+                    left: '-50%',
+                    width: '200%',
+                    height: '200%',
+                    background: 'linear-gradient(45deg, transparent, rgba(153, 105, 229, 0.1), transparent)',
+                    transform: 'rotate(45deg)',
+                    animation: 'shine 3s infinite',
+                    zIndex: 0,
+                  }}
+                />
+
+                {/* Efeito de borda brilhante */}
+                <Box
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '10px',
+                    padding: '1px',
+                    background: 'linear-gradient(135deg, rgba(153, 105, 229, 0.1), transparent, rgba(153, 105, 229, 0.1))',
+                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    maskComposite: 'exclude',
+                    zIndex: 0,
+                  }}
+                />
+              </Box>
+
+              <Title
+                order={3}
+                fw={700}
+                style={{
+                  letterSpacing: '-0.5px',
+                  background: 'linear-gradient(90deg, #fff, #9969E5)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  fontSize: '1.5rem',
+                }}
+              >
+                CodeBR
+              </Title>
+            </Box>
           </Group>
 
-          <Suspense fallback={<Box h={36} />}>
-            <UserMenu />
-          </Suspense>
+          <Group gap="md">
+            {/* Links de navegação */}
+            <Group gap="xl" ml={30}>
+              <Text
+                component={Link}
+                href="/pricing"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    color: '#9969E5',
+                    transform: 'translateY(-2px)',
+                  }
+                }}
+              >
+                Preços
+              </Text>
+
+              <Text
+                component={Link}
+                href="/about"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    color: '#9969E5',
+                    transform: 'translateY(-2px)',
+                  }
+                }}
+              >
+                Sobre nós
+              </Text>
+            </Group>
+
+            <Suspense fallback={<Box h={36} />}>
+              <UserMenu />
+            </Suspense>
+          </Group>
         </Group>
       </Container>
     </Box>
@@ -148,13 +371,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </AppShell.Header>
 
       <AppShell.Main pt={90}>
-        
+
           <Flex direction="column" gap="xl">
             <Box>
               {children}
             </Box>
           </Flex>
-       
+
       </AppShell.Main>
 
       <Footer />

@@ -1,0 +1,847 @@
+'use client';
+
+import { Box, Container, Group, Text, ThemeIcon, SimpleGrid, Title, Flex, Badge, Paper, Progress, Divider, Avatar, Button } from '@mantine/core';
+import {
+  IconShieldCheck,
+  IconRocket,
+  IconCertificate,
+  IconClockHour4,
+  IconServer,
+  IconBrandGithub,
+  IconBrandAws,
+  IconBrandCloudflare,
+  IconBrandStripe,
+  IconBrandGoogle,
+  IconLock,
+  IconShieldLock,
+  IconAlertCircle,
+  IconCheck,
+  IconX,
+  IconChartBar,
+  IconChartLine,
+  IconDeviceDesktop,
+  IconDeviceMobile,
+  IconWorld,
+  IconCertificate2,
+  IconAward,
+  IconStars,
+  IconServerBolt,
+  IconDatabase,
+  IconCloudLock,
+  IconHeadset,
+  IconMessages,
+  IconTicket,
+  IconClock
+} from '@tabler/icons-react';
+import { motion } from 'framer-motion';
+
+const MotionBox = motion(Box);
+const MotionText = motion(Text);
+const MotionThemeIcon = motion(ThemeIcon);
+const MotionGroup = motion(Group);
+const MotionFlex = motion(Flex);
+const MotionBadge = motion(Badge);
+const MotionPaper = motion(Paper);
+const MotionProgress = motion(Progress);
+
+// Componente de mockup para o painel de segurança
+function SecurityDashboardMockup({ data }: { data: any }) {
+  return (
+    <Box style={{ height: '100%' }}>
+      <Flex direction="column" gap="md" style={{ height: '100%' }}>
+        <Flex justify="space-between" align="center">
+          <Badge
+            color="green"
+            variant="light"
+            size="sm"
+            leftSection={<IconCheck size={12} />}
+          >
+            Protegido
+          </Badge>
+          <Text size="xs" c="dimmed">
+            Última verificação: {data.lastScan}
+          </Text>
+        </Flex>
+
+        <Box style={{ textAlign: 'center', padding: '10px 0' }}>
+          <Box
+            style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              background: `conic-gradient(#7641C0 ${data.securityScore}%, #2A2A2A ${data.securityScore}%)`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto',
+              position: 'relative',
+            }}
+          >
+            <Box
+              style={{
+                width: '70px',
+                height: '70px',
+                borderRadius: '50%',
+                background: 'rgba(20, 20, 20, 0.8)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Text fw={700} size="xl" c="white">{data.securityScore}</Text>
+            </Box>
+          </Box>
+          <Text size="xs" c="dimmed" mt="xs">Pontuação de Segurança</Text>
+        </Box>
+
+        <Box style={{ flex: 1 }}>
+          <Text size="xs" fw={500} c="white" mb="xs">Status de Proteção</Text>
+          <Flex direction="column" gap="xs">
+            {data.securityItems.map((item: any, index: number) => (
+              <Flex key={index} justify="space-between" align="center"
+                style={{
+                  padding: '6px 10px',
+                  borderRadius: '4px',
+                  background: 'rgba(30, 30, 30, 0.5)',
+                }}>
+                <Flex align="center" gap="xs">
+                  <Box style={{ color: '#7641C0' }}>{item.icon}</Box>
+                  <Text size="xs">{item.name}</Text>
+                </Flex>
+                <Badge size="xs" variant="outline" color="green">{item.status}</Badge>
+              </Flex>
+            ))}
+          </Flex>
+        </Box>
+
+        <Flex justify="space-between" align="center"
+          style={{
+            padding: '8px 10px',
+            borderRadius: '4px',
+            background: 'rgba(118, 65, 192, 0.1)',
+            border: '1px solid rgba(118, 65, 192, 0.2)',
+          }}>
+          <Flex align="center" gap="xs">
+            <IconShieldCheck size={16} style={{ color: '#7641C0' }} />
+            <Text size="xs" fw={500}>Ameaças bloqueadas</Text>
+          </Flex>
+          <Text size="xs" fw={700} c="#9969E5">{data.threatsPrevented}</Text>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+}
+
+// Componente de mockup para métricas de performance
+function PerformanceMetricsMockup({ data }: { data: any }) {
+  return (
+    <Box style={{ height: '100%' }}>
+      <Flex direction="column" gap="md" style={{ height: '100%' }}>
+        <Flex justify="space-between" align="center">
+          <Badge
+            color="green"
+            variant="light"
+            size="sm"
+            leftSection={<IconCheck size={12} />}
+          >
+            Otimizado
+          </Badge>
+          <Text size="xs" c="dimmed">
+            Tempo de carregamento: {data.loadTime}
+          </Text>
+        </Flex>
+
+        <Box style={{ padding: '10px 0' }}>
+          <Flex justify="space-between" align="center" mb="xs">
+            <Text size="xs" fw={500} c="white">Velocidade da Página</Text>
+            <Text size="xs" fw={700} c="#9969E5">{data.pageSpeed}/100</Text>
+          </Flex>
+          <Progress
+            value={data.pageSpeed}
+            size="md"
+            radius="xl"
+            color="violet"
+            style={{ height: '8px' }}
+          />
+        </Box>
+
+        <Box style={{ flex: 1 }}>
+          <Text size="xs" fw={500} c="white" mb="xs">Performance por Dispositivo</Text>
+          <Flex direction="column" gap="xs">
+            {data.devices.map((device: any, index: number) => (
+              <Flex key={index} justify="space-between" align="center"
+                style={{
+                  padding: '6px 10px',
+                  borderRadius: '4px',
+                  background: 'rgba(30, 30, 30, 0.5)',
+                }}>
+                <Flex align="center" gap="xs">
+                  <Box style={{ color: '#7641C0' }}>{device.icon}</Box>
+                  <Text size="xs">{device.name}</Text>
+                </Flex>
+                <Progress
+                  value={device.score}
+                  size="xs"
+                  radius="xl"
+                  color="violet"
+                  style={{ width: '60px', height: '4px' }}
+                />
+              </Flex>
+            ))}
+          </Flex>
+        </Box>
+
+        <Flex justify="space-between" align="center"
+          style={{
+            padding: '8px 10px',
+            borderRadius: '4px',
+            background: 'rgba(118, 65, 192, 0.1)',
+            border: '1px solid rgba(118, 65, 192, 0.2)',
+          }}>
+          <Flex align="center" gap="xs">
+            <IconChartLine size={16} style={{ color: '#7641C0' }} />
+            <Text size="xs" fw={500}>Uptime</Text>
+          </Flex>
+          <Text size="xs" fw={700} c="#9969E5">{data.uptime}%</Text>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+}
+
+// Componente de mockup para certificado de qualidade
+function QualityCertificateMockup({ data }: { data: any }) {
+  return (
+    <Box style={{ height: '100%' }}>
+      <Flex direction="column" gap="md" style={{ height: '100%' }}>
+        <Box
+          style={{
+            border: '1px dashed rgba(118, 65, 192, 0.3)',
+            borderRadius: '8px',
+            padding: '15px 10px',
+            background: 'rgba(118, 65, 192, 0.05)',
+            textAlign: 'center',
+          }}
+        >
+          <IconCertificate2 size={24} style={{ color: '#9969E5', marginBottom: '8px' }} />
+          <Text size="sm" fw={700} c="white">Certificado de Qualidade</Text>
+          <Text size="xs" c="dimmed">Nível {data.certificationLevel}</Text>
+        </Box>
+
+        <Box style={{ flex: 1 }}>
+          <Text size="xs" fw={500} c="white" mb="xs">Padrões Verificados</Text>
+          <Flex direction="column" gap="xs">
+            {data.standards.map((standard: any, index: number) => (
+              <Flex key={index} justify="space-between" align="center"
+                style={{
+                  padding: '6px 10px',
+                  borderRadius: '4px',
+                  background: 'rgba(30, 30, 30, 0.5)',
+                }}>
+                <Flex align="center" gap="xs">
+                  <Box style={{ color: '#7641C0' }}>{standard.icon}</Box>
+                  <Text size="xs">{standard.name}</Text>
+                </Flex>
+                {standard.verified ? (
+                  <Badge size="xs" variant="outline" color="green">
+                    <IconCheck size={10} />
+                  </Badge>
+                ) : (
+                  <Badge size="xs" variant="outline" color="red">
+                    <IconX size={10} />
+                  </Badge>
+                )}
+              </Flex>
+            ))}
+          </Flex>
+        </Box>
+
+        <Flex justify="space-between"
+          style={{
+            padding: '8px 10px',
+            borderRadius: '4px',
+            background: 'rgba(30, 30, 30, 0.5)',
+            fontSize: '10px',
+          }}>
+          <Flex direction="column">
+            <Text size="xs" c="dimmed">Emitido em</Text>
+            <Text size="xs">{data.issuedDate}</Text>
+          </Flex>
+          <Flex direction="column" align="flex-end">
+            <Text size="xs" c="dimmed">Válido até</Text>
+            <Text size="xs">{data.validUntil}</Text>
+          </Flex>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+}
+
+// Componente de mockup para status do servidor
+function ServerStatusMockup({ data }: { data: any }) {
+  return (
+    <Box style={{ height: '100%' }}>
+      <Flex direction="column" gap="md" style={{ height: '100%' }}>
+        <Flex justify="space-between" align="center">
+          <Badge
+            color="green"
+            variant="light"
+            size="sm"
+            leftSection={<IconCheck size={12} />}
+          >
+            {data.serverStatus}
+          </Badge>
+          <Text size="xs" c="dimmed">
+            {data.location}
+          </Text>
+        </Flex>
+
+        <Box>
+          <Flex justify="space-between" align="center" mb="xs">
+            <Text size="xs" fw={500} c="white">CPU</Text>
+            <Text size="xs" c="dimmed">{data.cpuUsage}%</Text>
+          </Flex>
+          <Progress
+            value={data.cpuUsage}
+            size="sm"
+            radius="xl"
+            color={data.cpuUsage > 80 ? 'red' : data.cpuUsage > 50 ? 'yellow' : 'green'}
+            style={{ height: '6px' }}
+          />
+
+          <Flex justify="space-between" align="center" mt="md" mb="xs">
+            <Text size="xs" fw={500} c="white">Memória</Text>
+            <Text size="xs" c="dimmed">{data.memoryUsage}%</Text>
+          </Flex>
+          <Progress
+            value={data.memoryUsage}
+            size="sm"
+            radius="xl"
+            color={data.memoryUsage > 80 ? 'red' : data.memoryUsage > 50 ? 'yellow' : 'green'}
+            style={{ height: '6px' }}
+          />
+        </Box>
+
+        <Box style={{ flex: 1 }}>
+          <Text size="xs" fw={500} c="white" mb="xs">Especificações</Text>
+          <Flex direction="column" gap="xs">
+            {data.metrics.map((metric: any, index: number) => (
+              <Flex key={index} justify="space-between" align="center"
+                style={{
+                  padding: '6px 10px',
+                  borderRadius: '4px',
+                  background: 'rgba(30, 30, 30, 0.5)',
+                }}>
+                <Flex align="center" gap="xs">
+                  <Box style={{ color: '#7641C0' }}>{metric.icon}</Box>
+                  <Text size="xs">{metric.name}</Text>
+                </Flex>
+                <Text size="xs" fw={500} c="#9969E5">{metric.value}</Text>
+              </Flex>
+            ))}
+          </Flex>
+        </Box>
+
+        <Flex justify="space-between" align="center"
+          style={{
+            padding: '8px 10px',
+            borderRadius: '4px',
+            background: 'rgba(118, 65, 192, 0.1)',
+            border: '1px solid rgba(118, 65, 192, 0.2)',
+          }}>
+          <Flex align="center" gap="xs">
+            <IconServerBolt size={16} style={{ color: '#7641C0' }} />
+            <Text size="xs" fw={500}>Proteção GDPR</Text>
+          </Flex>
+          <Badge size="xs" variant="filled" color="green">Ativada</Badge>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+}
+
+// Componente de mockup para painel de suporte
+function SupportPanelMockup({ data }: { data: any }) {
+  return (
+    <Box style={{ height: '100%' }}>
+      <Flex direction="column" gap="md" style={{ height: '100%' }}>
+        <Flex justify="space-between" align="center">
+          <Badge
+            color="green"
+            variant="light"
+            size="sm"
+            leftSection={<IconCheck size={12} />}
+          >
+            Disponível
+          </Badge>
+          <Text size="xs" c="dimmed">
+            Próximo atendente: {data.nextAvailable}
+          </Text>
+        </Flex>
+
+        <Box style={{ textAlign: 'center', padding: '10px 0' }}>
+          <Flex align="center" justify="center" gap="md">
+            <Box>
+              <Text size="xl" fw={700} c="#9969E5">{data.responseTime}</Text>
+              <Text size="xs" c="dimmed">Tempo de resposta</Text>
+            </Box>
+            <Divider orientation="vertical" color="dark.6" />
+            <Box>
+              <Text size="xl" fw={700} c="#9969E5">{data.satisfaction}%</Text>
+              <Text size="xs" c="dimmed">Satisfação</Text>
+            </Box>
+          </Flex>
+        </Box>
+
+        <Box style={{ flex: 1 }}>
+          <Text size="xs" fw={500} c="white" mb="xs">Canais de Suporte</Text>
+          <Flex direction="column" gap="xs">
+            {data.supportChannels.map((channel: any, index: number) => (
+              <Flex key={index} justify="space-between" align="center"
+                style={{
+                  padding: '6px 10px',
+                  borderRadius: '4px',
+                  background: 'rgba(30, 30, 30, 0.5)',
+                }}>
+                <Flex align="center" gap="xs">
+                  <Box style={{ color: '#7641C0' }}>{channel.icon}</Box>
+                  <Text size="xs">{channel.name}</Text>
+                </Flex>
+                <Badge size="xs" variant="outline" color="green">{channel.status}</Badge>
+              </Flex>
+            ))}
+          </Flex>
+        </Box>
+
+        <Button
+          variant="light"
+          color="violet"
+          size="xs"
+          leftSection={<IconHeadset size={14} />}
+          style={{
+            background: 'rgba(118, 65, 192, 0.1)',
+            border: '1px solid rgba(118, 65, 192, 0.2)',
+          }}
+        >
+          Iniciar Atendimento
+        </Button>
+      </Flex>
+    </Box>
+  );
+}
+
+// Função para renderizar o mockup correto com base no tipo
+function renderMockup(item: any) {
+  switch (item.mockupType) {
+    case 'security-dashboard':
+      return <SecurityDashboardMockup data={item.mockupData} />;
+    case 'performance-metrics':
+      return <PerformanceMetricsMockup data={item.mockupData} />;
+    case 'quality-certificate':
+      return <QualityCertificateMockup data={item.mockupData} />;
+    case 'server-status':
+      return <ServerStatusMockup data={item.mockupData} />;
+    case 'support-panel':
+      return <SupportPanelMockup data={item.mockupData} />;
+    default:
+      return null;
+  }
+}
+
+export function TrustSignals() {
+  const trustItems = [
+    {
+      icon: <IconShieldCheck size={24} stroke={1.5} />,
+      title: 'Segurança Garantida',
+      description: 'Proteção de dados de nível bancário com servidores na Suíça',
+      badge: 'ISO 27001',
+      mockupType: 'security-dashboard',
+      mockupData: {
+        securityScore: 98,
+        threatsPrevented: 1243,
+        lastScan: '2 horas atrás',
+        securityItems: [
+          { name: 'Firewall', status: 'Ativo', icon: <IconShieldLock size={16} /> },
+          { name: 'SSL/TLS', status: 'Seguro', icon: <IconLock size={16} /> },
+          { name: 'Backups', status: 'Atualizados', icon: <IconDatabase size={16} /> },
+          { name: 'Monitoramento', status: 'Online', icon: <IconAlertCircle size={16} /> }
+        ]
+      }
+    },
+    {
+      icon: <IconRocket size={24} stroke={1.5} />,
+      title: 'Performance Superior',
+      description: 'Sites otimizados para velocidade e experiência do usuário',
+      badge: '99.9% Uptime',
+      mockupType: 'performance-metrics',
+      mockupData: {
+        pageSpeed: 96,
+        uptime: 99.98,
+        loadTime: '0.8s',
+        devices: [
+          { name: 'Desktop', score: 98, icon: <IconDeviceDesktop size={16} /> },
+          { name: 'Mobile', score: 94, icon: <IconDeviceMobile size={16} /> },
+          { name: 'Global', score: 96, icon: <IconWorld size={16} /> }
+        ]
+      }
+    },
+    {
+      icon: <IconCertificate size={24} stroke={1.5} />,
+      title: 'Qualidade Certificada',
+      description: 'Padrões suíços de excelência em cada projeto',
+      badge: 'Certificado',
+      mockupType: 'quality-certificate',
+      mockupData: {
+        certificationLevel: 'Premium',
+        issuedDate: '15/04/2023',
+        validUntil: '15/04/2024',
+        standards: [
+          { name: 'ISO 9001', verified: true, icon: <IconCertificate2 size={16} /> },
+          { name: 'Web Standards', verified: true, icon: <IconAward size={16} /> },
+          { name: 'Best Practices', verified: true, icon: <IconStars size={16} /> }
+        ]
+      }
+    },
+    {
+      icon: <IconServer size={24} stroke={1.5} />,
+      title: 'Hospedagem Premium',
+      description: 'Servidores de alta performance localizados na Suíça',
+      badge: 'GDPR Compliant',
+      mockupType: 'server-status',
+      mockupData: {
+        serverStatus: 'Online',
+        location: 'Zürich, Suíça',
+        cpuUsage: 28,
+        memoryUsage: 42,
+        metrics: [
+          { name: 'Velocidade', value: '10 Gbps', icon: <IconServerBolt size={16} /> },
+          { name: 'Armazenamento', value: 'SSD NVMe', icon: <IconDatabase size={16} /> },
+          { name: 'Segurança', value: 'Avançada', icon: <IconCloudLock size={16} /> }
+        ]
+      }
+    },
+    {
+      icon: <IconClockHour4 size={24} stroke={1.5} />,
+      title: 'Suporte 24/7',
+      description: 'Assistência técnica disponível a qualquer momento',
+      badge: 'SLA Garantido',
+      mockupType: 'support-panel',
+      mockupData: {
+        responseTime: '15 min',
+        satisfaction: 98,
+        supportChannels: [
+          { name: 'Chat', status: 'Online', icon: <IconMessages size={16} /> },
+          { name: 'Tickets', status: 'Rápido', icon: <IconTicket size={16} /> },
+          { name: 'Telefone', status: '24/7', icon: <IconHeadset size={16} /> }
+        ],
+        nextAvailable: 'Imediatamente'
+      }
+    }
+  ];
+
+  const partners = [
+    { icon: <IconBrandAws size={28} />, name: 'AWS' },
+    { icon: <IconBrandCloudflare size={28} />, name: 'Cloudflare' },
+    { icon: <IconBrandStripe size={28} />, name: 'Stripe' },
+    { icon: <IconBrandGithub size={28} />, name: 'GitHub' },
+    { icon: <IconBrandGoogle size={28} />, name: 'Google Cloud' }
+  ];
+
+  return (
+    <Box
+      py={80}
+      style={{
+        background: 'linear-gradient(to bottom, rgba(10,10,10,0.9) 0%, rgba(15,15,15,0.9) 100%)',
+        backdropFilter: 'blur(20px)',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Background circuit effect */}
+      <Box
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(118,65,192,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(118,65,192,0.05) 0%, transparent 50%)',
+          zIndex: 0,
+        }}
+      />
+
+      <Container size="xl" style={{ position: 'relative', zIndex: 1 }}>
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          mb={60}
+          ta="center"
+        >
+          <MotionBadge
+            variant="light"
+            color="purple.5"
+            size="lg"
+            radius="sm"
+            mb="md"
+            style={{
+              background: 'linear-gradient(135deg, rgba(118,65,192,0.1), rgba(153,105,229,0.2))',
+              border: '1px solid rgba(153,105,229,0.3)',
+              backdropFilter: 'blur(10px)',
+            }}
+          >
+            Por que nos escolher
+          </MotionBadge>
+
+          <Title
+            order={2}
+            fw={700}
+            size="2.5rem"
+            c="white"
+            mb="sm"
+            style={{
+              lineHeight: 1.2,
+              letterSpacing: '-0.5px',
+            }}
+          >
+            Qualidade e precisão <Text span c="purple.4" inherit>suíça</Text> em cada detalhe
+          </Title>
+
+          <Text
+            size="lg"
+            c="gray.4"
+            maw={700}
+            mx="auto"
+            lh={1.6}
+          >
+            Combinamos tecnologia de ponta com a tradicional precisão suíça para entregar
+            soluções web excepcionais para o seu negócio.
+          </Text>
+        </MotionBox>
+
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 5 }} spacing="xl" mb={80}>
+          {trustItems.map((item, index) => (
+            <MotionBox
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              style={{ zIndex: 1 }}
+            >
+              <MotionBox
+                p="md"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(20,20,20,0.5), rgba(30,30,30,0.5))',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                  height: '100%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                }}
+                whileHover={{
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+                  border: '1px solid rgba(153,105,229,0.2)',
+                }}
+              >
+                {/* Subtle gradient overlay */}
+                <Box
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(135deg, rgba(153,105,229,0.05) 0%, transparent 50%)',
+                    zIndex: 0,
+                  }}
+                />
+
+                <Flex direction="column" style={{ height: '100%', position: 'relative', zIndex: 1 }}>
+                  {/* Header com título e badge */}
+                  <Flex justify="space-between" align="center" mb="md">
+                    <Flex align="center" gap="xs">
+                      <MotionThemeIcon
+                        size={36}
+                        radius="md"
+                        variant="light"
+                        color="purple.5"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(118,65,192,0.2), rgba(153,105,229,0.1))',
+                          border: '1px solid rgba(153,105,229,0.2)',
+                          boxShadow: '0 5px 15px rgba(118,65,192,0.1)',
+                        }}
+                        whileHover={{
+                          scale: 1.05,
+                          boxShadow: '0 5px 20px rgba(118,65,192,0.2)',
+                        }}
+                      >
+                        {item.icon}
+                      </MotionThemeIcon>
+                      <Text fw={700} size="md" c="white">{item.title}</Text>
+                    </Flex>
+
+                    <Badge
+                      variant="light"
+                      color="purple.5"
+                      size="sm"
+                      radius="sm"
+                      style={{
+                        background: 'rgba(118,65,192,0.1)',
+                        border: '1px solid rgba(153,105,229,0.2)',
+                      }}
+                    >
+                      {item.badge}
+                    </Badge>
+                  </Flex>
+
+                  {/* Mockup interface */}
+                  <Box style={{ flex: 1, marginBottom: '12px' }}>
+                    {renderMockup(item)}
+                  </Box>
+
+                  {/* Descrição no rodapé */}
+                  <Text size="xs" c="gray.5" lh={1.6} ta="center" style={{ opacity: 0.8 }}>
+                    {item.description}
+                  </Text>
+                </Flex>
+              </Box>
+            </MotionBox>
+          ))}
+        </SimpleGrid>
+
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          mb={60}
+        >
+          <Box
+            p="xl"
+            style={{
+              background: 'linear-gradient(135deg, rgba(20,20,20,0.5), rgba(30,30,30,0.5))',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '16px',
+              border: '1px solid rgba(255,255,255,0.05)',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Subtle gradient overlay */}
+            <Box
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(135deg, rgba(153,105,229,0.03) 0%, transparent 70%)',
+                zIndex: 0,
+              }}
+            />
+
+            <Flex direction="column" align="center" style={{ position: 'relative', zIndex: 1 }}>
+              <Title order={3} fw={600} size="h3" mb="lg" c="white" ta="center">
+                Tecnologias e Parceiros de Confiança
+              </Title>
+
+              <MotionGroup
+                spacing={50}
+                position="center"
+                wrap="wrap"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, staggerChildren: 0.1 }}
+                viewport={{ once: true, margin: "-100px" }}
+              >
+                {partners.map((partner, index) => (
+                  <MotionFlex
+                    key={index}
+                    direction="column"
+                    align="center"
+                    gap="xs"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <ThemeIcon
+                      size={60}
+                      radius="md"
+                      variant="light"
+                      color="gray.7"
+                      style={{
+                        background: 'rgba(40, 40, 40, 0.6)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                      }}
+                    >
+                      {partner.icon}
+                    </ThemeIcon>
+                    <Text size="sm" c="gray.5">{partner.name}</Text>
+                  </MotionFlex>
+                ))}
+              </MotionGroup>
+
+              <Text size="sm" c="gray.6" mt="xl" ta="center">
+                Trabalhamos com as melhores tecnologias do mercado para garantir segurança, performance e confiabilidade.
+              </Text>
+            </Flex>
+          </Box>
+        </MotionBox>
+
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          ta="center"
+          maw={800}
+          mx="auto"
+          p="xl"
+          style={{
+            background: 'linear-gradient(135deg, rgba(118,65,192,0.05), rgba(30,30,30,0))',
+            borderRadius: '16px',
+            position: 'relative',
+          }}
+        >
+          <Box
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '80px',
+              height: '3px',
+              background: 'linear-gradient(90deg, transparent, rgba(153,105,229,0.5), transparent)',
+              borderRadius: '3px',
+            }}
+          />
+
+          <Text
+            size="xl"
+            c="white"
+            fw={500}
+            lh={1.6}
+            style={{
+              fontStyle: 'italic',
+              position: 'relative',
+            }}
+          >
+            "Nosso compromisso é oferecer soluções web de alta qualidade, combinando design moderno com tecnologia avançada e a tradicional precisão suíça."
+          </Text>
+
+          <Text size="sm" c="purple.4" fw={600} mt="md">
+            — Equipe CodeBR
+          </Text>
+        </MotionBox>
+      </Container>
+    </Box>
+  );

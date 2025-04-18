@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { Box, Text, Group, Badge } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import { Box, Text, Group, Badge, Divider } from '@mantine/core';
 import { keyframes } from '@emotion/react';
 import {
   IconBrandVscode,
@@ -10,10 +10,14 @@ import {
   IconBrandCss3,
   IconBrandJavascript,
   IconBrandReact,
+  IconBrandNextjs,
   IconSettings,
   IconLayoutDashboard,
   IconPlus,
-  IconSearch
+  IconTerminal,
+  IconDeviceLaptop,
+  IconBrandGithub,
+  IconRocket
 } from '@tabler/icons-react';
 
 // Animações
@@ -22,9 +26,31 @@ const blink = keyframes({
   '50%': { opacity: 0 },
 });
 
-const typing = keyframes({
-  from: { width: '0%' },
-  to: { width: '100%' },
+// Animação de typing removida pois não está sendo utilizada
+
+const fadeIn = keyframes({
+  from: { opacity: 0 },
+  to: { opacity: 1 },
+});
+
+const slideInFromBottom = keyframes({
+  from: { transform: 'translateY(20px)', opacity: 0 },
+  to: { transform: 'translateY(0)', opacity: 1 },
+});
+
+const glitch = keyframes({
+  '0%': { transform: 'translate(0)' },
+  '20%': { transform: 'translate(-2px, 2px)' },
+  '40%': { transform: 'translate(-2px, -2px)' },
+  '60%': { transform: 'translate(2px, 2px)' },
+  '80%': { transform: 'translate(2px, -2px)' },
+  '100%': { transform: 'translate(0)' },
+});
+
+const pulse = keyframes({
+  '0%': { boxShadow: '0 0 0 0 rgba(118, 65, 217, 0.5)' },
+  '70%': { boxShadow: '0 0 0 10px rgba(118, 65, 217, 0)' },
+  '100%': { boxShadow: '0 0 0 0 rgba(118, 65, 217, 0)' },
 });
 
 // Cores para o editor de código
@@ -43,7 +69,157 @@ const codeColors = {
 };
 
 export function HeroNotebookSimulator() {
-  const [activeTab, setActiveTab] = useState('editor');
+  const [activeTab, setActiveTab] = useState('split-view');
+  const [typedCode, setTypedCode] = useState('');
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
+  const [showGlitch, setShowGlitch] = useState(false);
+  const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
+  const [autoPlayProgress, setAutoPlayProgress] = useState(0);
+
+  // Código a ser digitado linha por linha
+  const codeLines = [
+    "import React from 'react';",
+    "import { motion } from 'framer-motion';",
+    "",
+    "export default function HeroSection() {",
+    "  return (",
+    "    <motion.div",
+    "      initial={{ opacity: 0 }}",
+    "      animate={{ opacity: 1 }}",
+    "      className='hero-container'",
+    "    >",
+    "      <h1 className='title'>CodeBR</h1>",
+    "      <p className='subtitle'>Desenvolvimento de sites profissionais</p>",
+    "      <div className='cta-buttons'>",
+    "        <motion.button",
+    "          whileHover={{ scale: 1.05 }}",
+    "          className='primary-button'",
+    "        >",
+    "          Ver serviços",
+    "        </motion.button>",
+    "      </div>",
+    "    </motion.div>",
+    "  );",
+    "}"
+  ];
+
+  // Simulação de saída do terminal
+  const terminalLines = [
+    { text: '$ npm create next-app codebr-website', delay: 500 },
+    { text: 'Creating a new Next.js app in codebr-website...', delay: 1000 },
+    { text: 'Installing dependencies...', delay: 2000 },
+    { text: '> Installing react, next, framer-motion...', delay: 2500 },
+    { text: '> Configuring project...', delay: 3500 },
+    { text: 'Success! Created codebr-website', delay: 4500 },
+    { text: '$ cd codebr-website', delay: 5000 },
+    { text: '$ npm run dev', delay: 5500 },
+    { text: '> codebr-website@0.1.0 dev', delay: 6000 },
+    { text: '> next dev', delay: 6500 },
+    { text: 'ready - started server on 0.0.0.0:3000', delay: 7000 },
+    { text: 'event - compiled client and server successfully in 1.2s', delay: 7500 },
+    { text: '✓ Ready in 1.2s', delay: 8000 },
+  ];
+
+  // Efeito para digitação do código
+  useEffect(() => {
+    if (activeTab === 'split-view' || activeTab === 'editor') {
+      const interval = setInterval(() => {
+        if (currentLineIndex < codeLines.length) {
+          setTypedCode(prev => prev + codeLines[currentLineIndex] + '\n');
+          setCurrentLineIndex(prev => prev + 1);
+        } else {
+          clearInterval(interval);
+        }
+      }, 300);
+
+      return () => clearInterval(interval);
+    }
+  }, [currentLineIndex, activeTab]);
+
+  // Efeito para piscar o cursor
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 530);
+
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  // Efeito para mostrar glitch ocasionalmente
+  useEffect(() => {
+    const glitchInterval = setInterval(() => {
+      if (Math.random() > 0.7) {
+        setShowGlitch(true);
+        setTimeout(() => setShowGlitch(false), 200);
+      }
+    }, 5000);
+
+    return () => clearInterval(glitchInterval);
+  }, []);
+
+  // Efeito para simular saída do terminal
+  useEffect(() => {
+    if (activeTab === 'terminal') {
+      let timeouts: NodeJS.Timeout[] = [];
+
+      terminalLines.forEach((line) => {
+        const timeout = setTimeout(() => {
+          setTerminalOutput(prev => [...prev, line.text]);
+        }, line.delay);
+
+        timeouts.push(timeout);
+      });
+
+      return () => timeouts.forEach(timeout => clearTimeout(timeout));
+    } else {
+      setTerminalOutput([]);
+    }
+  }, [activeTab]);
+
+  // Efeito para alternar automaticamente entre as abas
+  useEffect(() => {
+    const tabSequence = ['split-view', 'editor', 'preview', 'terminal', 'settings'];
+    let currentTabIndex = tabSequence.indexOf(activeTab);
+    if (currentTabIndex === -1) currentTabIndex = 0;
+
+    const tabDuration = 8000; // 8 segundos por aba
+    const progressUpdateInterval = 100; // Atualizar a barra de progresso a cada 100ms
+
+    // Intervalo para atualizar a barra de progresso
+    const progressInterval = setInterval(() => {
+      setAutoPlayProgress(prev => {
+        if (prev >= 100) return 0;
+        return prev + (100 * progressUpdateInterval / tabDuration);
+      });
+    }, progressUpdateInterval);
+
+    // Intervalo para trocar as abas
+    const autoTabInterval = setInterval(() => {
+      // Avançar para a próxima aba na sequência
+      currentTabIndex = (currentTabIndex + 1) % tabSequence.length;
+      setActiveTab(tabSequence[currentTabIndex]);
+
+      // Resetar a barra de progresso
+      setAutoPlayProgress(0);
+
+      // Resetar o estado de digitação quando voltar para abas de código
+      if (tabSequence[currentTabIndex] === 'split-view' || tabSequence[currentTabIndex] === 'editor') {
+        setTypedCode('');
+        setCurrentLineIndex(0);
+      }
+
+      // Resetar o terminal quando voltar para a aba terminal
+      if (tabSequence[currentTabIndex] === 'terminal') {
+        setTerminalOutput([]);
+      }
+    }, tabDuration);
+
+    return () => {
+      clearInterval(autoTabInterval);
+      clearInterval(progressInterval);
+    };
+  }, []);
 
   return (
     <Box
@@ -161,6 +337,47 @@ export function HeroNotebookSimulator() {
               <Text size="xs" c="gray.5">View</Text>
               <Text size="xs" c="gray.5" style={{ color: '#9969E5' }}>Preview</Text>
             </Box>
+
+            {/* Indicador de apresentação automática */}
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                position: 'absolute',
+                right: '15px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'rgba(20, 20, 20, 0.7)',
+                backdropFilter: 'blur(5px)',
+                padding: '4px 8px',
+                borderRadius: '4px',
+                border: '1px solid rgba(153, 105, 229, 0.2)',
+              }}
+            >
+              <Text size="xs" c="gray.4" fw={500} style={{ fontSize: '10px' }}>
+                Demonstração automática
+              </Text>
+              <Box
+                style={{
+                  width: '60px',
+                  height: '4px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '2px',
+                  overflow: 'hidden',
+                }}
+              >
+                <Box
+                  style={{
+                    width: `${autoPlayProgress}%`,
+                    height: '100%',
+                    background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                    borderRadius: '2px',
+                    transition: 'width 0.1s linear',
+                  }}
+                />
+              </Box>
+            </Box>
           </Box>
 
           {/* Conteúdo principal */}
@@ -190,6 +407,7 @@ export function HeroNotebookSimulator() {
               }}
             >
               <IconBrandVscode size={24} color="#0098ff" style={{ filter: 'drop-shadow(0 0 2px rgba(0,150,255,0.4))' }} />
+
               <IconCode
                 size={24}
                 color={activeTab === 'editor' ? '#fff' : '#666'}
@@ -200,6 +418,18 @@ export function HeroNotebookSimulator() {
                 }}
                 onClick={() => setActiveTab('editor')}
               />
+
+              <IconDeviceLaptop
+                size={24}
+                color={activeTab === 'split-view' ? '#fff' : '#666'}
+                style={{
+                  filter: activeTab === 'split-view' ? 'drop-shadow(0 0 2px rgba(255,255,255,0.4))' : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+                onClick={() => setActiveTab('split-view')}
+              />
+
               <IconLayoutDashboard
                 size={24}
                 color={activeTab === 'preview' ? '#fff' : '#666'}
@@ -210,6 +440,18 @@ export function HeroNotebookSimulator() {
                 }}
                 onClick={() => setActiveTab('preview')}
               />
+
+              <IconTerminal
+                size={24}
+                color={activeTab === 'terminal' ? '#fff' : '#666'}
+                style={{
+                  filter: activeTab === 'terminal' ? 'drop-shadow(0 0 2px rgba(255,255,255,0.4))' : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+                onClick={() => setActiveTab('terminal')}
+              />
+
               <IconSettings
                 size={24}
                 color={activeTab === 'settings' ? '#fff' : '#666'}
@@ -313,6 +555,7 @@ export function HeroNotebookSimulator() {
                 position: 'relative',
               }}
             >
+              {/* Editor view - código sendo digitado */}
               {activeTab === 'editor' && (
                 <Box
                   style={{
@@ -323,98 +566,350 @@ export function HeroNotebookSimulator() {
                     color: codeColors.text,
                     height: '100%',
                     overflow: 'auto',
+                    position: 'relative',
                   }}
                 >
-                  <Text style={{ color: codeColors.comment, marginBottom: '10px' }}>{'//'} Website Builder Component</Text>
-                  <Text style={{ color: codeColors.keyword, marginBottom: '5px' }}>import</Text>
-                  <Text style={{ color: codeColors.text, marginLeft: '20px', marginBottom: '5px' }}>{'{'} Box, Text, Button, Group, Container {'}'}</Text>
-                  <Text style={{ color: codeColors.keyword, marginLeft: '0px', marginBottom: '5px' }}>from</Text>
-                  <Text style={{ color: codeColors.string, marginLeft: '5px', marginBottom: '10px' }}>'@mantine/core';</Text>
-
-                  <Text style={{ color: codeColors.keyword, marginBottom: '5px' }}>import</Text>
-                  <Text style={{ color: codeColors.text, marginLeft: '20px', marginBottom: '5px' }}>{'{'} DragDropContext, Droppable, Draggable {'}'}</Text>
-                  <Text style={{ color: codeColors.keyword, marginLeft: '0px', marginBottom: '5px' }}>from</Text>
-                  <Text style={{ color: codeColors.string, marginLeft: '5px', marginBottom: '10px' }}>'react-beautiful-dnd';</Text>
-
-                  <Text style={{ color: codeColors.keyword, marginBottom: '5px' }}>export</Text>
-                  <Text style={{ color: codeColors.keyword, marginBottom: '5px' }}>function</Text>
-                  <Text style={{ color: codeColors.function, marginBottom: '5px', display: 'inline' }}>WebsiteBuilder</Text>
-                  <Text style={{ color: codeColors.text, marginBottom: '5px', display: 'inline' }}>() {'{'}</Text>
-
-                  <Box style={{ marginLeft: '20px', marginTop: '10px' }}>
-                    <Text style={{ color: codeColors.keyword, marginBottom: '5px' }}>const</Text>
-                    <Text style={{ color: codeColors.variable, display: 'inline' }}>[components, setComponents]</Text>
-                    <Text style={{ color: codeColors.text, display: 'inline' }}> = </Text>
-                    <Text style={{ color: codeColors.function, display: 'inline' }}>useState</Text>
-                    <Text style={{ color: codeColors.text, display: 'inline' }}>(initialComponents);</Text>
-
-                    <Box style={{ marginTop: '15px' }}>
-                      <Text style={{ color: codeColors.keyword, marginBottom: '5px' }}>const</Text>
-                      <Text style={{ color: codeColors.variable, display: 'inline' }}>handleDragEnd</Text>
-                      <Text style={{ color: codeColors.text, display: 'inline' }}> = </Text>
-                      <Text style={{ color: codeColors.text, display: 'inline' }}>(result) = > {'{'}</Text>
-                      <Text style={{ color: codeColors.comment, marginLeft: '20px', marginTop: '5px' }}>{'//'} Reordering logic</Text>
-                      <Text style={{ color: codeColors.text, marginLeft: '20px', marginTop: '5px' }}>{'// ...'}</Text>
-                      <Text style={{ color: codeColors.text, marginTop: '5px' }}>{'}'}</Text>
-                    </Box>
-
-                    <Box style={{ marginTop: '15px' }}>
-                      <Text style={{ color: codeColors.keyword }}>return</Text>
-                      <Text style={{ color: codeColors.text }}> (</Text>
-                      <Box style={{ marginLeft: '20px', marginTop: '5px' }}>
-                        <Text style={{ color: codeColors.component }}>{`<DragDropContext onDragEnd={handleDragEnd}>`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '20px' }}>{`<Box className="website-builder">`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '40px' }}>{`<Box className="toolbar">`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '60px' }}>{`<Text>Drag components to build your website</Text>`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '40px' }}>{`</Box>`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '40px' }}>{`<Box className="canvas">`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '60px' }}>{`<Droppable droppableId="canvas">`}</Text>
-                        <Text style={{ color: codeColors.text, marginLeft: '80px' }}>{`{(provided) => (`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '100px' }}>{`<Box ref={provided.innerRef} {...provided.droppableProps}>`}</Text>
-                        <Text style={{ color: codeColors.text, marginLeft: '120px' }}>{`{components.map((item, index) => (`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '140px' }}>{`<Draggable key={item.id} draggableId={item.id} index={index}>`}</Text>
-                        <Text style={{ color: codeColors.text, marginLeft: '160px' }}>{`{(provided) => (`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '180px' }}>{`<Box ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>`}</Text>
-                        <Text style={{ color: codeColors.text, marginLeft: '200px' }}>{`{renderComponent(item)}`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '180px' }}>{`</Box>`}</Text>
-                        <Text style={{ color: codeColors.text, marginLeft: '160px' }}>{`)}`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '140px' }}>{`</Draggable>`}</Text>
-                        <Text style={{ color: codeColors.text, marginLeft: '120px' }}>{`))}`}</Text>
-                        <Text style={{ color: codeColors.text, marginLeft: '120px' }}>{`{provided.placeholder}`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '100px' }}>{`</Box>`}</Text>
-                        <Text style={{ color: codeColors.text, marginLeft: '80px' }}>{`)}`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '60px' }}>{`</Droppable>`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '40px' }}>{`</Box>`}</Text>
-                        <Text style={{ color: codeColors.component, marginLeft: '20px' }}>{`</Box>`}</Text>
-                        <Text style={{ color: codeColors.component }}>{`</DragDropContext>`}</Text>
-                      </Box>
-                      <Text style={{ color: codeColors.text }}>);</Text>
-                    </Box>
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      right: '10px',
+                      background: 'rgba(118, 65, 217, 0.1)',
+                      padding: '5px 10px',
+                      borderRadius: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      animation: `${pulse} 2s infinite`,
+                    }}
+                  >
+                    <IconRocket size={14} color="#9969E5" />
+                    <Text size="xs" c="#9969E5" fw={500}>Live Coding</Text>
                   </Box>
-                  <Text style={{ color: codeColors.text, marginTop: '10px' }}>{'}'}</Text>
 
-                  <Box style={{ marginTop: '20px', position: 'relative' }}>
-                    <Text style={{ color: codeColors.text, display: 'inline' }}>// Cursor blinking effect</Text>
+                  <pre
+                    style={{
+                      margin: 0,
+                      fontFamily: 'monospace',
+                      fontSize: '13px',
+                      lineHeight: 1.5,
+                      color: codeColors.text,
+                      position: 'relative',
+                      animation: showGlitch ? `${glitch} 0.2s ease` : 'none',
+                    }}
+                  >
+                    <code>
+                      {typedCode.split('\n').map((line, index) => {
+                        // Colorização de sintaxe básica
+                        let colorizedLine: React.ReactNode = line;
+
+                        // Imports e keywords
+                        if (line.includes('import') || line.includes('export') || line.includes('return') || line.includes('function') || line.includes('const')) {
+                          colorizedLine = (
+                            <span key={`keyword-${index}`} style={{ color: codeColors.keyword }}>
+                              {line}
+                            </span>
+                          );
+                        }
+
+                        // Componentes React
+                        else if (line.includes('<') && line.includes('>')) {
+                          colorizedLine = (
+                            <span key={`component-${index}`} style={{ color: codeColors.component }}>
+                              {line}
+                            </span>
+                          );
+                        }
+
+                        // Strings
+                        else if (line.includes('\'') || line.includes('"')) {
+                          colorizedLine = (
+                            <span key={`string-${index}`} style={{ color: codeColors.string }}>
+                              {line}
+                            </span>
+                          );
+                        }
+
+                        return (
+                          <div key={`line-${index}`}>
+                            {colorizedLine}
+                          </div>
+                        );
+                      })}
+                    </code>
+                  </pre>
+
+                  {/* Cursor piscando */}
+                  {showCursor && (
                     <Box
                       style={{
                         position: 'absolute',
                         width: '8px',
                         height: '16px',
                         backgroundColor: '#fff',
-                        bottom: '0',
-                        left: '220px',
+                        left: typedCode.split('\n')[typedCode.split('\n').length - 1]?.length * 8 + 15 || 15,
+                        top: (typedCode.split('\n').length - 1) * 19.5 + 15,
                         animation: `${blink} 1s infinite`,
                       }}
                     />
+                  )}
+                </Box>
+              )}
+
+              {/* Terminal view */}
+              {activeTab === 'terminal' && (
+                <Box
+                  style={{
+                    padding: '15px',
+                    fontFamily: 'monospace',
+                    fontSize: '13px',
+                    lineHeight: 1.5,
+                    color: '#ddd',
+                    height: '100%',
+                    overflow: 'auto',
+                    background: '#121212',
+                  }}
+                >
+                  {terminalOutput.map((line, index) => (
+                    <Box
+                      key={index}
+                      style={{
+                        marginBottom: '5px',
+                        animation: `${fadeIn} 0.3s ease`,
+                      }}
+                    >
+                      {line.includes('$') ? (
+                        <Text style={{ color: '#9969E5' }}>{line}</Text>
+                      ) : line.includes('Success') ? (
+                        <Text style={{ color: '#4CAF50' }}>{line}</Text>
+                      ) : line.includes('Installing') ? (
+                        <Text style={{ color: '#2196F3' }}>{line}</Text>
+                      ) : line.includes('ready') || line.includes('✓') ? (
+                        <Text style={{ color: '#4CAF50' }}>{line}</Text>
+                      ) : (
+                        <Text>{line}</Text>
+                      )}
+                    </Box>
+                  ))}
+
+                  {/* Cursor piscando */}
+                  {showCursor && terminalOutput.length > 0 && (
+                    <Box
+                      style={{
+                        display: 'inline-block',
+                        width: '8px',
+                        height: '16px',
+                        backgroundColor: '#ddd',
+                        animation: `${blink} 1s infinite`,
+                        verticalAlign: 'middle',
+                      }}
+                    />
+                  )}
+                </Box>
+              )}
+
+              {/* Split view - código e preview lado a lado */}
+              {activeTab === 'split-view' && (
+                <Box
+                  style={{
+                    display: 'flex',
+                    height: '100%',
+                  }}
+                >
+                  {/* Lado do código */}
+                  <Box
+                    style={{
+                      width: '50%',
+                      height: '100%',
+                      padding: '15px',
+                      fontFamily: 'monospace',
+                      fontSize: '13px',
+                      lineHeight: 1.5,
+                      color: codeColors.text,
+                      overflow: 'auto',
+                      borderRight: '1px solid #333',
+                      position: 'relative',
+                    }}
+                  >
+                    <pre
+                      style={{
+                        margin: 0,
+                        fontFamily: 'monospace',
+                        fontSize: '13px',
+                        lineHeight: 1.5,
+                        color: codeColors.text,
+                        position: 'relative',
+                        animation: showGlitch ? `${glitch} 0.2s ease` : 'none',
+                      }}
+                    >
+                      <code>
+                        {typedCode.split('\n').map((line, index) => {
+                          // Colorização de sintaxe básica
+                          let colorizedLine: React.ReactNode = line;
+
+                          // Imports e keywords
+                          if (line.includes('import') || line.includes('export') || line.includes('return') || line.includes('function') || line.includes('const')) {
+                            colorizedLine = (
+                              <span key={`split-keyword-${index}`} style={{ color: codeColors.keyword }}>
+                                {line}
+                              </span>
+                            );
+                          }
+
+                          // Componentes React
+                          else if (line.includes('<') && line.includes('>')) {
+                            colorizedLine = (
+                              <span key={`split-component-${index}`} style={{ color: codeColors.component }}>
+                                {line}
+                              </span>
+                            );
+                          }
+
+                          // Strings
+                          else if (line.includes('\'') || line.includes('"')) {
+                            colorizedLine = (
+                              <span key={`split-string-${index}`} style={{ color: codeColors.string }}>
+                                {line}
+                              </span>
+                            );
+                          }
+
+                          return (
+                            <div key={`split-line-${index}`}>
+                              {colorizedLine}
+                            </div>
+                          );
+                        })}
+                      </code>
+                    </pre>
+
+                    {/* Cursor piscando */}
+                    {showCursor && (
+                      <Box
+                        style={{
+                          position: 'absolute',
+                          width: '8px',
+                          height: '16px',
+                          backgroundColor: '#fff',
+                          left: typedCode.split('\n')[typedCode.split('\n').length - 1]?.length * 8 + 15 || 15,
+                          top: (typedCode.split('\n').length - 1) * 19.5 + 15,
+                          animation: `${blink} 1s infinite`,
+                        }}
+                      />
+                    )}
+                  </Box>
+
+                  {/* Lado do preview */}
+                  <Box
+                    style={{
+                      width: '50%',
+                      height: '100%',
+                      background: '#0f0f0f',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '20px',
+                      position: 'relative',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {/* Fundo com efeito de grade */}
+                    <Box
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundImage: 'linear-gradient(rgba(118, 65, 217, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(118, 65, 217, 0.05) 1px, transparent 1px)',
+                        backgroundSize: '20px 20px',
+                        zIndex: 0,
+                      }}
+                    />
+
+                    {/* Preview do site */}
+                    <Box
+                      style={{
+                        background: 'linear-gradient(135deg, #1a1a1a, #2a2a2a)',
+                        borderRadius: '8px',
+                        padding: '30px',
+                        width: '90%',
+                        maxWidth: '400px',
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.5), 0 0 10px rgba(118, 65, 217, 0.3)',
+                        border: '1px solid rgba(118, 65, 217, 0.2)',
+                        zIndex: 1,
+                        animation: `${slideInFromBottom} 0.5s ease`,
+                      }}
+                    >
+                      <Text
+                        fw={800}
+                        size="xl"
+                        c="white"
+                        style={{
+                          marginBottom: '10px',
+                          textAlign: 'center',
+                          background: 'linear-gradient(90deg, #fff, #9969E5)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                        }}
+                      >
+                        CodeBR
+                      </Text>
+
+                      <Text
+                        size="sm"
+                        c="gray.4"
+                        style={{
+                          marginBottom: '20px',
+                          textAlign: 'center',
+                        }}
+                      >
+                        Desenvolvimento de sites profissionais
+                      </Text>
+
+                      <Box
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          marginTop: '20px',
+                        }}
+                      >
+                        <Box
+                          component="a"
+                          href="/pricing"
+                          style={{
+                            padding: '8px 16px',
+                            background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                            color: 'white',
+                            borderRadius: '4px',
+                            fontWeight: 600,
+                            fontSize: '14px',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
+                            textDecoration: 'none',
+                            display: 'inline-block',
+                            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                            '&:hover': {
+                              transform: 'translateY(-2px)',
+                              boxShadow: '0 6px 15px rgba(0,0,0,0.4)',
+                            }
+                          }}
+                        >
+                          Ver serviços
+                        </Box>
+                      </Box>
+                    </Box>
                   </Box>
                 </Box>
               )}
 
+              {/* Preview view - site completo */}
               {activeTab === 'preview' && (
                 <Box
                   style={{
                     height: '100%',
-                    background: '#fff',
+                    background: '#0f0f0f',
                     padding: '0',
                     position: 'relative',
                     overflow: 'hidden',
@@ -427,6 +922,7 @@ export function HeroNotebookSimulator() {
                       width: '100%',
                       position: 'relative',
                       overflow: 'hidden',
+                      animation: `${fadeIn} 0.5s ease`,
                     }}
                   >
                     {/* Header */}
@@ -434,12 +930,13 @@ export function HeroNotebookSimulator() {
                       style={{
                         height: '60px',
                         width: '100%',
-                        background: '#6741D9',
+                        background: 'linear-gradient(90deg, #1a1a1a, #2a2a2a)',
+                        borderBottom: '1px solid rgba(118, 65, 217, 0.2)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         padding: '0 20px',
-                        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
                       }}
                     >
                       <Box style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -448,23 +945,23 @@ export function HeroNotebookSimulator() {
                             width: '30px',
                             height: '30px',
                             borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #8A63E8, #6741D9)',
+                            background: 'linear-gradient(135deg, #9969E5, #7641C0)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
                           }}
                         >
-                          <Text fw={700} size="sm" c="white">S</Text>
+                          <Text fw={700} size="sm" c="white">C</Text>
                         </Box>
-                        <Text fw={700} size="sm" c="white">Websites Suíços</Text>
+                        <Text fw={700} size="sm" c="white">CodeBR</Text>
                       </Box>
 
                       <Box style={{ display: 'flex', gap: '20px' }}>
                         <Text size="xs" c="white">Home</Text>
-                        <Text size="xs" c="white">Services</Text>
-                        <Text size="xs" c="white">About</Text>
-                        <Text size="xs" c="white">Contact</Text>
+                        <Text size="xs" c="white">Serviços</Text>
+                        <Text size="xs" c="white">Sobre</Text>
+                        <Text size="xs" c="white">Contato</Text>
                       </Box>
                     </Box>
 
@@ -473,7 +970,7 @@ export function HeroNotebookSimulator() {
                       style={{
                         height: '400px',
                         width: '100%',
-                        background: 'linear-gradient(135deg, #6741D9, #8A63E8)',
+                        background: 'linear-gradient(135deg, #1a1a1a, #2a2a2a)',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -493,28 +990,64 @@ export function HeroNotebookSimulator() {
                           width: '100%',
                           height: '100%',
                           opacity: 0.1,
-                          backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)',
+                          backgroundImage: 'linear-gradient(rgba(118, 65, 217, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(118, 65, 217, 0.1) 1px, transparent 1px)',
                           backgroundSize: '20px 20px',
                         }}
                       />
 
-                      <Text fw={800} size="xl" c="white" mb={10}>Create Beautiful Websites</Text>
-                      <Text size="sm" c="white" mb={20} style={{ maxWidth: '600px' }}>
-                        Our drag-and-drop website builder makes it easy to create professional websites without coding.
-                      </Text>
+                      {/* Partículas animadas */}
                       <Box
                         style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          opacity: 0.3,
+                          background: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'1\' fill=\'%239969E5\' /%3E%3C/svg%3E")',
+                          backgroundSize: '100px 100px',
+                          animation: `${fadeIn} 2s ease`,
+                        }}
+                      />
+
+                      <Text
+                        fw={800}
+                        size="xl"
+                        c="white"
+                        mb={10}
+                        style={{
+                          background: 'linear-gradient(90deg, #fff, #9969E5)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                        }}
+                      >
+                        CodeBR
+                      </Text>
+                      <Text size="sm" c="gray.3" mb={20} style={{ maxWidth: '600px' }}>
+                        Desenvolvimento de sites profissionais com tecnologias modernas
+                      </Text>
+                      <Box
+                        component="a"
+                        href="/pricing"
+                        style={{
                           padding: '10px 20px',
-                          background: 'white',
-                          color: '#6741D9',
+                          background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                          color: 'white',
                           borderRadius: '5px',
                           fontWeight: 600,
                           fontSize: '14px',
                           cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+                          boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
+                          textDecoration: 'none',
+                          display: 'inline-block',
+                          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                          '&:hover': {
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 6px 15px rgba(0,0,0,0.4)',
+                          }
                         }}
                       >
-                        Get Started
+                        Ver serviços
                       </Box>
                     </Box>
 
@@ -522,10 +1055,21 @@ export function HeroNotebookSimulator() {
                     <Box
                       style={{
                         padding: '40px 20px',
-                        background: 'white',
+                        background: '#0f0f0f',
                       }}
                     >
-                      <Text fw={700} size="md" c="#333" mb={20} style={{ textAlign: 'center' }}>Features</Text>
+                      <Text
+                        fw={700}
+                        size="md"
+                        c="white"
+                        mb={20}
+                        style={{
+                          textAlign: 'center',
+                          textShadow: '0 0 10px rgba(118, 65, 217, 0.5)',
+                        }}
+                      >
+                        Tecnologias
+                      </Text>
 
                       <Box
                         style={{
@@ -540,10 +1084,11 @@ export function HeroNotebookSimulator() {
                           style={{
                             width: '180px',
                             padding: '20px',
-                            background: '#f9f9f9',
+                            background: 'rgba(255,255,255,0.03)',
                             borderRadius: '8px',
                             textAlign: 'center',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                            border: '1px solid rgba(118, 65, 217, 0.1)',
                           }}
                         >
                           <Box
@@ -551,17 +1096,17 @@ export function HeroNotebookSimulator() {
                               width: '40px',
                               height: '40px',
                               borderRadius: '50%',
-                              background: 'rgba(103, 65, 217, 0.1)',
+                              background: 'rgba(118, 65, 217, 0.1)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               margin: '0 auto 10px',
                             }}
                           >
-                            <IconLayoutDashboard size={20} color="#6741D9" />
+                            <IconBrandReact size={20} color="#61DAFB" />
                           </Box>
-                          <Text fw={600} size="xs" c="#333" mb={5}>Drag & Drop</Text>
-                          <Text size="xs" c="#666">Easy-to-use interface</Text>
+                          <Text fw={600} size="xs" c="white" mb={5}>React</Text>
+                          <Text size="xs" c="gray.5">Interfaces modernas</Text>
                         </Box>
 
                         {/* Feature 2 */}
@@ -569,10 +1114,11 @@ export function HeroNotebookSimulator() {
                           style={{
                             width: '180px',
                             padding: '20px',
-                            background: '#f9f9f9',
+                            background: 'rgba(255,255,255,0.03)',
                             borderRadius: '8px',
                             textAlign: 'center',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                            border: '1px solid rgba(118, 65, 217, 0.1)',
                           }}
                         >
                           <Box
@@ -580,17 +1126,17 @@ export function HeroNotebookSimulator() {
                               width: '40px',
                               height: '40px',
                               borderRadius: '50%',
-                              background: 'rgba(103, 65, 217, 0.1)',
+                              background: 'rgba(118, 65, 217, 0.1)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               margin: '0 auto 10px',
                             }}
                           >
-                            <IconBrandReact size={20} color="#6741D9" />
+                            <IconBrandNextjs size={20} color="#fff" />
                           </Box>
-                          <Text fw={600} size="xs" c="#333" mb={5}>Modern Tech</Text>
-                          <Text size="xs" c="#666">Built with React</Text>
+                          <Text fw={600} size="xs" c="white" mb={5}>Next.js</Text>
+                          <Text size="xs" c="gray.5">Performance otimizada</Text>
                         </Box>
 
                         {/* Feature 3 */}
@@ -598,10 +1144,11 @@ export function HeroNotebookSimulator() {
                           style={{
                             width: '180px',
                             padding: '20px',
-                            background: '#f9f9f9',
+                            background: 'rgba(255,255,255,0.03)',
                             borderRadius: '8px',
                             textAlign: 'center',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                            border: '1px solid rgba(118, 65, 217, 0.1)',
                           }}
                         >
                           <Box
@@ -609,17 +1156,17 @@ export function HeroNotebookSimulator() {
                               width: '40px',
                               height: '40px',
                               borderRadius: '50%',
-                              background: 'rgba(103, 65, 217, 0.1)',
+                              background: 'rgba(118, 65, 217, 0.1)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               margin: '0 auto 10px',
                             }}
                           >
-                            <IconSettings size={20} color="#6741D9" />
+                            <IconCode size={20} color="#9969E5" />
                           </Box>
-                          <Text fw={600} size="xs" c="#333" mb={5}>Customizable</Text>
-                          <Text size="xs" c="#666">Endless options</Text>
+                          <Text fw={600} size="xs" c="white" mb={5}>Código limpo</Text>
+                          <Text size="xs" c="gray.5">Fácil manutenção</Text>
                         </Box>
                       </Box>
                     </Box>
@@ -627,47 +1174,130 @@ export function HeroNotebookSimulator() {
                 </Box>
               )}
 
+              {/* Settings view */}
               {activeTab === 'settings' && (
                 <Box
                   style={{
                     padding: '20px',
                     height: '100%',
                     overflow: 'auto',
+                    background: '#1a1a1a',
                   }}
                 >
-                  <Text size="sm" fw={700} c="gray.2" mb={15}>Website Builder Settings</Text>
+                  <Box
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <IconRocket size={18} color="#9969E5" />
+                    <Text size="sm" fw={700} c="white">Configurações do Projeto</Text>
+                  </Box>
+
+                  <Divider color="dark.6" my="md" />
 
                   <Box style={{ marginBottom: '20px' }}>
-                    <Text size="xs" fw={600} c="gray.4" mb={10}>Components</Text>
+                    <Text size="xs" fw={600} c="gray.4" mb={10}>Tecnologias</Text>
                     <Group gap="xs" mb={10}>
-                      <Badge color="indigo">Header</Badge>
-                      <Badge color="blue">Hero Section</Badge>
-                      <Badge color="teal">Features</Badge>
-                      <Badge color="green">Gallery</Badge>
-                      <Badge color="yellow">Testimonials</Badge>
-                      <Badge color="orange">Contact Form</Badge>
-                      <Badge color="red">Footer</Badge>
+                      <Badge color="blue" variant="light">React</Badge>
+                      <Badge color="gray" variant="light">Next.js</Badge>
+                      <Badge color="purple" variant="light">TypeScript</Badge>
+                      <Badge color="teal" variant="light">Tailwind CSS</Badge>
+                      <Badge color="pink" variant="light">Framer Motion</Badge>
                     </Group>
                   </Box>
 
                   <Box style={{ marginBottom: '20px' }}>
-                    <Text size="xs" fw={600} c="gray.4" mb={10}>Theme</Text>
+                    <Text size="xs" fw={600} c="gray.4" mb={10}>Tema</Text>
                     <Group gap="xs">
-                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#6741D9', border: '2px solid #fff' }} />
-                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#1098AD' }} />
-                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#FF6B6B' }} />
-                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#20C997' }} />
-                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#FD7E14' }} />
+                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#7641C0', border: '2px solid #333' }} />
+                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#1a1a1a' }} />
+                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#9969E5' }} />
+                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#333' }} />
+                      <Box style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#fff' }} />
                     </Group>
                   </Box>
 
                   <Box style={{ marginBottom: '20px' }}>
-                    <Text size="xs" fw={600} c="gray.4" mb={10}>Export Options</Text>
+                    <Text size="xs" fw={600} c="gray.4" mb={10}>Componentes</Text>
+                    <Box
+                      style={{
+                        background: '#222',
+                        borderRadius: '4px',
+                        padding: '10px',
+                        border: '1px solid #333',
+                      }}
+                    >
+                      <Box
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          padding: '8px',
+                          borderBottom: '1px solid #333',
+                        }}
+                      >
+                        <Text size="xs" c="gray.4">Header</Text>
+                        <Badge color="green" size="xs" variant="light">Ativo</Badge>
+                      </Box>
+                      <Box
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          padding: '8px',
+                          borderBottom: '1px solid #333',
+                        }}
+                      >
+                        <Text size="xs" c="gray.4">Hero Section</Text>
+                        <Badge color="green" size="xs" variant="light">Ativo</Badge>
+                      </Box>
+                      <Box
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          padding: '8px',
+                          borderBottom: '1px solid #333',
+                        }}
+                      >
+                        <Text size="xs" c="gray.4">Features</Text>
+                        <Badge color="green" size="xs" variant="light">Ativo</Badge>
+                      </Box>
+                      <Box
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          padding: '8px',
+                          borderBottom: '1px solid #333',
+                        }}
+                      >
+                        <Text size="xs" c="gray.4">Testimonials</Text>
+                        <Badge color="gray" size="xs" variant="light">Inativo</Badge>
+                      </Box>
+                      <Box
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          padding: '8px',
+                        }}
+                      >
+                        <Text size="xs" c="gray.4">Footer</Text>
+                        <Badge color="green" size="xs" variant="light">Ativo</Badge>
+                      </Box>
+                    </Box>
+                  </Box>
+
+                  <Box style={{ marginBottom: '20px' }}>
+                    <Text size="xs" fw={600} c="gray.4" mb={10}>Ferramentas</Text>
                     <Group gap="xs">
-                      <Badge color="gray">HTML/CSS</Badge>
-                      <Badge color="gray">React</Badge>
-                      <Badge color="gray">Next.js</Badge>
-                      <Badge color="gray">WordPress</Badge>
+                      <Badge leftSection={<IconBrandGithub size={12} />} color="gray" variant="light">GitHub</Badge>
+                      <Badge leftSection={<IconTerminal size={12} />} color="gray" variant="light">CLI</Badge>
+                      <Badge leftSection={<IconCode size={12} />} color="gray" variant="light">VS Code</Badge>
                     </Group>
                   </Box>
                 </Box>

@@ -3,7 +3,8 @@
 import { HeroSection } from '../../components/HeroSection';
 import { TrustSignals } from '@/components/TrustSignals';
 import { ServicesSection } from '@/components/ServicesSection';
-import { HostingSection } from '@/components/HostingSection';
+import { ModernWorkflowSection } from '@/components/ModernWorkflowSection';
+import { PricingSection } from '@/components/PricingSection';
 import { CtaSection } from '@/components/CtaSection';
 
 export function HomeUI() {
@@ -12,7 +13,8 @@ export function HomeUI() {
       <HeroSection />
       <TrustSignals />
       <ServicesSection />
-      <HostingSection />
+      <PricingSection />
+      <ModernWorkflowSection />
       <CtaSection />
     </main>
   );
