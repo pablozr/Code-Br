@@ -11,13 +11,13 @@ import {
 } from '@mantine/core';
 import { IconArrowRight } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { ParallaxEffect } from './effects/ParallaxEffect';
-import { GradientNebulaBackground } from './effects/backgrounds/GradientNebulaBackground';
+import { ParallaxEffect } from './effects/ParallaxEffect'
 import GradientText from './ui/gradient-text';
 import { TechButton } from './effects/TechButton';
 import { HeroNotebookSimulator } from './HeroNotebookSimulator';
 import BlackHoleAnimation from './effects/BlackHoleAnimation';
 import CodeTitle from './ui/CodeTitle';
+import { GradientNebulaBackground } from './background/GradientNebulaBackground';
 
 // @ts-ignore - Type issues with motion components
 const MotionBox = motion(Box);

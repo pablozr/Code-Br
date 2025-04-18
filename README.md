@@ -8,9 +8,10 @@ CodeBR é uma plataforma SaaS especializada em serviços de criação de website
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Frontend**: Next.js 14, React 18, TypeScript
+- **Frontend**: Next.js 15, React 19, TypeScript
 - **Estilização**: Mantine UI, TailwindCSS
 - **Animações**: Framer Motion
+- **Efeitos Visuais**: Three.js, tsParticles
 - **Autenticação**: NextAuth.js
 - **Banco de Dados**: PostgreSQL com Drizzle ORM
 - **Infraestrutura**: Docker para desenvolvimento local
@@ -21,21 +22,47 @@ CodeBR é uma plataforma SaaS especializada em serviços de criação de website
 codebr-website/
 ├── app/                      # Diretório principal do Next.js App Router
 │   ├── (dashboard)/          # Grupo de rotas para o dashboard (área logada)
+│   │   ├── dashboard/         # Páginas do dashboard
+│   │   ├── pricing/           # Página de preços
+│   │   ├── home-ui.tsx        # Componente principal da página inicial
+│   │   └── page.tsx           # Página inicial
 │   ├── (login)/              # Grupo de rotas para autenticação
+│   │   ├── sign-in/           # Página de login
+│   │   ├── sign-up/           # Página de cadastro
+│   │   └── actions.ts         # Ações de autenticação
 │   ├── api/                  # Rotas de API
+│   │   └── stripe/            # Integração com Stripe
 │   ├── globals.css           # Estilos globais
-│   └── layout.tsx            # Layout principal da aplicação
+│   ├── layout.tsx            # Layout principal da aplicação
+│   └── not-found.tsx         # Página 404
 │
 ├── components/               # Componentes reutilizáveis
 │   ├── effects/              # Efeitos visuais (partículas, animações)
-│   ├── layout/               # Componentes de layout (Header, Footer)
+│   │   ├── AnimatedText.tsx    # Texto com animação
+│   │   ├── BlackHoleEffect.tsx # Efeito de buraco negro
+│   │   ├── GlowEffect.tsx      # Efeito de brilho
+│   │   ├── ParticlesBackground.tsx # Fundo com partículas
+│   │   └── Tilt3DEffect.tsx    # Efeito 3D de inclinação
+│   ├── layout/               # Componentes de layout
+│   │   ├── Footer.tsx         # Rodapé do site
+│   │   └── Header.tsx         # Cabeçalho do site
 │   ├── ui/                   # Componentes de UI reutilizáveis
-│   └── [NomeDoComponente].tsx # Componentes específicos de seções
+│   │   ├── aurora-background.tsx # Fundo com efeito aurora
+│   │   ├── CodeTitle.tsx       # Título com efeito de código
+│   │   ├── colourful-text.tsx  # Texto com cores gradientes
+│   │   └── gradient-text.tsx   # Texto com gradiente
+│   ├── CtaSection.tsx        # Seção de chamada para ação
+│   ├── HeroSection.tsx       # Seção principal da página inicial
+│   ├── ModernWorkflowSection.tsx # Seção de fluxo de trabalho
+│   ├── PricingSection.tsx    # Seção de preços
+│   ├── ServicesSection.tsx   # Seção de serviços
+│   └── TrustSignals.tsx      # Seção de sinais de confiança
 │
 ├── lib/                      # Utilitários e configurações
 │   ├── auth/                 # Configuração de autenticação
 │   ├── db/                   # Configuração do banco de dados
-│   └── utils/                # Funções utilitárias
+│   ├── payments/             # Integração com pagamentos
+│   └── utils.ts              # Funções utilitárias
 │
 ├── public/                   # Arquivos estáticos
 │
@@ -55,70 +82,114 @@ A página inicial é composta pelos seguintes componentes principais:
 1. **HeroSection** (`components/HeroSection.tsx`)
    - Seção principal com título, subtítulo e CTA
    - Inclui o componente `HeroNotebookSimulator` que exibe uma simulação de notebook
+   - Utiliza o efeito `BlackHoleAnimation` para criar um efeito visual impressionante
 
 2. **TrustSignals** (`components/TrustSignals.tsx`)
    - Exibe logos e sinais de confiança de parceiros e clientes
+   - Design moderno com animações suaves
 
 3. **ServicesSection** (`components/ServicesSection.tsx`)
    - Apresenta os serviços oferecidos com cards interativos
+   - Efeitos de hover e animações para melhorar a experiência do usuário
 
 4. **ModernWorkflowSection** (`components/ModernWorkflowSection.tsx`)
    - Demonstra o processo de trabalho com animações e mockups
    - Transição automática entre etapas do workflow
+   - Mockups interativos que ilustram cada fase do processo
 
 5. **PricingSection** (`components/PricingSection.tsx`)
    - Exibe opções de preços e planos disponíveis
    - Configurado para solicitar orçamentos personalizados
+   - Cards com efeitos visuais e destaque para planos recomendados
 
 6. **CtaSection** (`components/CtaSection.tsx`)
    - Call-to-action final para conversão de leads
-
-7. **Footer** (`components/layout/Footer.tsx`)
-   - Rodapé com links, informações de contato e copyright
+   - Fundo com efeito de partículas e gradiente
+   - Botões com efeitos de hover
 
 ### Componentes de Layout
 
 1. **Header** (`components/layout/Header.tsx`)
    - Navegação principal e logo
    - Links para login e cadastro
+   - Design responsivo com menu mobile
 
 2. **Footer** (`components/layout/Footer.tsx`)
    - Informações de contato, links úteis e redes sociais
+   - Organizado em seções para fácil navegação
+   - Botão de voltar ao topo
+
+### Componentes de UI
+
+Os componentes de UI estão localizados em `components/ui/` e incluem:
+
+1. **aurora-background** - Fundo com efeito de aurora boreal
+2. **CodeTitle** - Título com efeito de código/terminal
+3. **colourful-text** - Texto com cores gradientes e animações
+4. **gradient-text** - Texto com gradiente personalizável
 
 ### Efeitos Visuais
 
 Os efeitos visuais estão localizados em `components/effects/` e incluem:
 
 1. **BlackHoleEffect** - Efeito visual de buraco negro com distorção gravitacional
-2. **ParticlesEffect** - Animação de partículas que orbitam e interagem
-3. **MatrixEffect** - Efeito de código estilo Matrix
-4. **CircuitEffect** - Visualização de circuitos com efeitos neon
+2. **BlackHoleAnimation** - Animação otimizada do buraco negro
+3. **ParticlesBackground** - Animação de partículas que orbitam e interagem
+4. **AnimatedText** - Texto com animações de entrada
+5. **Tilt3DEffect** - Efeito 3D de inclinação para elementos interativos
+6. **GlowEffect** - Efeito de brilho para elementos UI
 
 ## 🔐 Sistema de Autenticação (A Implementar)
 
-O sistema de autenticação será implementado usando NextAuth.js. As rotas e componentes relacionados estão organizados em:
+O sistema de autenticação está parcialmente implementado usando NextAuth.js. As rotas e componentes relacionados estão organizados em:
 
-- `app/(login)/` - Contém as páginas de login, cadastro e recuperação de senha
+- `app/(login)/` - Contém as páginas de login e cadastro
 - `lib/auth/` - Configuração do NextAuth.js
+
+### Estrutura Atual:
+
+1. **Página de Login** (`app/(login)/sign-in/page.tsx`)
+   - Interface básica para login de usuários
+   - Integração com NextAuth.js
+
+2. **Página de Cadastro** (`app/(login)/sign-up/page.tsx`)
+   - Interface para registro de novos usuários
+   - Validação de formulário
+
+3. **Ações de Autenticação** (`app/(login)/actions.ts`)
+   - Funções de servidor para login e registro
 
 ### Implementação Pendente:
 
-1. **Formulário de Login** - Criar formulário com validação
-2. **Cadastro de Usuários** - Implementar fluxo de registro
-3. **Recuperação de Senha** - Adicionar funcionalidade de reset de senha
-4. **Integração com Provedores** - Configurar login social (Google, GitHub)
+1. **Aprimoramento do Formulário de Login** - Melhorar a validação e feedback ao usuário
+2. **Recuperação de Senha** - Adicionar funcionalidade de reset de senha
+3. **Integração com Provedores** - Configurar login social (Google, GitHub)
+4. **Proteção de Rotas** - Implementar middleware para proteção de rotas autenticadas
 
 ## 📊 Dashboard (A Implementar)
 
-O dashboard será a área administrativa para usuários logados, localizado em `app/(dashboard)/`:
+O dashboard está parcialmente estruturado e será a área administrativa para usuários logados, localizado em `app/(dashboard)/`:
+
+### Estrutura Atual:
+
+1. **Layout do Dashboard** (`app/(dashboard)/dashboard/layout.tsx`)
+   - Estrutura básica com sidebar e área de conteúdo
+
+2. **Página Principal** (`app/(dashboard)/dashboard/page.tsx`)
+   - Visão geral das atividades e projetos
+
+3. **Páginas de Configuração**
+   - Segurança (`app/(dashboard)/dashboard/security/page.tsx`)
+   - Atividade (`app/(dashboard)/dashboard/activity/page.tsx`)
+   - Geral (`app/(dashboard)/dashboard/general/page.tsx`)
 
 ### Implementação Pendente:
 
-1. **Layout do Dashboard** - Criar estrutura com sidebar e área de conteúdo
+1. **Aprimoramento do Layout** - Melhorar a experiência do usuário e responsividade
 2. **Página de Perfil** - Gerenciamento de informações do usuário
 3. **Gerenciamento de Projetos** - CRUD para projetos do cliente
 4. **Acompanhamento de Status** - Visualização do progresso dos projetos
-5. **Pagamentos** - Integração com gateway de pagamento
+5. **Pagamentos** - Integração com gateway de pagamento (Stripe)
 
 ## 🔄 Fluxo de Trabalho Recomendado
 
@@ -138,7 +209,7 @@ O dashboard será a área administrativa para usuários logados, localizado em `
    docker-compose up -d
 
    # Iniciar o servidor de desenvolvimento
-   npm run dev
+   npm run dev --turbopack
    ```
 
 2. **Desenvolvimento de Novas Funcionalidades**:
@@ -173,14 +244,17 @@ Utilizamos o Mantine UI como biblioteca principal de componentes. Para manter a 
 1. **Botões**:
    - Primário: Gradiente roxo com bordas arredondadas
    - Secundário: Outline branco/roxo
+   - Componente personalizado: `TechButton` para botões com efeitos avançados
 
 2. **Cards**:
    - Fundo escuro com bordas sutis
    - Efeito de hover com elevação
+   - Bordas com gradiente ou glow em destaque
 
-3. **Inputs**:
-   - Estilo minimalista com foco roxo
-   - Validação visual clara
+3. **Efeitos de Texto**:
+   - `CodeTitle` para títulos com efeito de código
+   - `GradientText` para texto com gradiente personalizável
+   - `colourful-text` para texto com cores gradientes animadas
 
 ## 📝 Convenções de Código
 
@@ -191,18 +265,32 @@ Utilizamos o Mantine UI como biblioteca principal de componentes. Para manter a 
 
 2. **Organização de Arquivos**:
    - Um componente por arquivo
-   - Agrupar por funcionalidade
+   - Componentes de UI em `components/ui/`
+   - Efeitos visuais em `components/effects/`
+   - Componentes de layout em `components/layout/`
+   - Seções da página principal na raiz de `components/`
 
 3. **Estilização**:
    - Preferir estilos inline do Mantine
    - Usar TailwindCSS para ajustes finos
+   - Animações com Framer Motion
 
-## 🧪 Testes (A Implementar)
+## 💻 Próximos Passos
 
-Implementar testes usando:
-- Jest para testes unitários
-- React Testing Library para testes de componentes
-- Cypress para testes E2E
+1. **Implementação do Sistema de Autenticação**
+   - Finalizar formulários de login e cadastro
+   - Implementar recuperação de senha
+   - Adicionar provedores sociais
+
+2. **Desenvolvimento do Dashboard**
+   - Criar interface para gerenciamento de projetos
+   - Implementar visualização de status
+   - Integrar sistema de pagamentos
+
+3. **Melhorias de Performance**
+   - Otimizar carregamento de imagens
+   - Implementar lazy loading para componentes pesados
+   - Melhorar a responsividade em dispositivos móveis
 
 ## 📚 Recursos Adicionais
 
@@ -211,6 +299,8 @@ Implementar testes usando:
 - [Documentação do Framer Motion](https://www.framer.com/motion/)
 - [Documentação do NextAuth.js](https://next-auth.js.org/)
 - [Documentação do Drizzle ORM](https://orm.drizzle.team/)
+- [Documentação do Three.js](https://threejs.org/docs/)
+- [Documentação do tsParticles](https://particles.js.org/docs/)
 
 ## 📄 Licença
 

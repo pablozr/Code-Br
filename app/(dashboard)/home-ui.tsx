@@ -1,6 +1,6 @@
 'use client';
 
-import { HeroSection } from '../../components/HeroSection';
+import { HeroSection } from '@/components/HeroSection';
 import { TrustSignals } from '@/components/TrustSignals';
 import { ServicesSection } from '@/components/ServicesSection';
 import { ModernWorkflowSection } from '@/components/ModernWorkflowSection';
