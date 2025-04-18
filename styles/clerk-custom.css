@@ -1,0 +1,475 @@
+/* Estilos personalizados para os componentes do Clerk */
+
+/* Efeito de brilho nos botões */
+.cl-formButtonPrimary {
+  position: relative;
+  overflow: hidden;
+}
+
+.cl-formButtonPrimary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+  z-index: 0;
+}
+
+/* Efeito de brilho nos botões sociais */
+.cl-socialButtonsIconButton {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cl-socialButtonsIconButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px -2px rgba(118, 65, 192, 0.3);
+}
+
+/* Efeito de borda brilhante no card */
+.cl-card {
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: rgba(15, 15, 15, 0.85) !important;
+  backdrop-filter: blur(15px) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(118, 65, 192, 0.2) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.cl-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(153, 105, 229, 0.3), transparent, rgba(153, 105, 229, 0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Efeito de brilho no topo do card */
+.cl-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(153, 105, 229, 0.1), transparent 70%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Animações */
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  20% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+/* Estilização dos provedores sociais */
+.cl-socialButtonsIconButton {
+  width: 56px !important;
+  height: 56px !important;
+  border-width: 2px !important;
+  border-radius: 12px !important;
+  margin: 0 8px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.cl-socialButtonsIconButton:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="google"] {
+  border-color: rgba(234, 67, 53, 0.5) !important;
+  background-color: rgba(234, 67, 53, 0.05) !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="google"]:hover {
+  background-color: rgba(234, 67, 53, 0.1) !important;
+  border-color: rgba(234, 67, 53, 0.7) !important;
+  box-shadow: 0 8px 20px -2px rgba(234, 67, 53, 0.3) !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="google"]::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+  background: linear-gradient(45deg, transparent, rgba(234, 67, 53, 0.1), transparent) !important;
+  transform: rotate(45deg) !important;
+  animation: shine 3s infinite !important;
+  z-index: 0 !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="apple"] {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="apple"]:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 0 8px 20px -2px rgba(255, 255, 255, 0.2) !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="apple"]::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent) !important;
+  transform: rotate(45deg) !important;
+  animation: shine 3s infinite !important;
+  animation-delay: 1s !important;
+  z-index: 0 !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="microsoft"] {
+  border-color: rgba(0, 120, 212, 0.5) !important;
+  background-color: rgba(0, 120, 212, 0.05) !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="microsoft"]:hover {
+  background-color: rgba(0, 120, 212, 0.1) !important;
+  border-color: rgba(0, 120, 212, 0.7) !important;
+  box-shadow: 0 8px 20px -2px rgba(0, 120, 212, 0.3) !important;
+}
+
+.cl-socialButtonsIconButton[data-provider="microsoft"]::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+  background: linear-gradient(45deg, transparent, rgba(0, 120, 212, 0.1), transparent) !important;
+  transform: rotate(45deg) !important;
+  animation: shine 3s infinite !important;
+  animation-delay: 2s !important;
+  z-index: 0 !important;
+}
+
+/* Melhorias na tipografia */
+.cl-headerTitle {
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+.cl-headerSubtitle {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  text-align: center;
+}
+
+/* Centralização dos botões sociais */
+.cl-socialButtonsIconButton {
+  margin: 0 5px;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.cl-socialButtonsIconButtonContainer {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
+  gap: 12px !important;
+}
+
+/* Garantir que os ícones dos provedores sociais apareçam */
+.cl-socialButtonsProviderIcon {
+  width: 28px !important;
+  height: 28px !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)) !important;
+}
+
+.cl-socialButtonsProviderIcon__google,
+.cl-socialButtonsProviderIcon__apple,
+.cl-socialButtonsProviderIcon__microsoft {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: scale(1.2) !important;
+}
+
+/* Corrigir a exibição dos botões sociais */
+.cl-socialButtons {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 16px !important;
+  margin: 24px 0 !important;
+  padding: 8px 0 !important;
+  position: relative !important;
+}
+
+.cl-socialButtons::before {
+  content: 'Ou continue com' !important;
+  position: absolute !important;
+  top: -12px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background-color: #0A0A0A !important;
+  padding: 0 16px !important;
+  font-size: 14px !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  z-index: 2 !important;
+}
+
+.cl-socialButtons::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent, rgba(153, 105, 229, 0.3), transparent) !important;
+  z-index: 1 !important;
+}
+
+.cl-socialButtons-iconButton {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  justify-content: center !important;
+  gap: 16px !important;
+}
+
+/* Personalização do cabeçalho */
+.cl-headerTitle {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: white !important;
+  text-align: center !important;
+  margin-bottom: 8px !important;
+  letter-spacing: -0.5px !important;
+  background: linear-gradient(135deg, #fff, #9969E5) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-shadow: 0 2px 10px rgba(153, 105, 229, 0.2) !important;
+}
+
+.cl-headerSubtitle {
+  font-size: 15px !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  text-align: center !important;
+  margin-bottom: 24px !important;
+}
+
+/* Estilização do rodapé */
+.cl-footerAction {
+  margin-top: 24px !important;
+  text-align: center !important;
+}
+
+.cl-footerActionText {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 14px !important;
+}
+
+.cl-footerActionLink {
+  color: #9969E5 !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.cl-footerActionLink:hover {
+  color: #7641C0 !important;
+  text-decoration: none !important;
+}
+
+/* Estilização do container dos botões sociais */
+.cl-socialButtonsIconButtonContainer {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 16px !important;
+  margin: 24px 0 !important;
+  padding: 16px 0 !important;
+  position: relative !important;
+  background: rgba(20, 20, 20, 0.3) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(153, 105, 229, 0.1) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Estilização específica para cada provedor */
+.cl-socialButtons-iconButton button[data-provider="google"] {
+  background-color: rgba(20, 20, 20, 0.7) !important;
+  border: 1px solid rgba(234, 67, 53, 0.3) !important;
+}
+
+.cl-socialButtons-iconButton button[data-provider="apple"] {
+  background-color: rgba(20, 20, 20, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.cl-socialButtons-iconButton button[data-provider="microsoft"] {
+  background-color: rgba(20, 20, 20, 0.7) !important;
+  border: 1px solid rgba(0, 120, 212, 0.3) !important;
+}
+
+/* Efeito de brilho no logo */
+.cl-logoImage {
+  filter: drop-shadow(0 0 8px rgba(153, 105, 229, 0.5));
+  transition: all 0.3s ease;
+}
+
+.cl-logoImage:hover {
+  filter: drop-shadow(0 0 12px rgba(153, 105, 229, 0.7));
+  transform: scale(1.05);
+}
+
+/* Estilização dos campos de entrada */
+.cl-formFieldInput {
+  background-color: rgba(25, 25, 25, 0.6) !important;
+  border: 1px solid rgba(118, 65, 192, 0.2) !important;
+  color: white !important;
+  padding: 12px 16px !important;
+  height: 48px !important;
+  font-size: 15px !important;
+  transition: all 0.3s ease !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(5px) !important;
+}
+
+.cl-formFieldInput:focus {
+  box-shadow: 0 0 0 2px rgba(153, 105, 229, 0.2) !important;
+  border-color: rgba(153, 105, 229, 0.5) !important;
+  background-color: rgba(30, 30, 30, 0.7) !important;
+  outline: none !important;
+}
+
+.cl-formFieldLabel {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  margin-bottom: 8px !important;
+  letter-spacing: 0.3px !important;
+}
+
+/* Estilização do divider */
+.cl-dividerText {
+  font-size: 0.9rem !important;
+  padding: 0 16px !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.3px !important;
+}
+
+.cl-dividerLine {
+  height: 2px !important;
+  background: linear-gradient(90deg, transparent, rgba(118, 65, 192, 0.5), transparent) !important;
+  border-radius: 2px !important;
+  box-shadow: 0 0 8px rgba(118, 65, 192, 0.3) !important;
+}
+
+.cl-divider {
+  margin: 24px 0 !important;
+  position: relative !important;
+}
+
+.cl-divider::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 1px !important;
+  background: rgba(118, 65, 192, 0.1) !important;
+  z-index: -1 !important;
+}
+
+/* Estilização do botão principal */
+.cl-formButtonPrimary {
+  background: linear-gradient(135deg, #7641C0, #9969E5) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  padding: 12px 24px !important;
+  height: 48px !important;
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(118, 65, 192, 0.3) !important;
+  transition: all 0.3s ease !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+  letter-spacing: 0.3px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.cl-formButtonPrimary::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+  transition: all 0.6s ease !important;
+}
+
+.cl-formButtonPrimary:hover {
+  background: linear-gradient(135deg, #6A5ACD, #8A63E8) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(118, 65, 192, 0.4) !important;
+}
+
+.cl-formButtonPrimary:hover::before {
+  left: 100% !important;
+}
+
+.cl-formButtonPrimary:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 4px 10px rgba(118, 65, 192, 0.3) !important;
+}

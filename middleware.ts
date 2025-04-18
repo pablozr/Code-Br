@@ -1,48 +1,22 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { signToken, verifyToken } from '@/lib/auth/session';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-const protectedRoutes = '/dashboard';
+// Rotas públicas que não requerem autenticação
+const isPublicRoute = createRouteMatcher([
+  '/',                // Página inicial
+  '/sign-in(.*)',     // Página de login e suas sub-rotas
+  '/sign-up(.*)',     // Página de cadastro e suas sub-rotas
+  '/pricing',         // Página de preços
+  '/api/webhooks(.*)', // Webhooks do Clerk
+  '/sso-callback(.*)', // Callback para SSO
+]);
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const sessionCookie = request.cookies.get('session');
-  const isProtectedRoute = pathname.startsWith(protectedRoutes);
-
-  if (isProtectedRoute && !sessionCookie) {
-    return NextResponse.redirect(new URL('/sign-in', request.url));
+export default clerkMiddleware(async (auth, req) => {
+  // Se não for uma rota pública, protege com autenticação
+  if (!isPublicRoute(req)) {
+    await auth.protect();
   }
-
-  let res = NextResponse.next();
-
-  if (sessionCookie && request.method === "GET") {
-    try {
-      const parsed = await verifyToken(sessionCookie.value);
-      const expiresInOneDay = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-      res.cookies.set({
-        name: 'session',
-        value: await signToken({
-          ...parsed,
-          expires: expiresInOneDay.toISOString(),
-        }),
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-        expires: expiresInOneDay,
-      });
-    } catch (error) {
-      console.error('Error updating session:', error);
-      res.cookies.delete('session');
-      if (isProtectedRoute) {
-        return NextResponse.redirect(new URL('/sign-in', request.url));
-      }
-    }
-  }
-
-  return res;
-}
+});
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 };

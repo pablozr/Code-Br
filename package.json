@@ -11,6 +11,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.16.0",
     "@emotion/react": "^11.14.0",
     "@mantine/carousel": "^7.17.4",
     "@mantine/charts": "^7.17.4",

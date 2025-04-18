@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   AppShell,
@@ -16,19 +16,16 @@ import {
   rem,
   Box,
   Divider,
-  useMantineTheme,
-  Transition,
   ActionIcon
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
-  IconChevronDown,
-  IconChevronUp,
   IconBrandGithub,
   IconCode
 } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useScroll, useMotionValueEvent } from 'framer-motion';
+import { UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
 
 const mainLinks = [
   { label: 'Início', href: '/' },
@@ -40,10 +37,8 @@ const mainLinks = [
 
 export function Header() {
   const [opened, { toggle, close }] = useDisclosure(false);
-  const [servicesOpened, setServicesOpened] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const theme = useMantineTheme();
   const { scrollY } = useScroll();
 
   // Detectar rolagem para mudar o estilo do header
@@ -228,75 +223,92 @@ export function Header() {
                 <IconBrandGithub size={rem(18)} color="#9969E5" />
               </ActionIcon>
 
-              <Button
-                component={Link}
-                href="/sign-up"
-                variant="outline"
-                color="gray.0"
-                radius="xl"
-                leftSection={<IconCode size={rem(16)} />}
-                style={{
-                  borderColor: 'rgba(118, 65, 192, 0.3)',
-                  backgroundColor: 'rgba(118, 65, 192, 0.05)',
-                  backdropFilter: 'blur(10px)',
-                  transition: 'all 0.3s ease',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  '&:hover': {
-                    borderColor: 'rgba(118, 65, 192, 0.5)',
-                    backgroundColor: 'rgba(118, 65, 192, 0.1)',
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 4px 12px -2px rgba(118, 65, 192, 0.3)',
-                  }
-                }}
-              >
-                <Box
+              <SignedOut>
+                <Button
+                  component={Link}
+                  href="/sign-up"
+                  variant="outline"
+                  color="gray.0"
+                  radius="xl"
+                  leftSection={<IconCode size={rem(16)} />}
                   style={{
-                    position: 'absolute',
-                    top: '-50%',
-                    left: '-50%',
-                    width: '200%',
-                    height: '200%',
-                    background: 'linear-gradient(45deg, transparent, rgba(118, 65, 192, 0.1), transparent)',
-                    transform: 'rotate(45deg)',
-                    animation: 'shine 4s infinite',
-                    zIndex: 0,
+                    borderColor: 'rgba(118, 65, 192, 0.3)',
+                    backgroundColor: 'rgba(118, 65, 192, 0.05)',
+                    backdropFilter: 'blur(10px)',
+                    transition: 'all 0.3s ease',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&:hover': {
+                      borderColor: 'rgba(118, 65, 192, 0.5)',
+                      backgroundColor: 'rgba(118, 65, 192, 0.1)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px -2px rgba(118, 65, 192, 0.3)',
+                    }
                   }}
-                />
-                <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
-              </Button>
+                >
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      top: '-50%',
+                      left: '-50%',
+                      width: '200%',
+                      height: '200%',
+                      background: 'linear-gradient(45deg, transparent, rgba(118, 65, 192, 0.1), transparent)',
+                      transform: 'rotate(45deg)',
+                      animation: 'shine 4s infinite',
+                      zIndex: 0,
+                    }}
+                  />
+                  <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
+                </Button>
 
-              <Button
-                component={Link}
-                href="/login"
-                variant="gradient"
-                gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
-                radius="xl"
-                style={{
-                  boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
-                  transition: 'all 0.3s ease',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  '&:hover': {
-                    transform: 'translateY(-2px) scale(1.03)',
-                    boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
-                  }
-                }}
-              >
-                <Box
+                <Button
+                  component={Link}
+                  href="/sign-in"
+                  variant="gradient"
+                  gradient={{ from: 'rgba(118,65,192,0.9)', to: 'rgba(153,105,229,0.9)', deg: 135 }}
+                  radius="md"
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
-                    animation: 'shine 3s infinite',
-                    zIndex: 0,
+                    boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
+                    transition: 'all 0.3s ease',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&:hover': {
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
+                    }
+                  }}
+                >
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
+                      animation: 'shine 3s infinite',
+                      zIndex: 0,
+                    }}
+                  />
+                  <Text style={{ position: 'relative', zIndex: 1 }}>Entrar</Text>
+                </Button>
+              </SignedOut>
+
+              <SignedIn>
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: {
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        boxShadow: '0 0 10px rgba(118,65,192,0.3)',
+                      },
+                    },
                   }}
                 />
-                <Text style={{ position: 'relative', zIndex: 1 }}>Entrar</Text>
-              </Button>
+              </SignedIn>
             </Group>
 
             {/* Mobile burger */}
@@ -427,76 +439,96 @@ export function Header() {
             </Button>
           ))}
           <Divider my="xl" color="dark.7" />
-          <Button
-            component={Link}
-            href="/login"
-            variant="gradient"
-            gradient={{ from: 'purple.7', to: 'purple.5', deg: 45 }}
-            fullWidth
-            size="lg"
-            onClick={close}
-            style={{
-              boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
-              }
-            }}
-          >
-            <Box
+          <SignedOut>
+            <Button
+              component={Link}
+              href="/sign-in"
+              variant="gradient"
+              gradient={{ from: 'rgba(118,65,192,0.9)', to: 'rgba(153,105,229,0.9)', deg: 135 }}
+              fullWidth
+              size="lg"
+              onClick={close}
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
-                animation: 'shine 3s infinite',
-                zIndex: 0,
+                boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
+                }
               }}
-            />
-            <Text style={{ position: 'relative', zIndex: 1 }}>Entrar</Text>
-          </Button>
-          <Button
-            component={Link}
-            href="/sign-up"
-            variant="outline"
-            color="gray.0"
-            fullWidth
-            size="lg"
-            onClick={close}
-            leftSection={<IconCode size={rem(16)} />}
-            style={{
-              borderColor: 'rgba(118, 65, 192, 0.3)',
-              backgroundColor: 'rgba(118, 65, 192, 0.05)',
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                borderColor: 'rgba(118, 65, 192, 0.5)',
-                backgroundColor: 'rgba(118, 65, 192, 0.1)',
-                transform: 'translateY(-2px)',
-              }
-            }}
-          >
-            <Box
+            >
+              <Box
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
+                  animation: 'shine 3s infinite',
+                  zIndex: 0,
+                }}
+              />
+              <Text style={{ position: 'relative', zIndex: 1 }}>Entrar</Text>
+            </Button>
+            <Button
+              component={Link}
+              href="/sign-up"
+              variant="outline"
+              color="gray.0"
+              fullWidth
+              size="lg"
+              onClick={close}
+              leftSection={<IconCode size={rem(16)} />}
               style={{
-                position: 'absolute',
-                top: '-50%',
-                left: '-50%',
-                width: '200%',
-                height: '200%',
-                background: 'linear-gradient(45deg, transparent, rgba(118, 65, 192, 0.1), transparent)',
-                transform: 'rotate(45deg)',
-                animation: 'shine 4s infinite',
-                zIndex: 0,
+                borderColor: 'rgba(118, 65, 192, 0.3)',
+                backgroundColor: 'rgba(118, 65, 192, 0.05)',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  borderColor: 'rgba(118, 65, 192, 0.5)',
+                  backgroundColor: 'rgba(118, 65, 192, 0.1)',
+                  transform: 'translateY(-2px)',
+                }
               }}
-            />
-            <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
-          </Button>
+            >
+              <Box
+                style={{
+                  position: 'absolute',
+                  top: '-50%',
+                  left: '-50%',
+                  width: '200%',
+                  height: '200%',
+                  background: 'linear-gradient(45deg, transparent, rgba(118, 65, 192, 0.1), transparent)',
+                  transform: 'rotate(45deg)',
+                  animation: 'shine 4s infinite',
+                  zIndex: 0,
+                }}
+              />
+              <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
+            </Button>
+          </SignedOut>
+
+          <SignedIn>
+            <Group justify="center" w="100%" my="md">
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: {
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      boxShadow: '0 0 10px rgba(118,65,192,0.3)',
+                    },
+                  },
+                }}
+              />
+            </Group>
+            <Text ta="center" c="dimmed" mb="lg">Logado com sucesso</Text>
+          </SignedIn>
         </Stack>
       </Drawer>
     </>

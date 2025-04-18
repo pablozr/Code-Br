@@ -1,10 +1,8 @@
 'use client';
 
-import { use, Suspense } from 'react';
+import { Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@/lib/auth';
-import { signOut } from '@/app/(login)/actions';
+import { UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { Footer } from '@/components/layout/Footer';
 import {
   AppShell,
@@ -14,31 +12,17 @@ import {
   Group,
   Title,
   Text,
-  Button,
-  Avatar,
-  Menu,
-  rem,
-  Divider
+  Button
 } from '@mantine/core';
-import { IconHome, IconLogout, IconChevronDown, IconSettings, IconLogin } from '@tabler/icons-react';
+import { IconLogin } from '@tabler/icons-react';
 
 function UserMenu() {
-  const { userPromise } = useUser();
-  const user = use(userPromise);
-  const router = useRouter();
-
-  async function handleSignOut() {
-    await signOut();
-    router.refresh();
-    router.push('/');
-  }
-
-  if (!user) {
-    return (
-      <Group gap="md">
+  return (
+    <Group gap="md">
+      <SignedOut>
         <Button
           component={Link}
-          href="/login"
+          href="/sign-in"
           radius="md"
           leftSection={<IconLogin size={16} />}
           style={{
@@ -96,101 +80,45 @@ function UserMenu() {
           />
           <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
         </Button>
-      </Group>
-    );
-  }
+      </SignedOut>
 
-  return (
-    <Menu position="bottom-end" shadow="md" width={220}>
-      <Menu.Target>
-        <Box
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '4px 8px 4px 4px',
-            borderRadius: '8px',
-            background: 'rgba(30, 30, 30, 0.4)',
-            border: '1px solid rgba(255, 255, 255, 0.05)',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            '&:hover': {
-              background: 'rgba(40, 40, 40, 0.6)',
+      <SignedIn>
+        <UserButton
+          appearance={{
+            elements: {
+              avatarBox: {
+                width: '40px',
+                height: '40px',
+                borderRadius: '8px',
+                border: '1px solid rgba(153, 105, 229, 0.3)',
+                background: 'linear-gradient(135deg, #7641C0, #9969E5)',
+                boxShadow: '0 0 10px rgba(118,65,192,0.3)',
+              },
+              userButtonPopoverCard: {
+                background: 'rgba(20, 20, 20, 0.95)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+              },
+              userButtonPopoverActionButton: {
+                '&:hover': {
+                  background: 'rgba(153, 105, 229, 0.1)',
+                },
+              },
+              userButtonPopoverActionButtonText: {
+                color: 'white',
+              },
+              userButtonPopoverActionButtonIcon: {
+                color: '#9969E5',
+              },
+              userButtonPopoverFooter: {
+                borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+              },
             },
           }}
-        >
-          <Avatar
-            src={null}
-            color="grape"
-            radius="md"
-            size="sm"
-            style={{
-              border: '1px solid rgba(153, 105, 229, 0.3)',
-              background: 'linear-gradient(135deg, #7641C0, #9969E5)',
-            }}
-          >
-            {user.email
-              .split(' ')
-              .map((n) => n[0])
-              .join('')}
-          </Avatar>
-          <IconChevronDown size={14} color="rgba(255, 255, 255, 0.5)" />
-        </Box>
-      </Menu.Target>
-      <Menu.Dropdown
-        bg="rgba(20, 20, 20, 0.95)"
-        style={{
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
-          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-        }}
-      >
-        <Box p="xs">
-          <Text size="xs" c="dimmed" mb={5}>Conectado como</Text>
-          <Text size="sm" fw={500} c="white" truncate>{user.email}</Text>
-        </Box>
-        <Divider color="dark.6" my="xs" />
-        <Menu.Item
-          leftSection={<IconHome style={{ width: rem(14), height: rem(14) }} color="#9969E5" />}
-          component={Link}
-          href="/dashboard"
-          style={{
-            '&:hover': {
-              background: 'rgba(153, 105, 229, 0.1)',
-            }
-          }}
-        >
-          Painel
-        </Menu.Item>
-        <Menu.Item
-          leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} color="#9969E5" />}
-          component={Link}
-          href="/dashboard/general"
-          style={{
-            '&:hover': {
-              background: 'rgba(153, 105, 229, 0.1)',
-            }
-          }}
-        >
-          Configurações
-        </Menu.Item>
-        <Divider color="dark.6" my="xs" />
-        <form action={handleSignOut}>
-          <Menu.Item
-            leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} color="#ff6b6b" />}
-            type="submit"
-            color="red"
-            style={{
-              '&:hover': {
-                background: 'rgba(255, 107, 107, 0.1)',
-              }
-            }}
-          >
-            Sair
-          </Menu.Item>
-        </form>
-      </Menu.Dropdown>
-    </Menu>
+        />
+      </SignedIn>
+    </Group>
   );
 }
 
