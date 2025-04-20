@@ -2,8 +2,7 @@
 
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
-import { Footer } from '@/components/layout/Footer';
+import { Footer } from '@/app/_components/layout/Footer';
 import {
   AppShell,
   Container,
@@ -14,110 +13,42 @@ import {
   Text,
   Button
 } from '@mantine/core';
-import { IconLogin } from '@tabler/icons-react';
+
 
 function UserMenu() {
   return (
     <Group gap="md">
-      <SignedOut>
-        <Button
-          component={Link}
-          href="/sign-in"
-          radius="md"
-          leftSection={<IconLogin size={16} />}
+      <Button
+        component={Link}
+        href="/orcamento"
+        variant="gradient"
+        gradient={{ from: 'rgba(118,65,192,0.9)', to: 'rgba(153,105,229,0.9)', deg: 135 }}
+        radius="md"
+        style={{
+          boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
+          transition: 'all 0.3s ease',
+          position: 'relative',
+          overflow: 'hidden',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
+          }
+        }}
+      >
+        <Box
           style={{
-            background: 'rgba(30, 30, 30, 0.4)',
-            border: '1px solid rgba(153, 105, 229, 0.3)',
-            color: 'white',
-            fontWeight: 500,
-            transition: 'all 0.2s ease',
-            position: 'relative',
-            overflow: 'hidden',
-            '&:hover': {
-              background: 'rgba(40, 40, 40, 0.6)',
-              transform: 'translateY(-2px)',
-              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
-            }
-          }}
-        >
-          <Text>Entrar</Text>
-        </Button>
-
-        <Button
-          component={Link}
-          href="/sign-up"
-          radius="md"
-          style={{
-            background: 'linear-gradient(135deg, rgba(153, 105, 229, 0.1), rgba(153, 105, 229, 0.2))',
-            border: '1px solid rgba(153, 105, 229, 0.3)',
-            color: 'white',
-            fontWeight: 500,
-            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(10px)',
-            transition: 'all 0.2s ease',
-            position: 'relative',
-            overflow: 'hidden',
-            '&:hover': {
-              background: 'linear-gradient(135deg, rgba(153, 105, 229, 0.15), rgba(153, 105, 229, 0.25))',
-              transform: 'translateY(-2px)',
-              boxShadow: '0 6px 15px rgba(0, 0, 0, 0.15)',
-            }
-          }}
-        >
-          {/* Efeito de brilho */}
-          <Box
-            style={{
-              position: 'absolute',
-              top: '-50%',
-              left: '-50%',
-              width: '200%',
-              height: '200%',
-              background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
-              transform: 'rotate(45deg)',
-              animation: 'shine 3s infinite',
-              zIndex: 0,
-            }}
-          />
-          <Text style={{ position: 'relative', zIndex: 1 }}>Cadastrar</Text>
-        </Button>
-      </SignedOut>
-
-      <SignedIn>
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: {
-                width: '40px',
-                height: '40px',
-                borderRadius: '8px',
-                border: '1px solid rgba(153, 105, 229, 0.3)',
-                background: 'linear-gradient(135deg, #7641C0, #9969E5)',
-                boxShadow: '0 0 10px rgba(118,65,192,0.3)',
-              },
-              userButtonPopoverCard: {
-                background: 'rgba(20, 20, 20, 0.95)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-              },
-              userButtonPopoverActionButton: {
-                '&:hover': {
-                  background: 'rgba(153, 105, 229, 0.1)',
-                },
-              },
-              userButtonPopoverActionButtonText: {
-                color: 'white',
-              },
-              userButtonPopoverActionButtonIcon: {
-                color: '#9969E5',
-              },
-              userButtonPopoverFooter: {
-                borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-              },
-            },
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
+            animation: 'shine 3s infinite',
+            zIndex: 0,
           }}
         />
-      </SignedIn>
+        <Text style={{ position: 'relative', zIndex: 1 }}>Solicitar Orçamento</Text>
+      </Button>
     </Group>
   );
 }

@@ -1,129 +1,113 @@
-import { desc, and, eq, isNull } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { db } from './drizzle';
-import { activityLogs, teamMembers, teams, users } from './schema';
-import { cookies } from 'next/headers';
-import { verifyToken } from '@/lib/auth/session';
+import { contactRequests, quoteRequests } from './schema';
 
-export async function getUser() {
-  const sessionCookie = (await cookies()).get('session');
-  if (!sessionCookie || !sessionCookie.value) {
-    return null;
-  }
-
-  const sessionData = await verifyToken(sessionCookie.value);
-  if (
-    !sessionData ||
-    !sessionData.user ||
-    typeof sessionData.user.id !== 'number'
-  ) {
-    return null;
-  }
-
-  if (new Date(sessionData.expires) < new Date()) {
-    return null;
-  }
-
-  const user = await db
+// Get all contact requests
+export async function getContactRequests() {
+  return await db
     .select()
-    .from(users)
-    .where(and(eq(users.id, sessionData.user.id), isNull(users.deletedAt)))
-    .limit(1);
-
-  if (user.length === 0) {
-    return null;
-  }
-
-  return user[0];
+    .from(contactRequests)
+    .orderBy(desc(contactRequests.createdAt));
 }
 
-export async function getTeamByStripeCustomerId(customerId: string) {
+// Get a single contact request by ID
+export async function getContactRequestById(id: number) {
   const result = await db
     .select()
-    .from(teams)
-    .where(eq(teams.stripeCustomerId, customerId))
+    .from(contactRequests)
+    .where(eq(contactRequests.id, id))
     .limit(1);
 
   return result.length > 0 ? result[0] : null;
 }
 
-export async function updateTeamSubscription(
-  teamId: number,
-  subscriptionData: {
-    stripeSubscriptionId: string | null;
-    stripeProductId: string | null;
-    planName: string | null;
-    subscriptionStatus: string;
-  }
-) {
-  await db
-    .update(teams)
-    .set({
-      ...subscriptionData,
-      updatedAt: new Date(),
+// Create a new contact request
+export async function createContactRequest(data: {
+  name: string;
+  email: string;
+  message: string;
+}) {
+  const [result] = await db
+    .insert(contactRequests)
+    .values({
+      name: data.name,
+      email: data.email,
+      message: data.message,
     })
-    .where(eq(teams.id, teamId));
+    .returning();
+
+  return result;
 }
 
-export async function getUserWithTeam(userId: number) {
+// Update contact request status
+export async function updateContactRequestStatus(id: number, status: string) {
+  await db
+    .update(contactRequests)
+    .set({ status })
+    .where(eq(contactRequests.id, id));
+}
+
+// ===== Quote Request Functions =====
+
+// Get all quote requests
+export async function getQuoteRequests() {
+  return await db
+    .select()
+    .from(quoteRequests)
+    .orderBy(desc(quoteRequests.createdAt));
+}
+
+// Get a single quote request by ID
+export async function getQuoteRequestById(id: number) {
   const result = await db
-    .select({
-      user: users,
-      teamId: teamMembers.teamId,
-    })
-    .from(users)
-    .leftJoin(teamMembers, eq(users.id, teamMembers.userId))
-    .where(eq(users.id, userId))
+    .select()
+    .from(quoteRequests)
+    .where(eq(quoteRequests.id, id))
     .limit(1);
 
-  return result[0];
+  return result.length > 0 ? result[0] : null;
 }
 
-export async function getActivityLogs() {
-  const user = await getUser();
-  if (!user) {
-    throw new Error('User not authenticated');
-  }
-
-  return await db
-    .select({
-      id: activityLogs.id,
-      action: activityLogs.action,
-      timestamp: activityLogs.timestamp,
-      ipAddress: activityLogs.ipAddress,
-      userName: users.name,
+// Create a new quote request
+export async function createQuoteRequest(data: {
+  name: string;
+  email: string;
+  phone?: string;
+  websiteType?: string;
+  features?: string[];
+  budget?: string;
+  timeline?: string;
+  message: string;
+}) {
+  const [result] = await db
+    .insert(quoteRequests)
+    .values({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      websiteType: data.websiteType,
+      features: data.features,
+      budget: data.budget,
+      timeline: data.timeline,
+      message: data.message,
     })
-    .from(activityLogs)
-    .leftJoin(users, eq(activityLogs.userId, users.id))
-    .where(eq(activityLogs.userId, user.id))
-    .orderBy(desc(activityLogs.timestamp))
-    .limit(10);
+    .returning();
+
+  return result;
 }
 
-export async function getTeamForUser(userId: number) {
-  const result = await db.query.users.findFirst({
-    where: eq(users.id, userId),
-    with: {
-      teamMembers: {
-        with: {
-          team: {
-            with: {
-              teamMembers: {
-                with: {
-                  user: {
-                    columns: {
-                      id: true,
-                      name: true,
-                      email: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
+// Update quote request status
+export async function updateQuoteRequestStatus(id: number, status: string) {
+  await db
+    .update(quoteRequests)
+    .set({ status })
+    .where(eq(quoteRequests.id, id));
+}
 
-  return result?.teamMembers[0]?.team || null;
+// Update notification status
+export async function updateQuoteNotificationStatus(id: number, notificationSent: string) {
+  await db
+    .update(quoteRequests)
+    .set({ notificationSent })
+    .where(eq(quoteRequests.id, id));
 }
