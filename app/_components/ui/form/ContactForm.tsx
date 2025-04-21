@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from '@mantine/form';
+import { useForm, zodResolver } from '@mantine/form';
 import { TextInput, Textarea, Button, Box, Group, Text, Paper } from '@mantine/core';
 import { IconSend, IconCheck, IconAlertCircle } from '@tabler/icons-react';
-import { saveContactRequest, ContactFormValues } from '@/app/_actions/contact';
+import { contactFormSchema, ContactFormValues } from '@/app/_lib/validation/forms/contact-form-schema';
+import { formFieldStyles } from '@/app/_styles/components/form-styles';
 
 export function ContactForm() {
   const [loading, setLoading] = useState(false);
@@ -13,15 +14,14 @@ export function ContactForm() {
 
   const form = useForm<ContactFormValues>({
     initialValues: {
-      name: '',
+      nome: '',
       email: '',
-      message: '',
+      mensagem: '',
+      telefone: '',
+      assunto: '',
     },
-    validate: {
-      name: (value) => (value.length < 2 ? 'Nome deve ter pelo menos 2 caracteres' : null),
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Email inválido'),
-      message: (value) => (value.length < 10 ? 'Mensagem deve ter pelo menos 10 caracteres' : null),
-    },
+    validate: zodResolver(contactFormSchema),
+    validateInputOnBlur: true,
   });
 
   const handleSubmit = async (values: ContactFormValues) => {
@@ -29,16 +29,25 @@ export function ContactForm() {
     setError(null);
     
     try {
-      const result = await saveContactRequest(values);
-      
-      if (result.success) {
-        setSubmitted(true);
-        form.reset();
-      } else {
-        setError(result.error as string);
+      // Enviar dados para a API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao enviar o formulário');
       }
+
+      setSubmitted(true);
+      form.reset();
     } catch (err) {
-      setError('Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente.');
+      setError(err instanceof Error ? err.message : 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -91,20 +100,8 @@ export function ContactForm() {
           label="Nome"
           placeholder="Seu nome"
           required
-          {...form.getInputProps('name')}
-          styles={{
-            input: {
-              backgroundColor: 'rgba(30, 30, 30, 0.6)',
-              borderColor: 'rgba(118, 65, 192, 0.2)',
-              '&:focus': {
-                borderColor: 'rgba(118, 65, 192, 0.5)',
-              },
-            },
-            label: {
-              color: 'rgba(255, 255, 255, 0.9)',
-              marginBottom: '6px',
-            },
-          }}
+          {...form.getInputProps('nome')}
+          styles={formFieldStyles}
         />
         
         <TextInput
@@ -113,19 +110,23 @@ export function ContactForm() {
           placeholder="seu@email.com"
           required
           {...form.getInputProps('email')}
-          styles={{
-            input: {
-              backgroundColor: 'rgba(30, 30, 30, 0.6)',
-              borderColor: 'rgba(118, 65, 192, 0.2)',
-              '&:focus': {
-                borderColor: 'rgba(118, 65, 192, 0.5)',
-              },
-            },
-            label: {
-              color: 'rgba(255, 255, 255, 0.9)',
-              marginBottom: '6px',
-            },
-          }}
+          styles={formFieldStyles}
+        />
+
+        <TextInput
+          mt="md"
+          label="Telefone (opcional)"
+          placeholder="+55 (00) 00000-0000"
+          {...form.getInputProps('telefone')}
+          styles={formFieldStyles}
+        />
+
+        <TextInput
+          mt="md"
+          label="Assunto (opcional)"
+          placeholder="Assunto da mensagem"
+          {...form.getInputProps('assunto')}
+          styles={formFieldStyles}
         />
         
         <Textarea
@@ -134,20 +135,8 @@ export function ContactForm() {
           placeholder="Como podemos ajudar?"
           minRows={4}
           required
-          {...form.getInputProps('message')}
-          styles={{
-            input: {
-              backgroundColor: 'rgba(30, 30, 30, 0.6)',
-              borderColor: 'rgba(118, 65, 192, 0.2)',
-              '&:focus': {
-                borderColor: 'rgba(118, 65, 192, 0.5)',
-              },
-            },
-            label: {
-              color: 'rgba(255, 255, 255, 0.9)',
-              marginBottom: '6px',
-            },
-          }}
+          {...form.getInputProps('mensagem')}
+          styles={formFieldStyles}
         />
         
         {error && (

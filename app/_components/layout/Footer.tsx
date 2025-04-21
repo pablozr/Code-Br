@@ -30,10 +30,10 @@ const footerLinks = [
   {
     title: 'Serviços',
     links: [
-      { label: 'Landing Pages', href: '/pricing#landing-pages' },
-      { label: 'E-commerce', href: '/pricing#ecommerce' },
-      { label: 'Projetos Personalizados', href: '/pricing#custom' },
-      { label: 'Hospedagem Suíça', href: '/pricing#hosting' },
+      { label: 'Landing Pages', href: '/#services' },
+      { label: 'E-commerce', href: '/#services' },
+      { label: 'Projetos Personalizados', href: '/#services' },
+      { label: 'Solicitar Orçamento', href: '/orcamento' },
     ],
   },
   {
@@ -165,12 +165,12 @@ export function Footer() {
               </ThemeIcon>
               <Box>
                 <Title order={3} fw={700} c="white" style={{ letterSpacing: '-0.5px' }}>CodeBR</Title>
-                <Text size="xs" c="gray.5">Websites Suíços</Text>
+                <Text size="xs" c="gray.5">Criação de Websites</Text>
               </Box>
             </Group>
 
             <Text size="sm" c="gray.5" mt="xs" lh={1.7}>
-              Criamos websites profissionais com a precisão suíça. Hospedagem segura e performance excepcional para o seu negócio.
+              Criamos websites profissionais com tecnologia de ponta. Design moderno e performance excepcional para o seu negócio.
             </Text>
 
             <Group gap="md" mt="md">
@@ -284,7 +284,7 @@ export function Footer() {
           </Text>
 
           <Text size="sm" c="gray.6">
-            Feito com precisão na Suíça 🇨🇭
+            Feito com tecnologia de ponta 🚀
           </Text>
         </Group>
       </Container>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Container, Title, Text, SimpleGrid, Box } from '@mantine/core';
-import { ContactForm } from '@/app/_components/ui/ContactForm';
+import { ContactForm } from '@/app/_components/ui/form/ContactForm';
 import { IconMail, IconPhone, IconMapPin } from '@tabler/icons-react';
 
 export default function ContactPage() {

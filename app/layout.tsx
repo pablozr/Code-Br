@@ -1,6 +1,6 @@
 import './globals.css';
-import '../styles/circuit-board.css';
-import '../styles/bento-grid.css';
+import './_styles/effects/circuit-board.css';
+import './_styles/components/bento-grid.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import { Providers } from './providers';

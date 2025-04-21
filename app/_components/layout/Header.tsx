@@ -12,21 +12,17 @@ import {
   Drawer,
   Stack,
   Text,
-
-  rem,
   Box,
-  Divider,
-  ActionIcon
+  Divider
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconBrandGithub } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
 import { useScroll, useMotionValueEvent } from 'framer-motion';
 
 const mainLinks = [
   { label: 'Início', href: '/' },
-  { label: 'Serviços', href: '/pricing' },
-  { label: 'Sobre', href: '/about' },
+  { label: 'Serviços', href: '/#services' },
+  { label: 'Sobre', href: '/#about' },
   { label: 'Contato', href: '/contact' },
 ];
 
@@ -197,28 +193,6 @@ export function Header() {
             </Group>
 
             <Group gap="md" visibleFrom="md">
-              <ActionIcon
-                variant="subtle"
-                color="gray"
-                radius="xl"
-                component="a"
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  border: '1px solid rgba(118, 65, 192, 0.2)',
-                  backgroundColor: 'rgba(118, 65, 192, 0.05)',
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    backgroundColor: 'rgba(118, 65, 192, 0.1)',
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 4px 10px -2px rgba(118, 65, 192, 0.2)',
-                  }
-                }}
-              >
-                <IconBrandGithub size={rem(18)} color="#9969E5" />
-              </ActionIcon>
-
               <Button
                 component={Link}
                 href="/orcamento"
