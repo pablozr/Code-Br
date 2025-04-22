@@ -46,9 +46,9 @@ function Particles() {
   const colors = useRef<Float32Array>(new Float32Array(particleCount * 3));
 
   useEffect(() => {
-    const color1 = new THREE.Color('#6030A0'); // Roxo mais escuro
-    const color2 = new THREE.Color('#9461FF'); // Roxo mais claro
-    const brightColor = new THREE.Color('#F0E6FF'); // Branco com tom roxo para partículas mais brilhantes
+    const color1 = new THREE.Color('#7641C0'); // Roxo mais intenso
+    const color2 = new THREE.Color('#9969E5'); // Roxo mais claro
+    const brightColor = new THREE.Color('#B490FF'); // Roxo brilhante para partículas mais brilhantes
 
     for (let i = 0; i < particleCount; i++) {
       // Distribuição em toda a tela, não apenas ao redor do buraco negro
@@ -303,11 +303,11 @@ function Particles() {
             float alpha = smoothstep(0.5, 0.3, dist) * vOpacity * 0.8; // Reduzido para 80% da opacidade original
 
             // Garante que a cor seja visível e tenha um tom roxo mínimo
-            vec3 minColor = vec3(0.25, 0.12, 0.4); // Tom roxo mínimo mais intenso
+            vec3 minColor = vec3(0.46, 0.25, 0.75); // Tom roxo mínimo mais intenso (#7641C0)
             vec3 finalColor = max(vColor, minColor);
 
             // Adiciona um brilho mais intenso no centro com tom roxo
-            vec3 centerGlow = vec3(0.95, 0.85, 1.0); // Branco com tom roxo
+            vec3 centerGlow = vec3(0.7, 0.4, 0.9); // Roxo brilhante
             finalColor = mix(finalColor, centerGlow, 1.0 - dist * 2.0);
 
             // Aplica o efeito de blur
@@ -645,7 +645,7 @@ function PulseEffect({ position = [0, 0, 0.1] }: PulseEffectProps) {
 
   return (
     <mesh ref={meshRef} renderOrder={5} position={position}> {/* Usa a posição passada como prop */}
-      <planeGeometry args={[20, 20]} /> {/* Plano grande o suficiente para cobrir a área */}
+      <planeGeometry args={[30, 30]} /> {/* Plano maior para cobrir mais área */}
       <shaderMaterial
         transparent
         depthWrite={false}
@@ -706,9 +706,9 @@ function PulseEffect({ position = [0, 0, 0.1] }: PulseEffectProps) {
             float alpha = rings * breathEffect * smoothstep(0.8, 0.0, dist);
 
             // Torna o efeito mais visível no centro
-            alpha *= 0.35; // Aumentado para um efeito mais visível
+            alpha *= 0.6; // Aumentado para um efeito mais visível
             // Concentra o efeito no centro
-            alpha *= smoothstep(0.5, 0.0, dist);
+            alpha *= smoothstep(0.6, 0.0, dist);
 
             gl_FragColor = vec4(pulseColor, alpha);
           }
@@ -804,8 +804,8 @@ export function BlackHoleEffect() {
     >
       <Canvas
         camera={{
-          position: [0, 0, 15], // Afastei a câmera para capturar mais partículas
-          fov: 75, // Aumentado o campo de visão para mostrar mais partículas
+          position: [0, 0, 20], // Afastei mais a câmera para uma melhor visualização
+          fov: 70, // Ajustado o campo de visão para melhor enquadramento
           near: 0.1,
           far: 1000,
         }}
@@ -847,7 +847,7 @@ export function BlackHoleEffect() {
         <SpaceDistortion />
 
         {/* Grupo principal com o buraco negro e seus elementos */}
-        <group scale={[2, 2, 2]} position={[0, 4, 0]}>
+        <group scale={[2.5, 2.5, 2.5]} position={[0, 0, 0]}>
           {/* Efeito de pulso roxo que emana do centro - agora dentro do grupo para ficar centralizado */}
           <PulseEffect position={[0, 0, 0.1]} /> {/* Posicionado mais alto na tela */}
           {/* Ordem de renderização: primeiro partículas, depois disco de acreção, por último o core */}

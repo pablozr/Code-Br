@@ -3,6 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+const MotionDiv = motion.create('div');
+
 interface GradientTextProps {
   text: string;
   fontSize?: string | number;
@@ -57,7 +59,7 @@ export default function GradientText({
   return (
     <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
       {glowEffect && (
-        <motion.div
+        <MotionDiv
           style={{
             position: 'absolute',
             top: 0,
@@ -85,7 +87,7 @@ export default function GradientText({
           }}
         />
       )}
-      <motion.div
+      <MotionDiv
         className={className}
         style={gradientStyle}
         initial={{ opacity: 0, y: 20 }}
@@ -93,7 +95,7 @@ export default function GradientText({
         transition={{ duration: 0.5, delay: animationDelay }}
       >
         {text}
-      </motion.div>
+      </MotionDiv>
     </div>
   );
 }

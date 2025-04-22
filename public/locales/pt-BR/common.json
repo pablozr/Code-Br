@@ -1,0 +1,104 @@
+{
+  "header": {
+    "home": "Início",
+    "services": "Serviços",
+    "pricing": "Preços",
+    "about": "Sobre Nós",
+    "contact": "Contato",
+    "quote": "Solicitar Orçamento",
+    "language": "Idioma"
+  },
+  "hero": {
+    "title": "Sites Profissionais que Convertem Visitantes em Clientes",
+    "subtitle": "Qualidade e precisão",
+    "description": "Do conceito ao site pronto em semanas, sem complicações. Desenvolvemos websites que impulsionam seu negócio com design impactante e tecnologia de ponta.",
+    "cta": "Solicitar Orçamento",
+    "examples": "Ver Exemplos",
+    "badge": "Criação de Sites Profissionais",
+    "projects": "+100 Projetos Entregues",
+    "support": "Suporte Contínuo",
+    "delivery": "Entrega em até 4 Semanas"
+  },
+  "services": {
+    "title": "Nossos Serviços",
+    "subtitle": "Soluções completas para sua presença digital",
+    "landing": {
+      "title": "Landing Pages",
+      "description": "Páginas de alta conversão focadas em resultados."
+    },
+    "ecommerce": {
+      "title": "E-commerce",
+      "description": "Lojas online completas e otimizadas para vendas."
+    },
+    "corporate": {
+      "title": "Sites Corporativos",
+      "description": "Presença digital profissional para sua empresa."
+    },
+    "custom": {
+      "title": "Projetos Personalizados",
+      "description": "Soluções sob medida para necessidades específicas."
+    }
+  },
+  "workflow": {
+    "title": "Nosso Processo de Trabalho",
+    "subtitle": "Desenvolvemos websites com um processo estruturado e transparente, garantindo resultados excepcionais em cada etapa do projeto.",
+    "steps": {
+      "discovery": {
+        "title": "Descoberta e Estratégia",
+        "description": "Mergulhamos profundamente no seu negócio para entender seus objetivos, desafios e oportunidades digitais."
+      },
+      "design": {
+        "title": "Design e Prototipagem",
+        "description": "Transformamos conceitos em experiências visuais interativas que encantam e engajam seus usuários."
+      },
+      "development": {
+        "title": "Desenvolvimento",
+        "description": "Codificamos seu projeto com as tecnologias mais avançadas, garantindo performance, segurança e escalabilidade."
+      },
+      "launch": {
+        "title": "Lançamento",
+        "description": "Implementamos seu projeto em ambiente de produção com monitoramento contínuo para garantir uma transição suave."
+      },
+      "growth": {
+        "title": "Crescimento e Otimização",
+        "description": "Analisamos dados e implementamos melhorias contínuas para maximizar o ROI e impulsionar o crescimento do seu negócio."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "O que nossos clientes dizem",
+    "subtitle": "Histórias de sucesso de quem confiou em nosso trabalho"
+  },
+  "cta": {
+    "title": "Pronto para transformar sua presença digital?",
+    "description": "Entre em contato conosco hoje mesmo e descubra como podemos ajudar seu negócio a crescer online.",
+    "button": "Solicitar Orçamento"
+  },
+  "footer": {
+    "company": "Empresa",
+    "services": "Serviços",
+    "legal": "Legal",
+    "contact": "Contato",
+    "copyright": "© 2025 CodeBR. Todos os direitos reservados.",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Uso"
+  },
+  "quote": {
+    "title": "Solicite um Orçamento",
+    "subtitle": "Preencha o formulário abaixo e entraremos em contato em até 24 horas.",
+    "form": {
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "company": "Empresa",
+      "website": "Website atual (se houver)",
+      "projectType": "Tipo de Projeto",
+      "budget": "Orçamento",
+      "deadline": "Prazo",
+      "description": "Descreva seu projeto",
+      "submit": "Enviar Solicitação",
+      "success": "Sua solicitação foi enviada com sucesso! Entraremos em contato em breve.",
+      "error": "Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente."
+    }
+  }
+}

@@ -1,17 +1,16 @@
+import { ReactNode } from 'react';
 import { Header } from '@/app/_components/layout/Header';
 import { Footer } from '@/app/_components/layout/Footer';
 
 export default function MarketingLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <>
       <Header />
-      <div style={{ paddingTop: '70px' }}>
-        {children}
-      </div>
+      <main style={{ marginTop: '60px' }}>{children}</main>
       <Footer />
     </>
   );

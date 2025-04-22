@@ -17,8 +17,12 @@ import {
   Transition,
   Paper,
   Button,
+  Divider,
+  Progress,
+  Tooltip,
+  ActionIcon,
 } from '@mantine/core';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import {
   IconBulb,
   IconCode,
@@ -27,134 +31,209 @@ import {
   IconHeartHandshake,
   IconChartLine,
   IconArrowRight,
+  IconBrandFigma,
+  IconBrandGithub,
+  IconServer,
+  IconCloudUpload,
+  IconChartBar,
+  IconArrowsShuffle,
+  IconBrandReact,
+  IconBrandNextjs,
+  IconBrandVercel,
+  IconBrandAws,
+  IconBrandGoogle,
+  IconBrandStripe,
+  IconBrandTailwind,
+  IconBrandMantine,
+  IconBrandTypescript,
+  IconBrandJavascript,
+  IconBrandNodejs,
+  IconBrandPrisma,
+  IconDatabase,
+  IconDeviceAnalytics,
+  IconSettings,
+  IconUsers,
+  IconInfoCircle,
+  IconPlus,
+  IconMinus,
+  IconPlayerPlay,
+  IconPlayerPause,
+  IconArrowsMaximize,
+  IconArrowsMinimize,
+  IconArrowNarrowRight,
+  IconArrowNarrowLeft,
+  IconArrowNarrowUp,
+  IconArrowNarrowDown,
+  IconCircleDot,
+  IconCircle,
+  IconCircleFilled,
   IconCircleCheck,
+  IconCircleX,
+  IconCirclePlus,
+  IconCircleMinus,
+  IconCircleOff,
+  IconCircleHalf,
+  IconCircleHalf2,
+  IconCircleDashed,
+  IconCircleDotted,
+  IconCircleRectangle,
+  IconCircleTriangle,
+  IconCircleSquare,
+  IconCirclePlus2,
+  IconCircleMinus2,
 } from '@tabler/icons-react';
 
 // Componentes com motion
-const MotionBox = motion.div;
-const MotionFlex = motion.div;
-const MotionCard = motion.div;
+const MotionBox = motion.create(Box);
+const MotionFlex = motion.create(Flex);
+const MotionCard = motion.create(Card);
+const MotionText = motion.create(Text);
+const MotionTitle = motion.create(Title);
+const MotionBadge = motion.create(Badge);
+const MotionGroup = motion.create(Group);
+const MotionThemeIcon = motion.create(ThemeIcon);
+const MotionActionIcon = motion.create(ActionIcon);
+const MotionDivider = motion.create(Divider);
+const MotionProgress = motion.create(Progress);
 
 // Dados do processo de trabalho
 const workflowSteps = [
   {
-    title: 'Descoberta e Planejamento',
-    description: 'Entendemos suas necessidades, objetivos e público-alvo para criar um plano estratégico personalizado.',
+    id: 'discovery',
+    title: 'Descoberta e Estratégia',
+    description: 'Mergulhamos profundamente no seu negócio para entender seus objetivos, desafios e oportunidades digitais.',
     icon: <IconBulb size={rem(24)} stroke={1.5} />,
     details: [
-      'Análise de requisitos',
-      'Definição de objetivos',
-      'Pesquisa de mercado',
-      'Planejamento estratégico'
+      { title: 'Análise de Requisitos', icon: <IconInfoCircle size={16} />, progress: 100 },
+      { title: 'Definição de Objetivos', icon: <IconCircleCheck size={16} />, progress: 100 },
+      { title: 'Pesquisa de Mercado', icon: <IconUsers size={16} />, progress: 100 },
+      { title: 'Planejamento Estratégico', icon: <IconArrowsShuffle size={16} />, progress: 100 }
     ],
-    color: 'rgba(153, 105, 229, 1)',
+    tools: [
+      { name: 'Figma', icon: <IconBrandFigma size={18} /> },
+      { name: 'Miro', icon: <IconArrowsMaximize size={18} /> },
+      { name: 'Notion', icon: <IconCircleSquare size={18} /> }
+    ],
+    color: '#7641C0',
+    gradient: 'linear-gradient(135deg, #7641C0, #9969E5)',
     badge: '01',
-    image: '/images/workflow/discovery.webp'
-  },
-  {
-    title: 'Design e Prototipagem',
-    description: 'Criamos wireframes e protótipos interativos para visualizar a estrutura e o fluxo do seu projeto.',
-    icon: <IconDeviceDesktop size={rem(24)} stroke={1.5} />,
-    details: [
-      'Wireframes e mockups',
-      'Design de interface',
-      'Experiência do usuário',
-      'Protótipos interativos'
+    metrics: [
+      { label: 'Precisão', value: 98 },
+      { label: 'Eficiência', value: 95 },
+      { label: 'Satisfação', value: 100 }
     ],
-    color: 'rgba(153, 105, 229, 0.9)',
-    badge: '02',
-    image: '/images/workflow/design.webp'
+    visual: 'discovery'
   },
   {
+    id: 'design',
+    title: 'Design e Prototipagem',
+    description: 'Transformamos conceitos em experiências visuais interativas que encantam e engajam seus usuários.',
+    icon: <IconBrandFigma size={rem(24)} stroke={1.5} />,
+    details: [
+      { title: 'Design System', icon: <IconCircleSquare size={16} />, progress: 100 },
+      { title: 'UI/UX Design', icon: <IconDeviceDesktop size={16} />, progress: 100 },
+      { title: 'Protótipos Interativos', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+      { title: 'Testes de Usabilidade', icon: <IconUsers size={16} />, progress: 100 }
+    ],
+    tools: [
+      { name: 'Figma', icon: <IconBrandFigma size={18} /> },
+      { name: 'Adobe XD', icon: <IconCircleX size={18} /> },
+      { name: 'Framer', icon: <IconCircleTriangle size={18} /> }
+    ],
+    color: '#9969E5',
+    gradient: 'linear-gradient(135deg, #9969E5, #B490FF)',
+    badge: '02',
+    metrics: [
+      { label: 'Inovação', value: 95 },
+      { label: 'Usabilidade', value: 98 },
+      { label: 'Conversão', value: 92 }
+    ],
+    visual: 'design'
+  },
+  {
+    id: 'development',
     title: 'Desenvolvimento',
-    description: 'Transformamos os designs em código, utilizando as tecnologias mais modernas e eficientes do mercado.',
+    description: 'Codificamos seu projeto com as tecnologias mais avançadas, garantindo performance, segurança e escalabilidade.',
     icon: <IconCode size={rem(24)} stroke={1.5} />,
     details: [
-      'Codificação front-end',
-      'Desenvolvimento back-end',
-      'Integração de APIs',
-      'Testes de qualidade'
+      { title: 'Arquitetura', icon: <IconServer size={16} />, progress: 100 },
+      { title: 'Frontend', icon: <IconBrandReact size={16} />, progress: 100 },
+      { title: 'Backend', icon: <IconBrandNodejs size={16} />, progress: 100 },
+      { title: 'Testes Automatizados', icon: <IconCircleCheck size={16} />, progress: 100 }
     ],
-    color: 'rgba(153, 105, 229, 0.8)',
+    tools: [
+      { name: 'React', icon: <IconBrandReact size={18} /> },
+      { name: 'Next.js', icon: <IconBrandNextjs size={18} /> },
+      { name: 'TypeScript', icon: <IconBrandTypescript size={18} /> },
+      { name: 'Node.js', icon: <IconBrandNodejs size={18} /> },
+      { name: 'Prisma', icon: <IconBrandPrisma size={18} /> }
+    ],
+    color: '#6030A0',
+    gradient: 'linear-gradient(135deg, #6030A0, #7641C0)',
     badge: '03',
-    image: '/images/workflow/development.webp'
+    metrics: [
+      { label: 'Performance', value: 96 },
+      { label: 'Qualidade', value: 98 },
+      { label: 'Segurança', value: 99 }
+    ],
+    visual: 'development'
   },
   {
+    id: 'launch',
     title: 'Lançamento',
-    description: 'Realizamos testes rigorosos e preparamos tudo para o lançamento do seu projeto com segurança.',
+    description: 'Implementamos seu projeto em ambiente de produção com monitoramento contínuo para garantir uma transição suave.',
     icon: <IconRocket size={rem(24)} stroke={1.5} />,
     details: [
-      'Testes finais',
-      'Otimização de performance',
-      'Configuração de servidores',
-      'Lançamento controlado'
+      { title: 'CI/CD Pipeline', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+      { title: 'Infraestrutura', icon: <IconServer size={16} />, progress: 100 },
+      { title: 'Monitoramento', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+      { title: 'Otimização', icon: <IconSettings size={16} />, progress: 100 }
     ],
-    color: 'rgba(153, 105, 229, 0.7)',
+    tools: [
+      { name: 'Vercel', icon: <IconBrandVercel size={18} /> },
+      { name: 'AWS', icon: <IconBrandAws size={18} /> },
+      { name: 'GitHub', icon: <IconBrandGithub size={18} /> }
+    ],
+    color: '#B490FF',
+    gradient: 'linear-gradient(135deg, #B490FF, #9969E5)',
     badge: '04',
-    image: '/images/workflow/launch.webp'
+    metrics: [
+      { label: 'Uptime', value: 99.9 },
+      { label: 'Velocidade', value: 97 },
+      { label: 'Segurança', value: 100 }
+    ],
+    visual: 'launch'
   },
   {
-    title: 'Suporte Contínuo',
-    description: 'Oferecemos suporte técnico, manutenção e atualizações para garantir o sucesso contínuo do seu projeto.',
-    icon: <IconHeartHandshake size={rem(24)} stroke={1.5} />,
+    id: 'growth',
+    title: 'Crescimento e Otimização',
+    description: 'Analisamos dados e implementamos melhorias contínuas para maximizar o ROI e impulsionar o crescimento do seu negócio.',
+    icon: <IconChartBar size={rem(24)} stroke={1.5} />,
     details: [
-      'Suporte técnico',
-      'Manutenção preventiva',
-      'Atualizações de segurança',
-      'Melhorias contínuas'
+      { title: 'Análise de Dados', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+      { title: 'SEO Avançado', icon: <IconBrandGoogle size={16} />, progress: 100 },
+      { title: 'Otimização de Conversão', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+      { title: 'Escalabilidade', icon: <IconArrowsMaximize size={16} />, progress: 100 }
     ],
-    color: 'rgba(153, 105, 229, 0.6)',
+    tools: [
+      { name: 'Google Analytics', icon: <IconBrandGoogle size={18} /> },
+      { name: 'Hotjar', icon: <IconCircleDotted size={18} /> },
+      { name: 'Mixpanel', icon: <IconChartBar size={18} /> }
+    ],
+    color: '#9461FF',
+    gradient: 'linear-gradient(135deg, #9461FF, #B490FF)',
     badge: '05',
-    image: '/images/workflow/support.webp'
-  },
-  {
-    title: 'Crescimento e Evolução',
-    description: 'Analisamos métricas e feedback para implementar melhorias e novas funcionalidades que impulsionam seu negócio.',
-    icon: <IconChartLine size={rem(24)} stroke={1.5} />,
-    details: [
-      'Análise de métricas',
-      'Otimização de conversão',
-      'Novas funcionalidades',
-      'Escalabilidade'
+    metrics: [
+      { label: 'Crescimento', value: 35 },
+      { label: 'Retenção', value: 92 },
+      { label: 'ROI', value: 320 }
     ],
-    color: 'rgba(153, 105, 229, 0.5)',
-    badge: '06',
-    image: '/images/workflow/growth.webp'
+    visual: 'growth'
   }
 ];
 
-// Efeito de partículas para o fundo
-function ParticlesEffect() {
-  // Gerar valores determinísticos baseados no índice para evitar problemas de hidratação
-  const generateParticles = () => {
-    const particles = [];
-    for (let i = 0; i < 50; i++) {
-      // Usar valores determinísticos baseados no índice
-      const size = (i % 3) + 1.5;
-      const left = (i * 2) % 100;
-      const top = (i * 1.7) % 100;
-      const yMove = -((i % 10) * 10 + 50);
-      const xMove = ((i % 6) - 2.5) * 10;
-      const duration = (i % 5) * 3 + 15;
-      const delay = (i % 5) * 1;
-
-      particles.push({
-        id: i,
-        size,
-        left,
-        top,
-        yMove,
-        xMove,
-        duration,
-        delay
-      });
-    }
-    return particles;
-  };
-
-  // Gerar partículas uma vez
-  const particles = generateParticles();
-
+// Componente para o efeito de partículas flutuantes
+function FloatingParticles() {
   return (
     <Box
       style={{
@@ -165,42 +244,105 @@ function ParticlesEffect() {
         height: '100%',
         overflow: 'hidden',
         zIndex: 0,
-        opacity: 0.4,
+        pointerEvents: 'none',
       }}
     >
-      {particles.map((particle) => (
-        <MotionBox
-          key={particle.id}
-          style={{
-            position: 'absolute',
-            width: particle.size,
-            height: particle.size,
-            borderRadius: '50%',
-            background: 'rgba(153, 105, 229, 0.8)',
-            boxShadow: '0 0 10px rgba(153, 105, 229, 0.5)',
-            left: `${particle.left}%`,
-            top: `${particle.top}%`,
-            zIndex: 1,
-          }}
-          animate={{
-            y: [0, particle.yMove],
-            x: [0, particle.xMove],
-            opacity: [0.8, 0],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: 'easeInOut',
-          }}
-        />
-      ))}
+      {Array.from({ length: 30 }).map((_, i) => {
+        // Valores determinísticos baseados no índice
+        const size = (i % 3) + 2;
+        const left = (i * 3.33) % 100;
+        const top = (i * 3.33) % 100;
+        const delay = (i % 5) * 0.5;
+        const duration = 15 + (i % 5) * 2;
+        const opacity = 0.3 + (i % 3) * 0.1;
+
+        return (
+          <MotionBox
+            key={i}
+            style={{
+              position: 'absolute',
+              width: size,
+              height: size,
+              borderRadius: '50%',
+              background: i % 3 === 0 ? '#7641C0' : i % 3 === 1 ? '#9969E5' : '#B490FF',
+              boxShadow: `0 0 ${size * 2}px ${i % 3 === 0 ? '#7641C0' : i % 3 === 1 ? '#9969E5' : '#B490FF'}`,
+              left: `${left}%`,
+              top: `${top}%`,
+              opacity: opacity,
+            }}
+            animate={{
+              y: [0, -50, 0],
+              x: [0, i % 2 === 0 ? 20 : -20, 0],
+              opacity: [opacity, opacity * 1.5, opacity],
+            }}
+            transition={{
+              duration: duration,
+              repeat: Infinity,
+              delay: delay,
+              ease: 'easeInOut',
+            }}
+          />
+        );
+      })}
     </Box>
   );
 }
 
-// Componente para o ícone animado
-function AnimatedIcon({ icon, color }: { icon: React.ReactNode, color: string }) {
+// Componente para o efeito de grade futurista
+function FuturisticGrid() {
+  return (
+    <Box
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `
+          linear-gradient(90deg, rgba(153,105,229,0.03) 1px, transparent 1px),
+          linear-gradient(rgba(153,105,229,0.03) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+        zIndex: 0,
+        opacity: 0.5,
+        pointerEvents: 'none',
+      }}
+    />
+  );
+}
+
+// Componente para o efeito de gradiente dinâmico
+function DynamicGradient() {
+  return (
+    <MotionBox
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'radial-gradient(circle at 30% 30%, rgba(118,65,192,0.08) 0%, rgba(20,20,20,0) 50%), radial-gradient(circle at 70% 70%, rgba(153,105,229,0.08) 0%, rgba(20,20,20,0) 50%)',
+        zIndex: 0,
+        pointerEvents: 'none',
+      }}
+      animate={{
+        background: [
+          'radial-gradient(circle at 30% 30%, rgba(118,65,192,0.08) 0%, rgba(20,20,20,0) 50%), radial-gradient(circle at 70% 70%, rgba(153,105,229,0.08) 0%, rgba(20,20,20,0) 50%)',
+          'radial-gradient(circle at 40% 40%, rgba(118,65,192,0.08) 0%, rgba(20,20,20,0) 50%), radial-gradient(circle at 60% 60%, rgba(153,105,229,0.08) 0%, rgba(20,20,20,0) 50%)',
+          'radial-gradient(circle at 30% 30%, rgba(118,65,192,0.08) 0%, rgba(20,20,20,0) 50%), radial-gradient(circle at 70% 70%, rgba(153,105,229,0.08) 0%, rgba(20,20,20,0) 50%)',
+        ]
+      }}
+      transition={{
+        duration: 15,
+        repeat: Infinity,
+        ease: 'easeInOut',
+      }}
+    />
+  );
+}
+
+// Componente para o ícone animado moderno
+function AnimatedIcon({ icon, color, gradient }: { icon: React.ReactNode, color: string, gradient?: string }) {
   return (
     <MotionBox
       style={{
@@ -209,37 +351,62 @@ function AnimatedIcon({ icon, color }: { icon: React.ReactNode, color: string })
         alignItems: 'center',
         justifyContent: 'center',
       }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 10 }}
     >
-      <ThemeIcon
+      <MotionThemeIcon
         size={60}
-        radius="md"
+        radius="xl"
         style={{
-          background: `linear-gradient(135deg, ${color}, rgba(30,30,30,0.5))`,
-          border: '1px solid rgba(153,105,229,0.2)',
-          boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+          background: gradient || `linear-gradient(135deg, ${color}, rgba(30,30,30,0.5))`,
+          border: '1px solid rgba(255,255,255,0.1)',
+          boxShadow: `0 10px 20px rgba(0,0,0,0.2), 0 0 15px ${color}40`,
           color: 'white',
+          overflow: 'hidden',
+          position: 'relative',
         }}
+        initial={{ rotate: 0 }}
+        whileHover={{ rotate: [0, -5, 5, 0] }}
+        transition={{ duration: 0.5 }}
       >
-        {icon}
-      </ThemeIcon>
+        {/* Efeito de brilho interno */}
+        <Box
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '150%',
+            height: '100%',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+            transform: 'translateX(-100%) skewX(-15deg)',
+            animation: 'shine 3s infinite',
+            zIndex: 0,
+          }}
+        />
+
+        {/* Ícone */}
+        <Box style={{ position: 'relative', zIndex: 1 }}>
+          {icon}
+        </Box>
+      </MotionThemeIcon>
 
       {/* Efeito de brilho pulsante */}
       <MotionBox
         style={{
           position: 'absolute',
-          width: '100%',
-          height: '100%',
+          width: '140%',
+          height: '140%',
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${color}40 0%, ${color}00 70%)`,
-          filter: 'blur(10px)',
+          background: `radial-gradient(circle, ${color}30 0%, ${color}00 70%)`,
+          filter: 'blur(15px)',
           zIndex: -1,
         }}
         animate={{
-          opacity: [0.5, 1, 0.5],
-          scale: [0.8, 1.2, 0.8],
+          opacity: [0.4, 0.8, 0.4],
+          scale: [0.9, 1.1, 0.9],
         }}
         transition={{
-          duration: 3,
+          duration: 4,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
@@ -248,50 +415,777 @@ function AnimatedIcon({ icon, color }: { icon: React.ReactNode, color: string })
   );
 }
 
-// Estilos CSS para os efeitos de hover
-const hoverStyles = `
-  .step-card {
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  }
+// Componente para exibir ferramentas
+function ToolsDisplay({ tools }: { tools: { name: string, icon: React.ReactNode }[] }) {
+  return (
+    <Group gap="xs">
+      {tools.map((tool, index) => (
+        <Tooltip key={index} label={tool.name} position="top" withArrow arrowSize={6}>
+          <MotionActionIcon
+            variant="light"
+            color="gray"
+            radius="xl"
+            size="lg"
+            style={{
+              background: 'rgba(30,30,30,0.6)',
+              border: '1px solid rgba(153,105,229,0.2)',
+              backdropFilter: 'blur(10px)',
+            }}
+            whileHover={{ scale: 1.1, y: -3 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+          >
+            {tool.icon}
+          </MotionActionIcon>
+        </Tooltip>
+      ))}
+    </Group>
+  );
+}
 
-  .step-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  }
+// Componente para exibir métricas
+function MetricsDisplay({ metrics }: { metrics: { label: string, value: number }[] }) {
+  return (
+    <SimpleGrid cols={3} spacing="xs">
+      {metrics.map((metric, index) => (
+        <MotionBox
+          key={index}
+          style={{
+            background: 'rgba(30,30,30,0.4)',
+            borderRadius: '12px',
+            padding: '10px',
+            border: '1px solid rgba(153,105,229,0.1)',
+            textAlign: 'center',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+          transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+        >
+          <Text size="xl" fw={700} c="white" style={{ lineHeight: 1 }}>
+            {metric.value}{metric.label === 'ROI' ? '%' : ''}
+          </Text>
+          <Text size="xs" c="gray.5">
+            {metric.label}
+          </Text>
+        </MotionBox>
+      ))}
+    </SimpleGrid>
+  );
+}
 
-  .step-card:hover .step-arrow {
-    transform: translateX(5px);
-    opacity: 1;
+// Componentes de visualização para cada etapa do workflow
+function StepVisual({ type }: { type: string }) {
+  switch (type) {
+    case 'discovery':
+      return <DiscoveryVisual />;
+    case 'design':
+      return <DesignVisual />;
+    case 'development':
+      return <DevelopmentVisual />;
+    case 'launch':
+      return <LaunchVisual />;
+    case 'growth':
+      return <GrowthVisual />;
+    default:
+      return <DiscoveryVisual />;
   }
+}
 
-  .step-arrow {
-    transition: all 0.3s ease;
-    opacity: 0.7;
-  }
+// Visualização para a etapa de Descoberta
+function DiscoveryVisual() {
+  return (
+    <MotionBox
+      style={{
+        background: 'rgba(25,25,25,0.7)',
+        borderRadius: '16px',
+        border: '1px solid rgba(153,105,229,0.2)',
+        overflow: 'hidden',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(118,65,192,0.1)',
+        backdropFilter: 'blur(10px)',
+        padding: '20px',
+        height: '100%',
+        minHeight: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Flex align="center" mb="md">
+        <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
+          <IconBulb size={24} />
+        </ThemeIcon>
+        <Title order={4}>Análise Estratégica</Title>
+      </Flex>
 
-  .active-step {
-    border: 1px solid rgba(153,105,229,0.5);
-    box-shadow: 0 10px 30px rgba(153,105,229,0.2);
-  }
-`;
+      <Box style={{ flex: 1 }}>
+        <SimpleGrid cols={2} spacing="md" mb="md">
+          <MotionBox
+            style={{
+              background: 'rgba(118,65,192,0.1)',
+              borderRadius: '12px',
+              padding: '15px',
+              border: '1px solid rgba(118,65,192,0.2)',
+            }}
+            whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+          >
+            <Text fw={600} mb={5}>Pesquisa de Mercado</Text>
+            <Text size="sm" c="gray.5">Análise competitiva e identificação de oportunidades</Text>
+          </MotionBox>
+
+          <MotionBox
+            style={{
+              background: 'rgba(118,65,192,0.1)',
+              borderRadius: '12px',
+              padding: '15px',
+              border: '1px solid rgba(118,65,192,0.2)',
+            }}
+            whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+          >
+            <Text fw={600} mb={5}>Definição de Objetivos</Text>
+            <Text size="sm" c="gray.5">Estabelecimento de metas claras e mensuráveis</Text>
+          </MotionBox>
+        </SimpleGrid>
+
+        <MotionBox
+          style={{
+            background: 'linear-gradient(135deg, rgba(118,65,192,0.1), rgba(153,105,229,0.1))',
+            borderRadius: '12px',
+            padding: '15px',
+            border: '1px solid rgba(153,105,229,0.2)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <Box
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundImage: `radial-gradient(circle at 50% 50%, rgba(118,65,192,0.1) 0%, transparent 70%)`,
+              zIndex: 0,
+            }}
+          />
+
+          <Box style={{ position: 'relative', zIndex: 1 }}>
+            <Text fw={600} mb={5}>Resultado</Text>
+            <Text size="sm" c="gray.5" mb={10}>Plano estratégico detalhado com roadmap de implementação</Text>
+
+            <Group>
+              <Badge variant="light" color="purple">Estratégia</Badge>
+              <Badge variant="light" color="purple">Planejamento</Badge>
+              <Badge variant="light" color="purple">Análise</Badge>
+            </Group>
+          </Box>
+        </MotionBox>
+      </Box>
+    </MotionBox>
+  );
+}
+
+// Visualização para a etapa de Design
+function DesignVisual() {
+  return (
+    <MotionBox
+      style={{
+        background: 'rgba(25,25,25,0.7)',
+        borderRadius: '16px',
+        border: '1px solid rgba(153,105,229,0.2)',
+        overflow: 'hidden',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(118,65,192,0.1)',
+        backdropFilter: 'blur(10px)',
+        padding: '20px',
+        height: '100%',
+        minHeight: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Flex align="center" mb="md">
+        <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
+          <IconBrandFigma size={24} />
+        </ThemeIcon>
+        <Title order={4}>Design System</Title>
+      </Flex>
+
+      <SimpleGrid cols={2} spacing="md" mb="md">
+        <MotionBox
+          style={{
+            background: 'rgba(153,105,229,0.1)',
+            borderRadius: '12px',
+            padding: '15px',
+            border: '1px solid rgba(153,105,229,0.2)',
+            height: '150px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <Box
+            style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #7641C0, #9969E5)',
+              marginBottom: '10px',
+            }}
+          />
+          <Text size="sm" c="gray.5">Cores Primárias</Text>
+        </MotionBox>
+
+        <MotionBox
+          style={{
+            background: 'rgba(153,105,229,0.1)',
+            borderRadius: '12px',
+            padding: '15px',
+            border: '1px solid rgba(153,105,229,0.2)',
+            height: '150px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '5px',
+              marginBottom: '10px',
+            }}
+          >
+            <Text size="xl" fw={700}>Aa</Text>
+            <Text size="md">Aa</Text>
+            <Text size="sm">Aa</Text>
+          </Box>
+          <Text size="sm" c="gray.5">Tipografia</Text>
+        </MotionBox>
+      </SimpleGrid>
+
+      <MotionBox
+        style={{
+          background: 'linear-gradient(135deg, rgba(153,105,229,0.1), rgba(180,144,255,0.1))',
+          borderRadius: '12px',
+          padding: '15px',
+          border: '1px solid rgba(153,105,229,0.2)',
+          position: 'relative',
+          overflow: 'hidden',
+          flex: 1,
+        }}
+      >
+        <Box
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `radial-gradient(circle at 50% 50%, rgba(153,105,229,0.1) 0%, transparent 70%)`,
+            zIndex: 0,
+          }}
+        />
+
+        <Box style={{ position: 'relative', zIndex: 1 }}>
+          <Text fw={600} mb={5}>Componentes UI</Text>
+          <Group mb={15}>
+            <Box
+              style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, #7641C0, #9969E5)',
+                color: 'white',
+                fontSize: '14px',
+                fontWeight: 500,
+              }}
+            >
+              Botão
+            </Box>
+
+            <Box
+              style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: '1px solid #9969E5',
+                color: '#9969E5',
+                fontSize: '14px',
+                fontWeight: 500,
+              }}
+            >
+              Botão Outline
+            </Box>
+
+            <Box
+              style={{
+                width: '24px',
+                height: '24px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #7641C0, #9969E5)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: '12px',
+              }}
+            >
+              <IconPlus size={14} />
+            </Box>
+          </Group>
+
+          <Group>
+            <Badge variant="filled" color="purple">UI/UX</Badge>
+            <Badge variant="filled" color="purple">Design System</Badge>
+            <Badge variant="filled" color="purple">Protótipos</Badge>
+          </Group>
+        </Box>
+      </MotionBox>
+    </MotionBox>
+  );
+}
+
+// Visualização para a etapa de Desenvolvimento
+function DevelopmentVisual() {
+  return (
+    <MotionBox
+      style={{
+        background: 'rgba(25,25,25,0.7)',
+        borderRadius: '16px',
+        border: '1px solid rgba(153,105,229,0.2)',
+        overflow: 'hidden',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(118,65,192,0.1)',
+        backdropFilter: 'blur(10px)',
+        padding: '20px',
+        height: '100%',
+        minHeight: '400px',
+      }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Flex align="center" mb="md">
+        <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
+          <IconCode size={24} />
+        </ThemeIcon>
+        <Title order={4}>Desenvolvimento</Title>
+      </Flex>
+
+      <Box
+        style={{
+          background: 'rgba(30,30,30,0.6)',
+          borderRadius: '8px',
+          padding: '15px',
+          border: '1px solid rgba(96,48,160,0.3)',
+          fontFamily: 'monospace',
+          color: '#B490FF',
+          marginBottom: '15px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <Text size="sm" style={{ color: '#9969E5' }}>
+          <span style={{ color: '#7641C0' }}>import</span> &#123; <span style={{ color: '#B490FF' }}>useState, useEffect</span> &#125; <span style={{ color: '#7641C0' }}>from</span> <span style={{ color: '#9969E5' }}>'react'</span>;
+        </Text>
+        <Text size="sm" style={{ color: '#9969E5' }}>
+          <span style={{ color: '#7641C0' }}>import</span> &#123; <span style={{ color: '#B490FF' }}>motion</span> &#125; <span style={{ color: '#7641C0' }}>from</span> <span style={{ color: '#9969E5' }}>'framer-motion'</span>;
+        </Text>
+        <Text size="sm" mt={10}>
+          <span style={{ color: '#7641C0' }}>function</span> <span style={{ color: '#B490FF' }}>Component</span>() &#123;
+        </Text>
+        <Text size="sm" ml={20}>
+          <span style={{ color: '#7641C0' }}>const</span> [<span style={{ color: '#B490FF' }}>data</span>, <span style={{ color: '#B490FF' }}>setData</span>] = <span style={{ color: '#B490FF' }}>useState</span>(null);
+        </Text>
+        <Text size="sm" ml={20}>
+          <span style={{ color: '#7641C0' }}>return</span> (
+        </Text>
+        <Text size="sm" ml={40}>
+          &lt;<span style={{ color: '#B490FF' }}>motion.div</span> <span style={{ color: '#7641C0' }}>animate</span>="&#123;&#123; opacity: 1 &#125;&#125;"&gt;
+        </Text>
+        <Text size="sm" ml={60}>
+          // Componente React
+        </Text>
+        <Text size="sm" ml={40}>
+          &lt;/<span style={{ color: '#B490FF' }}>motion.div</span>&gt;
+        </Text>
+        <Text size="sm" ml={20}>
+          );
+        </Text>
+        <Text size="sm">
+          &#125;
+        </Text>
+      </Box>
+
+      <SimpleGrid cols={3} spacing="xs" mb="md">
+        <MotionBox
+          style={{
+            background: 'rgba(96,48,160,0.1)',
+            borderRadius: '8px',
+            padding: '10px',
+            border: '1px solid rgba(96,48,160,0.2)',
+            textAlign: 'center',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <IconBrandReact size={24} style={{ color: '#9969E5', marginBottom: '5px' }} />
+          <Text size="xs" c="gray.5">Frontend</Text>
+        </MotionBox>
+
+        <MotionBox
+          style={{
+            background: 'rgba(96,48,160,0.1)',
+            borderRadius: '8px',
+            padding: '10px',
+            border: '1px solid rgba(96,48,160,0.2)',
+            textAlign: 'center',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <IconBrandNodejs size={24} style={{ color: '#9969E5', marginBottom: '5px' }} />
+          <Text size="xs" c="gray.5">Backend</Text>
+        </MotionBox>
+
+        <MotionBox
+          style={{
+            background: 'rgba(96,48,160,0.1)',
+            borderRadius: '8px',
+            padding: '10px',
+            border: '1px solid rgba(96,48,160,0.2)',
+            textAlign: 'center',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <IconDatabase size={24} style={{ color: '#9969E5', marginBottom: '5px' }} />
+          <Text size="xs" c="gray.5">Database</Text>
+        </MotionBox>
+      </SimpleGrid>
+
+      <Group>
+        <Badge variant="dot" color="purple">Clean Code</Badge>
+        <Badge variant="dot" color="purple">Testes</Badge>
+        <Badge variant="dot" color="purple">CI/CD</Badge>
+        <Badge variant="dot" color="purple">Performance</Badge>
+      </Group>
+    </MotionBox>
+  );
+}
+
+// Visualização para a etapa de Lançamento
+function LaunchVisual() {
+  return (
+    <MotionBox
+      style={{
+        background: 'rgba(25,25,25,0.7)',
+        borderRadius: '16px',
+        border: '1px solid rgba(153,105,229,0.2)',
+        overflow: 'hidden',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(118,65,192,0.1)',
+        backdropFilter: 'blur(10px)',
+        padding: '20px',
+        height: '100%',
+        minHeight: '400px',
+      }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Flex align="center" mb="md">
+        <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
+          <IconRocket size={24} />
+        </ThemeIcon>
+        <Title order={4}>Lançamento</Title>
+      </Flex>
+
+      <MotionBox
+        style={{
+          background: 'rgba(180,144,255,0.1)',
+          borderRadius: '12px',
+          padding: '15px',
+          border: '1px solid rgba(180,144,255,0.2)',
+          marginBottom: '15px',
+        }}
+        whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+      >
+        <Flex align="center" justify="space-between" mb={10}>
+          <Text fw={600}>Infraestrutura</Text>
+          <Badge color="green">Online</Badge>
+        </Flex>
+
+        <SimpleGrid cols={2} spacing="xs" mb={10}>
+          <Box>
+            <Text size="xs" c="gray.5">Servidor</Text>
+            <Text size="sm">Vercel</Text>
+          </Box>
+
+          <Box>
+            <Text size="xs" c="gray.5">CDN</Text>
+            <Text size="sm">Cloudflare</Text>
+          </Box>
+
+          <Box>
+            <Text size="xs" c="gray.5">Banco de Dados</Text>
+            <Text size="sm">PlanetScale</Text>
+          </Box>
+
+          <Box>
+            <Text size="xs" c="gray.5">Monitoramento</Text>
+            <Text size="sm">Datadog</Text>
+          </Box>
+        </SimpleGrid>
+
+        <Progress value={100} color="green" size="sm" />
+      </MotionBox>
+
+      <SimpleGrid cols={2} spacing="md" mb="md">
+        <MotionBox
+          style={{
+            background: 'rgba(180,144,255,0.1)',
+            borderRadius: '12px',
+            padding: '15px',
+            border: '1px solid rgba(180,144,255,0.2)',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <Flex align="center" mb={10}>
+            <IconCircleCheck size={20} style={{ color: '#B490FF', marginRight: '8px' }} />
+            <Text fw={600}>Testes Finais</Text>
+          </Flex>
+
+          <Group spacing="xs">
+            <Badge variant="light" color="green">UI</Badge>
+            <Badge variant="light" color="green">Funcionalidade</Badge>
+            <Badge variant="light" color="green">Performance</Badge>
+            <Badge variant="light" color="green">SEO</Badge>
+          </Group>
+        </MotionBox>
+
+        <MotionBox
+          style={{
+            background: 'rgba(180,144,255,0.1)',
+            borderRadius: '12px',
+            padding: '15px',
+            border: '1px solid rgba(180,144,255,0.2)',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <Flex align="center" mb={10}>
+            <IconCircleCheck size={20} style={{ color: '#B490FF', marginRight: '8px' }} />
+            <Text fw={600}>Segurança</Text>
+          </Flex>
+
+          <Group spacing="xs">
+            <Badge variant="light" color="green">SSL</Badge>
+            <Badge variant="light" color="green">Firewall</Badge>
+            <Badge variant="light" color="green">GDPR</Badge>
+            <Badge variant="light" color="green">Backups</Badge>
+          </Group>
+        </MotionBox>
+      </SimpleGrid>
+
+      <Button
+        variant="gradient"
+        gradient={{ from: '#7641C0', to: '#B490FF' }}
+        radius="md"
+        leftSection={<IconRocket size={16} />}
+        fullWidth
+      >
+        Lançar Projeto
+      </Button>
+    </MotionBox>
+  );
+}
+
+// Visualização para a etapa de Crescimento
+function GrowthVisual() {
+  return (
+    <MotionBox
+      style={{
+        background: 'rgba(25,25,25,0.7)',
+        borderRadius: '16px',
+        border: '1px solid rgba(153,105,229,0.2)',
+        overflow: 'hidden',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(118,65,192,0.1)',
+        backdropFilter: 'blur(10px)',
+        padding: '20px',
+        height: '100%',
+        minHeight: '400px',
+      }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Flex align="center" mb="md">
+        <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
+          <IconChartBar size={24} />
+        </ThemeIcon>
+        <Title order={4}>Crescimento e Otimização</Title>
+      </Flex>
+
+      <MotionBox
+        style={{
+          background: 'rgba(148,97,255,0.1)',
+          borderRadius: '12px',
+          padding: '15px',
+          border: '1px solid rgba(148,97,255,0.2)',
+          marginBottom: '15px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <Box
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `radial-gradient(circle at 50% 50%, rgba(148,97,255,0.1) 0%, transparent 70%)`,
+            zIndex: 0,
+          }}
+        />
+
+        <Box style={{ position: 'relative', zIndex: 1 }}>
+          <Text fw={600} mb={10}>Métricas de Desempenho</Text>
+
+          <SimpleGrid cols={1} spacing="xs" mb={15}>
+            <Box>
+              <Flex justify="space-between" align="center" mb={5}>
+                <Text size="sm">Tráfego</Text>
+                <Text size="sm" fw={600} c="#B490FF">+45%</Text>
+              </Flex>
+              <Progress value={45} color="purple" size="sm" mb={10} />
+            </Box>
+
+            <Box>
+              <Flex justify="space-between" align="center" mb={5}>
+                <Text size="sm">Conversão</Text>
+                <Text size="sm" fw={600} c="#B490FF">+28%</Text>
+              </Flex>
+              <Progress value={28} color="purple" size="sm" mb={10} />
+            </Box>
+
+            <Box>
+              <Flex justify="space-between" align="center" mb={5}>
+                <Text size="sm">Retenção</Text>
+                <Text size="sm" fw={600} c="#B490FF">+92%</Text>
+              </Flex>
+              <Progress value={92} color="purple" size="sm" />
+            </Box>
+          </SimpleGrid>
+        </Box>
+      </MotionBox>
+
+      <SimpleGrid cols={2} spacing="md">
+        <MotionBox
+          style={{
+            background: 'rgba(148,97,255,0.1)',
+            borderRadius: '12px',
+            padding: '15px',
+            border: '1px solid rgba(148,97,255,0.2)',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <Flex align="center" mb={10}>
+            <IconBrandGoogle size={20} style={{ color: '#9461FF', marginRight: '8px' }} />
+            <Text fw={600}>SEO Avançado</Text>
+          </Flex>
+
+          <Text size="sm" c="gray.5" mb={10}>Otimização contínua para melhorar o posicionamento nos mecanismos de busca</Text>
+
+          <Badge variant="light" color="purple">Palavras-chave</Badge>
+        </MotionBox>
+
+        <MotionBox
+          style={{
+            background: 'rgba(148,97,255,0.1)',
+            borderRadius: '12px',
+            padding: '15px',
+            border: '1px solid rgba(148,97,255,0.2)',
+          }}
+          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+        >
+          <Flex align="center" mb={10}>
+            <IconArrowsShuffle size={20} style={{ color: '#9461FF', marginRight: '8px' }} />
+            <Text fw={600}>Otimização de Conversão</Text>
+          </Flex>
+
+          <Text size="sm" c="gray.5" mb={10}>Testes A/B e melhorias baseadas em dados para aumentar as conversões</Text>
+
+          <Badge variant="light" color="purple">CRO</Badge>
+        </MotionBox>
+      </SimpleGrid>
+    </MotionBox>
+  );
+}
 
 export function ModernWorkflowSection() {
   const [activeStep, setActiveStep] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isAutoPlay, setIsAutoPlay] = useState(false);
+  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
 
   // Função para alternar entre os passos
   const handleStepClick = (index: number) => {
     setActiveStep(index);
+    // Parar autoplay quando o usuário clica em um passo
+    if (isAutoPlay) {
+      setIsAutoPlay(false);
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current);
+        autoPlayRef.current = null;
+      }
+    }
   };
 
-  // Efeito para alternar automaticamente entre os passos com transição suave
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % workflowSteps.length);
-    }, 15000); // Tempo muito maior para cada passo (15 segundos)
+  // Função para iniciar/parar o autoplay
+  const toggleAutoPlay = () => {
+    if (isAutoPlay) {
+      setIsAutoPlay(false);
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current);
+        autoPlayRef.current = null;
+      }
+    } else {
+      setIsAutoPlay(true);
+      autoPlayRef.current = setInterval(() => {
+        setActiveStep((prev) => (prev + 1) % workflowSteps.length);
+      }, 5000);
+    }
+  };
 
-    return () => clearInterval(interval);
+  // Limpar o intervalo quando o componente for desmontado
+  useEffect(() => {
+    return () => {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current);
+      }
+    };
   }, []);
+
+  // Efeito para animar o scroll quando o passo ativo muda
+  useEffect(() => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+      const activeElement = container.querySelector(`[data-step="${activeStep}"]`);
+
+      if (activeElement) {
+        const containerRect = container.getBoundingClientRect();
+        const activeRect = activeElement.getBoundingClientRect();
+
+        const scrollLeft = activeRect.left - containerRect.left - (containerRect.width / 2) + (activeRect.width / 2);
+
+        container.scrollTo({
+          left: container.scrollLeft + scrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [activeStep]);
 
   return (
     <Box
@@ -299,868 +1193,338 @@ export function ModernWorkflowSection() {
       style={{
         position: 'relative',
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, rgba(15,15,15,1) 0%, rgba(20,20,20,1) 100%)',
-        borderTop: '1px solid rgba(153,105,229,0.1)',
-        borderBottom: '1px solid rgba(153,105,229,0.1)',
+        background: '#0A0A0A',
       }}
-      ref={containerRef}
+      id="workflow"
     >
-      {/* Adiciona os estilos CSS para hover */}
-      <style dangerouslySetInnerHTML={{ __html: hoverStyles }} />
+      {/* Efeitos de fundo */}
+      <FuturisticGrid />
+      <DynamicGradient />
+      <FloatingParticles />
 
-      {/* Efeito de partículas */}
-      <ParticlesEffect />
-
-      {/* Efeito de gradiente sutil */}
-      <Box
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'radial-gradient(circle at 50% 30%, rgba(153,105,229,0.05) 0%, rgba(20,20,20,0) 70%)',
-          zIndex: 0,
-        }}
-      />
-
-      <Container size="lg" style={{ position: 'relative', zIndex: 1 }}>
+      <Container size="xl">
         {/* Cabeçalho da seção */}
-        <MotionBox
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true, margin: "-100px" }}
-          style={{ textAlign: 'center', marginBottom: '80px' }}
-        >
-          <div
+        <Box mb={60}>
+          <MotionTitle
+            order={1}
+            ta="center"
             style={{
-              display: 'inline-block',
-              background: 'linear-gradient(135deg, rgba(118,65,192,0.15), rgba(153,105,229,0.1))',
-              border: '1px solid rgba(153,105,229,0.2)',
-              backdropFilter: 'blur(10px)',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              color: 'white',
-              marginBottom: '1.5rem',
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-            }}
-          >
-            Metodologia
-          </div>
-
-          <Title
-            order={2}
-            size="3.5rem"
-            fw={800}
-            c="white"
-            mb="md"
-            style={{
-              letterSpacing: '-0.5px',
-              lineHeight: 1.2,
-            }}
-          >
-            Nosso <Text span style={{
-              background: 'linear-gradient(135deg, #9969E5, #7641C0)',
+              fontSize: rem(42),
+              fontWeight: 800,
+              letterSpacing: -1,
+              marginBottom: rem(20),
+              background: 'linear-gradient(90deg, #fff, #9969E5)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-            }} inherit>Processo</Text> de Trabalho
-          </Title>
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            Nosso Processo de Trabalho
+          </MotionTitle>
 
-          <Text
-            size="xl"
-            c="gray.3"
+          <MotionText
+            c="gray.5"
+            ta="center"
+            size="lg"
             maw={700}
             mx="auto"
-            lh={1.7}
-            mb={60}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Desenvolvemos seu projeto com metodologia ágil e transparente, focando em resultados
-            que impulsionam seu negócio. Conheça nosso processo de trabalho inovador:
-          </Text>
-        </MotionBox>
+            Desenvolvemos websites com um processo estruturado e transparente, garantindo resultados excepcionais em cada etapa do projeto.
+          </MotionText>
+        </Box>
 
-        {/* Navegação horizontal dos passos */}
-        <MotionBox
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          viewport={{ once: true, margin: "-100px" }}
-          mb={60}
-        >
-          <SimpleGrid cols={{ base: 2, sm: 3, md: 6 }} spacing="md">
-            {workflowSteps.map((step, index) => (
-              <MotionBox
-                key={index}
-                onClick={() => handleStepClick(index)}
-                style={{ cursor: 'pointer' }}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Paper
-                  p="md"
-                  radius="md"
-                  style={{
-                    background: activeStep === index
-                      ? 'linear-gradient(135deg, rgba(30,30,30,0.9), rgba(40,40,40,0.9))'
-                      : 'linear-gradient(135deg, rgba(25,25,25,0.5), rgba(30,30,30,0.5))',
-                    border: activeStep === index
-                      ? '1px solid rgba(153,105,229,0.3)'
-                      : '1px solid rgba(255,255,255,0.05)',
-                    transition: 'all 0.3s ease',
-                    height: '100%',
-                  }}
-                >
-                  <Flex direction="column" align="center" justify="center">
-                    <Badge
-                      size="lg"
-                      radius="sm"
-                      mb="sm"
-                      style={{
-                        background: activeStep === index
-                          ? 'linear-gradient(135deg, rgba(153,105,229,0.3), rgba(118,65,192,0.3))'
-                          : 'rgba(40,40,40,0.5)',
-                        border: activeStep === index
-                          ? '1px solid rgba(153,105,229,0.3)'
-                          : '1px solid rgba(255,255,255,0.05)',
-                        color: 'white',
-                        fontWeight: 700,
-                        minWidth: '36px',
-                      }}
-                    >
-                      {step.badge}
-                    </Badge>
-                    <Text
-                      size="sm"
-                      fw={600}
-                      c={activeStep === index ? 'white' : 'gray.5'}
-                      ta="center"
-                      lh={1.3}
-                    >
-                      {step.title}
-                    </Text>
-                  </Flex>
-                </Paper>
-              </MotionBox>
-            ))}
-          </SimpleGrid>
-        </MotionBox>
+        {/* Controles de navegação */}
+        <Flex justify="space-between" align="center" mb={30}>
+          <MotionTitle
+            order={3}
+            style={{
+              fontSize: rem(24),
+              fontWeight: 700,
+              color: 'white',
+            }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {workflowSteps[activeStep].title}
+          </MotionTitle>
 
-        {/* Conteúdo detalhado do passo ativo */}
-        <MotionBox
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          style={{ minHeight: '400px', marginTop: '60px' }}
+          <Group>
+            <MotionActionIcon
+              variant="subtle"
+              color="gray"
+              radius="xl"
+              onClick={() => setActiveStep((prev) => (prev - 1 + workflowSteps.length) % workflowSteps.length)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <IconArrowNarrowLeft size={20} />
+            </MotionActionIcon>
+
+            <MotionActionIcon
+              variant="subtle"
+              color="gray"
+              radius="xl"
+              onClick={toggleAutoPlay}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {isAutoPlay ? <IconPlayerPause size={20} /> : <IconPlayerPlay size={20} />}
+            </MotionActionIcon>
+
+            <MotionActionIcon
+              variant="subtle"
+              color="gray"
+              radius="xl"
+              onClick={() => setActiveStep((prev) => (prev + 1) % workflowSteps.length)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <IconArrowNarrowRight size={20} />
+            </MotionActionIcon>
+          </Group>
+        </Flex>
+
+        {/* Indicadores de passos */}
+        <Box
+          ref={containerRef}
+          style={{
+            display: 'flex',
+            overflowX: 'auto',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            marginBottom: '30px',
+            padding: '10px 0',
+          }}
         >
           {workflowSteps.map((step, index) => (
-            <Transition
-              key={index}
-              mounted={activeStep === index}
-              transition={{
-                in: { opacity: 1, transform: 'translateX(0)' },
-                out: { opacity: 0, transform: 'translateX(-5px)' },
-                common: { transformOrigin: 'center center' },
-                transitionProperty: 'opacity, transform',
+            <MotionBox
+              key={step.id}
+              data-step={index}
+              onClick={() => handleStepClick(index)}
+              style={{
+                minWidth: '200px',
+                padding: '15px 20px',
+                borderRadius: '12px',
+                marginRight: '15px',
+                background: activeStep === index ? step.gradient : 'rgba(30,30,30,0.6)',
+                border: `1px solid ${activeStep === index ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.05)'}`,
+                cursor: 'pointer',
+                backdropFilter: 'blur(10px)',
+                boxShadow: activeStep === index ? '0 10px 30px rgba(118,65,192,0.2)' : 'none',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden',
               }}
-              duration={1000}
-              timingFunction="cubic-bezier(0.16, 1, 0.3, 1)"
-              exitDuration={500}
+              whileHover={{ y: -5 }}
+              animate={{
+                y: activeStep === index ? -5 : 0,
+                scale: activeStep === index ? 1.02 : 1,
+              }}
+              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
             >
-              {(styles) => (
-                <Grid gutter={40} style={styles}>
-                  <Grid.Col span={{ base: 12, md: 6 }}>
-                    <MotionBox
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-                    >
-                      <Flex gap="md" mb="md" align="center">
-                        <AnimatedIcon icon={step.icon} color={step.color} />
-                        <div>
-                          <Badge
-                            size="sm"
-                            radius="sm"
-                            mb="xs"
-                            style={{
-                              background: 'linear-gradient(135deg, rgba(153,105,229,0.2), rgba(118,65,192,0.2))',
-                              border: '1px solid rgba(153,105,229,0.2)',
-                              color: 'white',
-                            }}
-                          >
-                            {step.badge}
-                          </Badge>
-                          <Title order={3} size="2rem" fw={700} c="white" style={{ letterSpacing: '-0.5px' }}>
-                            {step.title}
-                          </Title>
-                        </div>
-                      </Flex>
+              {/* Efeito de brilho para o item ativo */}
+              {activeStep === index && (
+                <Box
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
+                    zIndex: 0,
+                  }}
+                />
+              )}
 
-                      <Text size="lg" c="gray.3" lh={1.7} mb="xl">
-                        {step.description}
-                      </Text>
+              <Flex align="center" style={{ position: 'relative', zIndex: 1 }}>
+                <Box
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: activeStep === index ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.05)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '12px',
+                    fontWeight: 700,
+                    color: 'white',
+                  }}
+                >
+                  {step.badge}
+                </Box>
 
-                      <Box mb="xl">
-                        <Text fw={600} size="md" c="white" mb="sm">
-                          O que inclui:
-                        </Text>
-                        {step.details.map((detail, i) => (
-                          <Flex key={i} align="center" gap="sm" mb="sm">
-                            <ThemeIcon
-                              size={24}
-                              radius="xl"
-                              style={{
-                                background: 'linear-gradient(135deg, rgba(153,105,229,0.2), rgba(118,65,192,0.2))',
-                                border: '1px solid rgba(153,105,229,0.2)',
-                              }}
-                            >
-                              <IconCircleCheck size={16} stroke={1.5} />
-                            </ThemeIcon>
-                            <Text c="gray.3">{detail}</Text>
-                          </Flex>
-                        ))}
-                      </Box>
+                <Box>
+                  <Text fw={600} c="white" size="sm">
+                    {step.title}
+                  </Text>
+                  <Text c="gray.5" size="xs">
+                    {step.timeframe}
+                  </Text>
+                </Box>
+              </Flex>
+            </MotionBox>
+          ))}
+        </Box>
 
-                      {/* Removido o botão "Saiba mais" */}
-                    </MotionBox>
-                  </Grid.Col>
+        {/* Conteúdo principal */}
+        <Grid gutter={40}>
+          {/* Coluna da esquerda: Detalhes do passo */}
+          <Grid.Col span={{ base: 12, md: 5 }}>
+            <MotionBox
+              style={{
+                background: 'rgba(25,25,25,0.7)',
+                borderRadius: '16px',
+                border: '1px solid rgba(153,105,229,0.2)',
+                overflow: 'hidden',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(118,65,192,0.1)',
+                backdropFilter: 'blur(10px)',
+                padding: '30px',
+                height: '100%',
+                minHeight: '400px',
+              }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Flex align="center" mb={30}>
+                <AnimatedIcon
+                  icon={workflowSteps[activeStep].icon}
+                  color={workflowSteps[activeStep].color}
+                  gradient={workflowSteps[activeStep].gradient}
+                />
+                <Box ml={20}>
+                  <MotionTitle
+                    order={3}
+                    style={{
+                      fontSize: rem(24),
+                      fontWeight: 700,
+                      color: 'white',
+                      marginBottom: rem(5),
+                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    key={`title-${activeStep}`}
+                  >
+                    {workflowSteps[activeStep].title}
+                  </MotionTitle>
+                  <MotionBadge
+                    variant="light"
+                    color="purple"
+                    size="lg"
+                    radius="sm"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    key={`timeframe-${activeStep}`}
+                  >
+                    {workflowSteps[activeStep].timeframe}
+                  </MotionBadge>
+                </Box>
+              </Flex>
 
-                  <Grid.Col span={{ base: 12, md: 6 }}>
-                    <MotionBox
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+              <MotionText
+                c="gray.4"
+                size="md"
+                mb={30}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                key={`desc-${activeStep}`}
+              >
+                {workflowSteps[activeStep].description}
+              </MotionText>
+
+              <MotionDivider
+                color="dark.5"
+                mb={20}
+                initial={{ width: 0 }}
+                animate={{ width: '100%' }}
+                transition={{ delay: 0.2 }}
+              />
+
+              <Text fw={600} c="white" mb={15}>
+                Detalhes do Processo
+              </Text>
+
+              <Box mb={30}>
+                {workflowSteps[activeStep].details.map((detail, index) => (
+                  <MotionFlex
+                    key={index}
+                    align="center"
+                    mb={10}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.1 }}
+                  >
+                    <Box
                       style={{
-                        height: '100%',
-                        minHeight: '450px',
-                        position: 'relative',
-                        borderRadius: '16px',
-                        overflow: 'hidden',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        color: '#9969E5',
+                        marginRight: '10px',
                       }}
                     >
-                      {/* Mockup ilustrativo */}
-                      <Box
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          background: `linear-gradient(135deg, ${step.color}20, rgba(20,20,20,0.8))`,
-                          borderRadius: '16px',
-                          border: '1px solid rgba(153,105,229,0.1)',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {/* Fundo com gradiente */}
-                        <Box
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            background: `radial-gradient(circle at 50% 50%, ${step.color}20, rgba(20,20,20,0.9))`,
-                            zIndex: 1,
-                          }}
-                        />
+                      {detail.icon}
+                    </Box>
+                    <Box style={{ flex: 1 }}>
+                      <Text size="sm" fw={500} c="white">
+                        {detail.title}
+                      </Text>
+                      <MotionProgress
+                        value={detail.progress}
+                        color="purple"
+                        size="xs"
+                        radius="xl"
+                        initial={{ width: 0 }}
+                        animate={{ width: '100%' }}
+                        transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
+                      />
+                    </Box>
+                  </MotionFlex>
+                ))}
+              </Box>
 
-                        {/* Grade de linhas */}
-                        <Box
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            backgroundImage: `
-                              linear-gradient(rgba(153,105,229,0.1) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(153,105,229,0.1) 1px, transparent 1px)
-                            `,
-                            backgroundSize: '30px 30px',
-                            zIndex: 2,
-                          }}
-                        />
+              <Text fw={600} c="white" mb={15}>
+                Ferramentas & Tecnologias
+              </Text>
 
-                        {/* Mockup baseado no tipo de etapa */}
-                        <MotionBox
-                          style={{
-                            position: 'relative',
-                            width: '90%',
-                            maxWidth: '500px',
-                            zIndex: 3,
-                            margin: '0 auto',
-                          }}
-                          initial={{ opacity: 0, y: 3 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-                        >
-                          {/* Mockup para Descoberta e Planejamento */}
-                          {step.title === 'Descoberta e Planejamento' && (
-                            <Box
-                              style={{
-                                background: 'rgba(25,25,25,0.95)',
-                                borderRadius: '12px',
-                                border: '1px solid rgba(153,105,229,0.3)',
-                                padding: '25px',
-                                boxShadow: '0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(153,105,229,0.1)',
-                                backdropFilter: 'blur(10px)',
-                              }}
-                            >
-                              <Flex align="center" mb="lg">
-                                <ThemeIcon
-                                  size={40}
-                                  radius="md"
-                                  style={{
-                                    background: 'linear-gradient(135deg, rgba(153,105,229,0.8), rgba(118,65,192,0.8))',
-                                    marginRight: '15px',
-                                  }}
-                                >
-                                  <IconBulb size={22} />
-                                </ThemeIcon>
-                                <div>
-                                  <Text fw={700} size="lg" c="white" style={{ letterSpacing: '-0.3px' }}>Plano Estratégico</Text>
-                                  <Text size="xs" c="gray.5">Projeto: Website Corporativo</Text>
-                                </div>
-                              </Flex>
+              <ToolsDisplay tools={workflowSteps[activeStep].tools} />
 
-                              <Box
-                                mb="lg"
-                                style={{
-                                  background: 'rgba(35,35,35,0.7)',
-                                  borderRadius: '8px',
-                                  border: '1px solid rgba(153,105,229,0.15)',
-                                  padding: '15px',
-                                }}
-                              >
-                                <Flex justify="space-between" mb="xs">
-                                  <Text size="sm" fw={600} c="white">Análise de Requisitos</Text>
-                                  <Badge
-                                    style={{
-                                      background: 'rgba(153,105,229,0.2)',
-                                      color: '#9969E5',
-                                      border: '1px solid rgba(153,105,229,0.2)',
-                                    }}
-                                  >
-                                    Completo
-                                  </Badge>
-                                </Flex>
-                                <Box mb="sm" style={{ height: '6px', width: '100%', background: 'rgba(40,40,40,0.8)', borderRadius: '3px', overflow: 'hidden' }}>
-                                  <Box style={{ height: '100%', width: '100%', background: 'linear-gradient(90deg, rgba(153,105,229,0.8), rgba(118,65,192,0.8))', borderRadius: '3px' }} />
-                                </Box>
+              <Box mt={30}>
+                <Text fw={600} c="white" mb={15}>
+                  Métricas de Sucesso
+                </Text>
 
-                                <Flex justify="space-between" mb="xs" mt="md">
-                                  <Text size="sm" fw={600} c="white">Definição de Objetivos</Text>
-                                  <Badge
-                                    style={{
-                                      background: 'rgba(153,105,229,0.2)',
-                                      color: '#9969E5',
-                                      border: '1px solid rgba(153,105,229,0.2)',
-                                    }}
-                                  >
-                                    Completo
-                                  </Badge>
-                                </Flex>
-                                <Box mb="sm" style={{ height: '6px', width: '100%', background: 'rgba(40,40,40,0.8)', borderRadius: '3px', overflow: 'hidden' }}>
-                                  <Box style={{ height: '100%', width: '100%', background: 'linear-gradient(90deg, rgba(153,105,229,0.8), rgba(118,65,192,0.8))', borderRadius: '3px' }} />
-                                </Box>
+                <MetricsDisplay metrics={workflowSteps[activeStep].metrics} />
+              </Box>
+            </MotionBox>
+          </Grid.Col>
 
-                                <Flex justify="space-between" mb="xs" mt="md">
-                                  <Text size="sm" fw={600} c="white">Pesquisa de Mercado</Text>
-                                  <Badge
-                                    style={{
-                                      background: 'rgba(153,105,229,0.15)',
-                                      color: '#9969E5',
-                                      border: '1px solid rgba(153,105,229,0.2)',
-                                    }}
-                                  >
-                                    Em progresso
-                                  </Badge>
-                                </Flex>
-                                <Box mb="sm" style={{ height: '6px', width: '100%', background: 'rgba(40,40,40,0.8)', borderRadius: '3px', overflow: 'hidden' }}>
-                                  <Box style={{ height: '100%', width: '75%', background: 'linear-gradient(90deg, rgba(153,105,229,0.8), rgba(118,65,192,0.8))', borderRadius: '3px' }} />
-                                </Box>
-                              </Box>
-
-                              <Flex gap="md" justify="space-between">
-                                <Box
-                                  style={{
-                                    flex: 1,
-                                    background: 'rgba(35,35,35,0.7)',
-                                    borderRadius: '8px',
-                                    border: '1px solid rgba(153,105,229,0.15)',
-                                    padding: '12px',
-                                    textAlign: 'center',
-                                  }}
-                                >
-                                  <Text size="xs" c="gray.5" mb="xs">Prazo</Text>
-                                  <Text fw={700} size="md" c="white">2 semanas</Text>
-                                </Box>
-                                <Box
-                                  style={{
-                                    flex: 1,
-                                    background: 'rgba(35,35,35,0.7)',
-                                    borderRadius: '8px',
-                                    border: '1px solid rgba(153,105,229,0.15)',
-                                    padding: '12px',
-                                    textAlign: 'center',
-                                  }}
-                                >
-                                  <Text size="xs" c="gray.5" mb="xs">Progresso</Text>
-                                  <Text fw={700} size="md" c="#9969E5">85%</Text>
-                                </Box>
-                                <Box
-                                  style={{
-                                    flex: 1,
-                                    background: 'rgba(35,35,35,0.7)',
-                                    borderRadius: '8px',
-                                    border: '1px solid rgba(153,105,229,0.15)',
-                                    padding: '12px',
-                                    textAlign: 'center',
-                                  }}
-                                >
-                                  <Text size="xs" c="gray.5" mb="xs">Status</Text>
-                                  <Text fw={700} size="md" c="#1dd1a1">Ativo</Text>
-                                </Box>
-                              </Flex>
-                            </Box>
-                          )}
-
-                          {/* Mockup para Design e Prototipagem */}
-                          {step.title === 'Design e Prototipagem' && (
-                            <Box
-                              style={{
-                                background: 'rgba(25,25,25,0.95)',
-                                borderRadius: '12px',
-                                border: '1px solid rgba(153,105,229,0.3)',
-                                overflow: 'hidden',
-                                boxShadow: '0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(153,105,229,0.1)',
-                              }}
-                            >
-                              {/* Barra de ferramentas do software de design */}
-                              <Box
-                                style={{
-                                  height: '36px',
-                                  background: 'rgba(30,30,30,0.95)',
-                                  borderBottom: '1px solid rgba(153,105,229,0.2)',
-                                  padding: '0 15px',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'space-between',
-                                }}
-                              >
-                                <Flex align="center">
-                                  <Box style={{ height: '10px', width: '10px', borderRadius: '50%', background: '#ff6b6b', marginRight: '6px' }} />
-                                  <Box style={{ height: '10px', width: '10px', borderRadius: '50%', background: '#feca57', marginRight: '6px' }} />
-                                  <Box style={{ height: '10px', width: '10px', borderRadius: '50%', background: '#1dd1a1' }} />
-                                </Flex>
-                                <Text size="xs" c="gray.5">Figma - Website Corporativo.fig</Text>
-                                <Flex align="center" gap={8}>
-                                  <Box style={{ height: '18px', width: '18px', borderRadius: '4px', background: 'rgba(153,105,229,0.2)' }} />
-                                  <Box style={{ height: '18px', width: '18px', borderRadius: '4px', background: 'rgba(153,105,229,0.2)' }} />
-                                  <Box style={{ height: '18px', width: '18px', borderRadius: '4px', background: 'rgba(153,105,229,0.2)' }} />
-                                </Flex>
-                              </Box>
-
-                              {/* Área de trabalho do design */}
-                              <Box p="md" style={{ background: 'rgba(22,22,22,0.95)' }}>
-                                {/* Barra lateral de ferramentas */}
-                                <Flex>
-                                  <Box style={{ width: '40px', marginRight: '15px' }}>
-                                    <Flex direction="column" gap={10} align="center">
-                                      <Box style={{ height: '24px', width: '24px', borderRadius: '6px', background: 'rgba(153,105,229,0.8)' }} />
-                                      <Box style={{ height: '24px', width: '24px', borderRadius: '6px', background: 'rgba(153,105,229,0.3)' }} />
-                                      <Box style={{ height: '24px', width: '24px', borderRadius: '6px', background: 'rgba(153,105,229,0.3)' }} />
-                                      <Box style={{ height: '24px', width: '24px', borderRadius: '6px', background: 'rgba(153,105,229,0.3)' }} />
-                                      <Box style={{ height: '24px', width: '24px', borderRadius: '6px', background: 'rgba(153,105,229,0.3)' }} />
-                                      <Box style={{ height: '24px', width: '24px', borderRadius: '6px', background: 'rgba(153,105,229,0.3)' }} />
-                                    </Flex>
-                                  </Box>
-
-                                  {/* Área principal do design */}
-                                  <Box style={{ flex: 1 }}>
-                                    {/* Wireframe da página */}
-                                    <Box
-                                      style={{
-                                        background: 'rgba(30,30,30,0.7)',
-                                        borderRadius: '8px',
-                                        border: '1px solid rgba(153,105,229,0.2)',
-                                        padding: '15px',
-                                        marginBottom: '15px',
-                                      }}
-                                    >
-                                      {/* Header do wireframe */}
-                                      <Box
-                                        style={{
-                                          height: '40px',
-                                          background: 'rgba(153,105,229,0.1)',
-                                          borderRadius: '4px',
-                                          marginBottom: '15px',
-                                          padding: '0 10px',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'space-between',
-                                        }}
-                                      >
-                                        <Box style={{ height: '20px', width: '80px', background: 'rgba(153,105,229,0.3)', borderRadius: '4px' }} />
-                                        <Flex gap={10}>
-                                          <Box style={{ height: '10px', width: '40px', background: 'rgba(153,105,229,0.2)', borderRadius: '2px' }} />
-                                          <Box style={{ height: '10px', width: '40px', background: 'rgba(153,105,229,0.2)', borderRadius: '2px' }} />
-                                          <Box style={{ height: '10px', width: '40px', background: 'rgba(153,105,229,0.2)', borderRadius: '2px' }} />
-                                          <Box style={{ height: '10px', width: '40px', background: 'rgba(153,105,229,0.2)', borderRadius: '2px' }} />
-                                        </Flex>
-                                      </Box>
-
-                                      {/* Hero section do wireframe */}
-                                      <Box
-                                        style={{
-                                          height: '120px',
-                                          background: 'rgba(153,105,229,0.15)',
-                                          borderRadius: '4px',
-                                          marginBottom: '15px',
-                                          padding: '15px',
-                                          display: 'flex',
-                                          flexDirection: 'column',
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
-                                        }}
-                                      >
-                                        <Box style={{ height: '14px', width: '60%', background: 'rgba(153,105,229,0.4)', borderRadius: '2px', marginBottom: '10px' }} />
-                                        <Box style={{ height: '8px', width: '40%', background: 'rgba(153,105,229,0.3)', borderRadius: '2px', marginBottom: '15px' }} />
-                                        <Box style={{ height: '24px', width: '120px', background: 'rgba(153,105,229,0.6)', borderRadius: '4px' }} />
-                                      </Box>
-
-                                      {/* Conteúdo do wireframe */}
-                                      <Flex gap={10}>
-                                        <Box style={{ flex: 1, height: '80px', background: 'rgba(153,105,229,0.1)', borderRadius: '4px', padding: '8px' }}>
-                                          <Box style={{ height: '10px', width: '70%', background: 'rgba(153,105,229,0.3)', borderRadius: '2px', marginBottom: '8px' }} />
-                                          <Box style={{ height: '6px', width: '90%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px', marginBottom: '4px' }} />
-                                          <Box style={{ height: '6px', width: '80%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px', marginBottom: '4px' }} />
-                                          <Box style={{ height: '6px', width: '60%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px' }} />
-                                        </Box>
-                                        <Box style={{ flex: 1, height: '80px', background: 'rgba(153,105,229,0.1)', borderRadius: '4px', padding: '8px' }}>
-                                          <Box style={{ height: '10px', width: '70%', background: 'rgba(153,105,229,0.3)', borderRadius: '2px', marginBottom: '8px' }} />
-                                          <Box style={{ height: '6px', width: '90%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px', marginBottom: '4px' }} />
-                                          <Box style={{ height: '6px', width: '80%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px', marginBottom: '4px' }} />
-                                          <Box style={{ height: '6px', width: '60%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px' }} />
-                                        </Box>
-                                        <Box style={{ flex: 1, height: '80px', background: 'rgba(153,105,229,0.1)', borderRadius: '4px', padding: '8px' }}>
-                                          <Box style={{ height: '10px', width: '70%', background: 'rgba(153,105,229,0.3)', borderRadius: '2px', marginBottom: '8px' }} />
-                                          <Box style={{ height: '6px', width: '90%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px', marginBottom: '4px' }} />
-                                          <Box style={{ height: '6px', width: '80%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px', marginBottom: '4px' }} />
-                                          <Box style={{ height: '6px', width: '60%', background: 'rgba(153,105,229,0.2)', borderRadius: '2px' }} />
-                                        </Box>
-                                      </Flex>
-                                    </Box>
-
-                                    {/* Barra de status e informações */}
-                                    <Flex justify="space-between" align="center">
-                                      <Badge
-                                        style={{
-                                          background: 'rgba(153,105,229,0.2)',
-                                          color: '#9969E5',
-                                          border: '1px solid rgba(153,105,229,0.2)',
-                                        }}
-                                      >
-                                        Wireframe v2
-                                      </Badge>
-
-                                      <Flex align="center" gap={15}>
-                                        <Text size="xs" c="gray.5">Zoom: 75%</Text>
-                                        <Text size="xs" c="gray.5">Página 1/3</Text>
-                                      </Flex>
-                                    </Flex>
-                                  </Box>
-                                </Flex>
-                              </Box>
-
-                              {/* Barra de status inferior */}
-                              <Box
-                                style={{
-                                  height: '30px',
-                                  background: 'rgba(30,30,30,0.95)',
-                                  borderTop: '1px solid rgba(153,105,229,0.2)',
-                                  padding: '0 15px',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'space-between',
-                                }}
-                              >
-                                <Text size="xs" c="gray.5">Projeto: Website Corporativo</Text>
-                                <Flex align="center" gap={15}>
-                                  <Text size="xs" c="#9969E5">Wireframes</Text>
-                                  <Text size="xs" c="gray.5">Protótipos</Text>
-                                  <Text size="xs" c="gray.5">Design Final</Text>
-                                </Flex>
-                              </Box>
-                            </Box>
-                          )}
-
-                          {/* Mockup para Desenvolvimento */}
-                          {step.title === 'Desenvolvimento' && (
-                            <Box
-                              style={{
-                                background: 'rgba(20,20,20,0.9)',
-                                borderRadius: '8px',
-                                border: '1px solid rgba(153,105,229,0.3)',
-                                padding: '15px',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-                                fontFamily: 'monospace',
-                              }}
-                            >
-                              <Text size="sm" c="gray.5" mb="xs">// Componente React</Text>
-                              <Text size="sm" c="#9969E5" mb="xs">function <Text span c="#61dafb">AppComponent</Text>() {'{'}</Text>
-                              <Text size="sm" c="gray.3" ml="md" mb="xs">const [data, setData] = useState([]);</Text>
-                              <Text size="sm" c="#9969E5" ml="md" mb="xs">useEffect<Text span c="white">(() => {'{'}</Text></Text>
-                              <Text size="sm" c="#61dafb" ml="xl" mb="xs">fetchData()<Text span c="white">;</Text></Text>
-                              <Text size="sm" c="white" ml="md" mb="xs">{'}'})</Text>
-                              <Text size="sm" c="#9969E5" ml="md" mb="xs">return <Text span c="#61dafb">{'('}</Text></Text>
-                              <Text size="sm" c="#ff6b6b" ml="xl" mb="xs">{'<'}<Text span c="#ff9f43">Container</Text>{'>'}</Text>
-                              <Text size="sm" c="#ff6b6b" ml="xl" mb="xs">{'  <'}<Text span c="#ff9f43">Header</Text> <Text span c="#1dd1a1">title</Text>=<Text span c="#00d2d3">"Dashboard"</Text>{'>'}</Text>
-                              <Text size="sm" c="#ff6b6b" ml="xl" mb="xs">{'  </'}Header{'>'}</Text>
-                              <Text size="sm" c="#ff6b6b" ml="xl" mb="xs">{'</'}Container{'>'}</Text>
-                              <Text size="sm" c="#61dafb" ml="md" mb="xs">)</Text>
-                              <Text size="sm" c="white" mb="xs">{'}'}</Text>
-                            </Box>
-                          )}
-
-                          {/* Mockup para Lançamento */}
-                          {step.title === 'Lançamento' && (
-                            <Box
-                              style={{
-                                background: 'rgba(25,25,25,0.95)',
-                                borderRadius: '12px',
-                                border: '1px solid rgba(153,105,229,0.3)',
-                                padding: '20px',
-                                boxShadow: '0 15px 30px rgba(0,0,0,0.4), 0 0 20px rgba(153,105,229,0.1)',
-                                backdropFilter: 'blur(10px)',
-                              }}
-                            >
-                              <Flex align="center" justify="center" direction="column">
-                                <ThemeIcon
-                                  size={60}
-                                  radius="xl"
-                                  mb="md"
-                                  style={{
-                                    background: 'linear-gradient(135deg, rgba(153,105,229,0.8), rgba(118,65,192,0.8))',
-                                    boxShadow: '0 0 20px rgba(153,105,229,0.5)',
-                                  }}
-                                >
-                                  <IconRocket size={30} />
-                                </ThemeIcon>
-                                <Text fw={700} size="lg" c="white" mb="sm" ta="center">Site lançado com sucesso!</Text>
-                                <Text c="gray.4" size="sm" ta="center" mb="md">Todos os testes foram concluídos e o site está no ar.</Text>
-
-                                <Box
-                                  style={{
-                                    width: '100%',
-                                    background: 'rgba(35,35,35,0.7)',
-                                    borderRadius: '8px',
-                                    border: '1px solid rgba(153,105,229,0.15)',
-                                    padding: '15px',
-                                    marginBottom: '15px',
-                                  }}
-                                >
-                                  <Flex justify="space-between" mb="xs">
-                                    <Text size="sm" fw={600} c="white">Status do Deployment</Text>
-                                    <Badge
-                                      style={{
-                                        background: 'rgba(29,209,161,0.2)',
-                                        color: '#1dd1a1',
-                                        border: '1px solid rgba(29,209,161,0.2)',
-                                      }}
-                                    >
-                                      Completo
-                                    </Badge>
-                                  </Flex>
-                                  <Box
-                                    style={{
-                                      width: '100%',
-                                      height: '8px',
-                                      background: 'rgba(40,40,40,0.8)',
-                                      borderRadius: '4px',
-                                      overflow: 'hidden',
-                                      marginBottom: '15px',
-                                    }}
-                                  >
-                                    <Box
-                                      style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        background: 'linear-gradient(90deg, rgba(29,209,161,0.8), rgba(29,209,161,0.6))',
-                                        borderRadius: '4px',
-                                      }}
-                                    />
-                                  </Box>
-
-                                  <Flex gap="md" justify="space-between">
-                                    <Box
-                                      style={{
-                                        flex: 1,
-                                        background: 'rgba(40,40,40,0.5)',
-                                        borderRadius: '8px',
-                                        border: '1px solid rgba(153,105,229,0.15)',
-                                        padding: '8px',
-                                        textAlign: 'center',
-                                      }}
-                                    >
-                                      <Text size="xs" c="gray.5" mb="xs">Testes</Text>
-                                      <Text fw={700} size="sm" c="#1dd1a1">Aprovados</Text>
-                                    </Box>
-                                    <Box
-                                      style={{
-                                        flex: 1,
-                                        background: 'rgba(40,40,40,0.5)',
-                                        borderRadius: '8px',
-                                        border: '1px solid rgba(153,105,229,0.15)',
-                                        padding: '8px',
-                                        textAlign: 'center',
-                                      }}
-                                    >
-                                      <Text size="xs" c="gray.5" mb="xs">Uptime</Text>
-                                      <Text fw={700} size="sm" c="#1dd1a1">100%</Text>
-                                    </Box>
-                                    <Box
-                                      style={{
-                                        flex: 1,
-                                        background: 'rgba(40,40,40,0.5)',
-                                        borderRadius: '8px',
-                                        border: '1px solid rgba(153,105,229,0.15)',
-                                        padding: '8px',
-                                        textAlign: 'center',
-                                      }}
-                                    >
-                                      <Text size="xs" c="gray.5" mb="xs">Status</Text>
-                                      <Text fw={700} size="sm" c="#1dd1a1">Online</Text>
-                                    </Box>
-                                  </Flex>
-                                </Box>
-
-                                <Button
-                                  variant="gradient"
-                                  gradient={{ from: 'rgba(153,105,229,0.8)', to: 'rgba(118,65,192,0.8)', deg: 90 }}
-                                  size="sm"
-                                  radius="md"
-                                  style={{ width: '100%' }}
-                                >
-                                  Acessar o Site
-                                </Button>
-                              </Flex>
-                            </Box>
-                          )}
-
-                          {/* Mockup para Suporte Contínuo */}
-                          {step.title === 'Suporte Contínuo' && (
-                            <Box
-                              style={{
-                                background: 'rgba(30,30,30,0.8)',
-                                borderRadius: '8px',
-                                border: '1px solid rgba(153,105,229,0.3)',
-                                padding: '20px',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-                              }}
-                            >
-                              <Text fw={700} size="lg" c="white" mb="md">Painel de Suporte</Text>
-                              <Flex mb="md" gap="md">
-                                <Box style={{ flex: 1, padding: '10px', background: 'rgba(153,105,229,0.1)', borderRadius: '4px', border: '1px solid rgba(153,105,229,0.2)' }}>
-                                  <Text fw={600} size="sm" c="white" mb="xs">Uptime</Text>
-                                  <Text fw={700} size="lg" c="#9969E5">99.9%</Text>
-                                </Box>
-                                <Box style={{ flex: 1, padding: '10px', background: 'rgba(153,105,229,0.1)', borderRadius: '4px', border: '1px solid rgba(153,105,229,0.2)' }}>
-                                  <Text fw={600} size="sm" c="white" mb="xs">Tickets</Text>
-                                  <Text fw={700} size="lg" c="#9969E5">0</Text>
-                                </Box>
-                              </Flex>
-                              <Box mb="md" style={{ padding: '10px', background: 'rgba(153,105,229,0.1)', borderRadius: '4px', border: '1px solid rgba(153,105,229,0.2)' }}>
-                                <Text fw={600} size="sm" c="white" mb="xs">Próxima Manutenção</Text>
-                                <Text fw={500} size="sm" c="gray.3">15/06/2024 - Atualização de segurança</Text>
-                              </Box>
-                              <Box style={{ height: '8px', width: '100%', background: 'rgba(40,40,40,0.9)', borderRadius: '4px', marginBottom: '5px' }}>
-                                <Box style={{ height: '100%', width: '85%', background: 'linear-gradient(90deg, rgba(153,105,229,0.8), rgba(118,65,192,0.8))', borderRadius: '4px' }} />
-                              </Box>
-                              <Text size="xs" c="gray.5" ta="right">Próximo backup: 85%</Text>
-                            </Box>
-                          )}
-
-                          {/* Mockup para Crescimento e Evolução */}
-                          {step.title === 'Crescimento e Evolução' && (
-                            <Box
-                              style={{
-                                background: 'rgba(30,30,30,0.8)',
-                                borderRadius: '8px',
-                                border: '1px solid rgba(153,105,229,0.3)',
-                                padding: '20px',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-                              }}
-                            >
-                              <Text fw={700} size="lg" c="white" mb="md">Analytics</Text>
-                              <Box mb="xl" style={{ height: '120px', position: 'relative' }}>
-                                {/* Gráfico simulado */}
-                                <Box style={{ position: 'absolute', bottom: 0, left: 0, width: '15%', height: '30%', background: 'rgba(153,105,229,0.3)', borderTopLeftRadius: '3px', borderTopRightRadius: '3px' }} />
-                                <Box style={{ position: 'absolute', bottom: 0, left: '17%', width: '15%', height: '45%', background: 'rgba(153,105,229,0.4)', borderTopLeftRadius: '3px', borderTopRightRadius: '3px' }} />
-                                <Box style={{ position: 'absolute', bottom: 0, left: '34%', width: '15%', height: '60%', background: 'rgba(153,105,229,0.5)', borderTopLeftRadius: '3px', borderTopRightRadius: '3px' }} />
-                                <Box style={{ position: 'absolute', bottom: 0, left: '51%', width: '15%', height: '75%', background: 'rgba(153,105,229,0.6)', borderTopLeftRadius: '3px', borderTopRightRadius: '3px' }} />
-                                <Box style={{ position: 'absolute', bottom: 0, left: '68%', width: '15%', height: '90%', background: 'rgba(153,105,229,0.7)', borderTopLeftRadius: '3px', borderTopRightRadius: '3px' }} />
-                                <Box style={{ position: 'absolute', bottom: 0, left: '85%', width: '15%', height: '100%', background: 'rgba(153,105,229,0.8)', borderTopLeftRadius: '3px', borderTopRightRadius: '3px' }} />
-                                {/* Linha de tendência */}
-                                <Box style={{ position: 'absolute', bottom: '30%', left: 0, width: '15%', height: '2px', background: 'rgba(255,255,255,0.5)' }} />
-                                <Box style={{ position: 'absolute', bottom: '45%', left: '15%', width: '19%', height: '2px', background: 'rgba(255,255,255,0.5)', transform: 'rotate(-15deg)', transformOrigin: 'left center' }} />
-                                <Box style={{ position: 'absolute', bottom: '60%', left: '34%', width: '17%', height: '2px', background: 'rgba(255,255,255,0.5)', transform: 'rotate(-15deg)', transformOrigin: 'left center' }} />
-                                <Box style={{ position: 'absolute', bottom: '75%', left: '51%', width: '17%', height: '2px', background: 'rgba(255,255,255,0.5)', transform: 'rotate(-15deg)', transformOrigin: 'left center' }} />
-                                <Box style={{ position: 'absolute', bottom: '90%', left: '68%', width: '17%', height: '2px', background: 'rgba(255,255,255,0.5)', transform: 'rotate(-15deg)', transformOrigin: 'left center' }} />
-                              </Box>
-                              <Flex gap="md">
-                                <Box style={{ flex: 1, padding: '10px', background: 'rgba(153,105,229,0.1)', borderRadius: '4px', border: '1px solid rgba(153,105,229,0.2)' }}>
-                                  <Text fw={600} size="sm" c="white" mb="xs">Visitantes</Text>
-                                  <Text fw={700} size="md" c="#9969E5">+127%</Text>
-                                </Box>
-                                <Box style={{ flex: 1, padding: '10px', background: 'rgba(153,105,229,0.1)', borderRadius: '4px', border: '1px solid rgba(153,105,229,0.2)' }}>
-                                  <Text fw={600} size="sm" c="white" mb="xs">Conversões</Text>
-                                  <Text fw={700} size="md" c="#9969E5">+85%</Text>
-                                </Box>
-                              </Flex>
-                            </Box>
-                          )}
-                        </MotionBox>
-
-                        {/* Efeito de brilho */}
-                        <MotionBox
-                          style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            width: '200px',
-                            height: '200px',
-                            borderRadius: '50%',
-                            background: `radial-gradient(circle, ${step.color}30 0%, ${step.color}00 70%)`,
-                            transform: 'translate(-50%, -50%)',
-                            filter: 'blur(30px)',
-                            zIndex: 0,
-                          }}
-                          animate={{
-                            opacity: [0.3, 0.6, 0.3],
-                            scale: [1, 1.2, 1],
-                          }}
-                          transition={{
-                            duration: 5,
-                            repeat: Infinity,
-                            ease: 'easeInOut',
-                          }}
-                        />
-                      </Box>
-                    </MotionBox>
-                  </Grid.Col>
-                </Grid>
-              )}
-            </Transition>
-          ))}
-        </MotionBox>
+          {/* Coluna da direita: Visualização */}
+          <Grid.Col span={{ base: 12, md: 7 }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                style={{ height: '100%' }}
+              >
+                <StepVisual type={workflowSteps[activeStep].visual} />
+              </motion.div>
+            </AnimatePresence>
+          </Grid.Col>
+        </Grid>
       </Container>
     </Box>
   );

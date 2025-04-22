@@ -22,7 +22,7 @@ import {
   IconHeadset,
   IconBolt,
   IconTrophy,
-  IconPremium
+  IconSettings,
 } from '@tabler/icons-react';
 
 // Componentes com motion
@@ -31,24 +31,6 @@ const MotionFlex = motion.div;
 const MotionBadge = motion.div;
 const MotionButton = motion.button;
 const MotionCard = motion.div;
-
-// Componente Sparkle para o efeito de brilho
-function Sparkle({ size, color, style }: { size: number, color: string, style?: React.CSSProperties }) {
-  return (
-    <Box
-      style={{
-        width: size,
-        height: size,
-        background: `radial-gradient(circle, ${color} 0%, rgba(255,255,255,0) 70%)`,
-        borderRadius: '50%',
-        position: 'absolute',
-        boxShadow: `0 0 ${size*2}px ${color}, 0 0 ${size}px ${color}`,
-        opacity: 1,
-        ...style,
-      }}
-    />
-  );
-}
 
 // Componente Particle para as partículas que sobem
 function Particle({ delay = 0, size = 3 }: { delay?: number, size?: number }) {
@@ -296,7 +278,7 @@ export function PricingSection() {
               letterSpacing: '1px',
             }}
           >
-            Nossos Serviços
+            Nossas soluções
           </div>
 
           <Title
@@ -670,102 +652,25 @@ export function PricingSection() {
           </SimpleGrid>
         </MotionBox>
 
-        {/* Tech stack section */}
-        <MotionBox
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          style={{
-            marginTop: '80px',
-            textAlign: 'center',
-          }}
-        >
-          <Text fw={600} size="lg" c="white" mb="md">
-            Todos os projetos são desenvolvidos com tecnologias modernas
-          </Text>
-
-          <Flex
-            justify="center"
-            align="center"
-            gap="xl"
-            wrap="wrap"
-            style={{
-              background: 'linear-gradient(135deg, rgba(20,20,20,0.5), rgba(30,30,30,0.5))',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '16px',
-              border: '1px solid rgba(255,255,255,0.05)',
-              padding: '20px',
-            }}
-          >
-            <Flex direction="column" align="center" gap="xs">
-              <ThemeIcon
-                size={50}
-                radius="md"
-                variant="light"
-                color="blue.5"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(49, 120, 198, 0.2), rgba(30,30,30,0.5))',
-                  border: '1px solid rgba(49, 120, 198, 0.2)',
-                }}
-              >
-                <IconBrandTypescript size={24} />
-              </ThemeIcon>
-              <Text size="sm" c="gray.5">TypeScript</Text>
-            </Flex>
-
-            <Flex direction="column" align="center" gap="xs">
-              <ThemeIcon
-                size={50}
-                radius="md"
-                variant="light"
-                color="blue.5"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(97, 218, 251, 0.2), rgba(30,30,30,0.5))',
-                  border: '1px solid rgba(97, 218, 251, 0.2)',
-                }}
-              >
-                <IconBrandReact size={24} />
-              </ThemeIcon>
-              <Text size="sm" c="gray.5">React</Text>
-            </Flex>
-
-            <Flex direction="column" align="center" gap="xs">
-              <ThemeIcon
-                size={50}
-                radius="md"
-                variant="light"
-                color="gray.9"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(80, 80, 80, 0.2), rgba(30,30,30,0.5))',
-                  border: '1px solid rgba(80, 80, 80, 0.2)',
-                }}
-              >
-                <IconBrandNextjs size={24} />
-              </ThemeIcon>
-              <Text size="sm" c="gray.5">Next.js</Text>
-            </Flex>
-          </Flex>
-        </MotionBox>
-
-        {/* Disclaimer e Informações Adicionais */}
+        {/* Destacar as observações */}
         <MotionBox
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
+          mt={60}
           style={{
-            marginTop: '60px',
-            background: 'linear-gradient(135deg, rgba(30,30,30,0.6), rgba(20,20,20,0.6))',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '16px',
-            border: '1px solid rgba(255,255,255,0.05)',
-            padding: '20px',
+            background: 'linear-gradient(135deg, rgba(153,105,229,0.1), rgba(118,65,192,0.05))',
+            border: '1px solid rgba(153,105,229,0.2)',
+            borderRadius: '12px',
+            padding: '24px',
+            boxShadow: '0 5px 15px rgba(153,105,229,0.1)',
           }}
         >
-          <Flex direction="column" gap="md">
+          <Flex direction="column" gap="xl">
             {/* Disclaimer */}
             <Box>
-              <Text fw={600} size="sm" c="white" mb="xs">
-                <IconBolt size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
+              <Text fw={700} size="md" c="white" mb="xs">
+                <IconBolt size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
                 Importante
               </Text>
               <Text size="sm" c="gray.4" lh={1.6}>
@@ -774,15 +679,27 @@ export function PricingSection() {
               </Text>
             </Box>
 
-            {/* Serviço de Manutenção */}
+            {/* Garantia */}
             <Box>
-              <Text fw={600} size="sm" c="white" mb="xs">
-                <IconHeadset size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
-                Serviço de Manutenção
+              <Text fw={700} size="md" c="white" mb="xs">
+                <IconTrophy size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
+                Garantia de Qualidade
               </Text>
               <Text size="sm" c="gray.4" lh={1.6}>
-                Oferecemos serviços de manutenção mensal a partir de R$ 800, incluindo atualizações de segurança, backup, monitoramento e pequenas alterações.
-                Nossos planos de manutenção garantem que seu site esteja sempre atualizado, seguro e funcionando perfeitamente.
+                Oferecemos 30 dias de garantia após a entrega do projeto para ajustes e correções, garantindo sua total satisfação com o resultado final.
+              </Text>
+            </Box>
+
+            {/* Manutenção */}
+            <Box>
+              <Text fw={700} size="md" c="white" mb="xs">
+                <IconSettings size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
+                Manutenção Mensal
+              </Text>
+              <Text size="sm" c="gray.4" lh={1.6}>
+                Oferecemos planos de manutenção mensal que incluem atualizações de segurança, backup, monitoramento de performance, 
+                correções de bugs e pequenas alterações de conteúdo. O valor da manutenção é calculado de acordo com a complexidade 
+                do projeto e será apresentado junto com o orçamento final.
               </Text>
             </Box>
           </Flex>

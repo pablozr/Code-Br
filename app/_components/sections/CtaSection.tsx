@@ -12,10 +12,10 @@ import {
 import { IconArrowRight, IconBrandWhatsapp } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 
-const MotionBox = motion(Box);
-const MotionTitle = motion(Title);
-const MotionText = motion(Text);
-const MotionGroup = motion(Group);
+const MotionBox = motion.create(Box);
+const MotionTitle = motion.create(Title);
+const MotionText = motion.create(Text);
+const MotionGroup = motion.create(Group);
 
 export function CtaSection() {
 

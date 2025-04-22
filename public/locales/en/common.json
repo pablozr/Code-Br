@@ -1,0 +1,104 @@
+{
+  "header": {
+    "home": "Home",
+    "services": "Services",
+    "pricing": "Pricing",
+    "about": "About Us",
+    "contact": "Contact",
+    "quote": "Request Quote",
+    "language": "Language"
+  },
+  "hero": {
+    "title": "Professional Websites that Convert Visitors into Customers",
+    "subtitle": "Quality and precision",
+    "description": "From concept to finished website in weeks, without complications. We develop websites that boost your business with impactful design and cutting-edge technology.",
+    "cta": "Request Quote",
+    "examples": "View Examples",
+    "badge": "Professional Website Creation",
+    "projects": "+100 Projects Delivered",
+    "support": "Continuous Support",
+    "delivery": "Delivery in up to 4 Weeks"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Complete solutions for your digital presence",
+    "landing": {
+      "title": "Landing Pages",
+      "description": "High-conversion pages focused on results."
+    },
+    "ecommerce": {
+      "title": "E-commerce",
+      "description": "Complete and optimized online stores for sales."
+    },
+    "corporate": {
+      "title": "Corporate Websites",
+      "description": "Professional digital presence for your company."
+    },
+    "custom": {
+      "title": "Custom Projects",
+      "description": "Tailored solutions for specific needs."
+    }
+  },
+  "workflow": {
+    "title": "Our Work Process",
+    "subtitle": "We develop websites with a structured and transparent process, ensuring exceptional results at every stage of the project.",
+    "steps": {
+      "discovery": {
+        "title": "Discovery and Strategy",
+        "description": "We dive deep into your business to understand your goals, challenges, and digital opportunities."
+      },
+      "design": {
+        "title": "Design and Prototyping",
+        "description": "We transform concepts into interactive visual experiences that delight and engage your users."
+      },
+      "development": {
+        "title": "Development",
+        "description": "We code your project with the most advanced technologies, ensuring performance, security, and scalability."
+      },
+      "launch": {
+        "title": "Launch",
+        "description": "We implement your project in a production environment with continuous monitoring to ensure a smooth transition."
+      },
+      "growth": {
+        "title": "Growth and Optimization",
+        "description": "We analyze data and implement continuous improvements to maximize ROI and drive your business growth."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "What our clients say",
+    "subtitle": "Success stories from those who trusted our work"
+  },
+  "cta": {
+    "title": "Ready to transform your digital presence?",
+    "description": "Contact us today and discover how we can help your business grow online.",
+    "button": "Request Quote"
+  },
+  "footer": {
+    "company": "Company",
+    "services": "Services",
+    "legal": "Legal",
+    "contact": "Contact",
+    "copyright": "© 2025 CodeBR. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "quote": {
+    "title": "Request a Quote",
+    "subtitle": "Fill out the form below and we'll get back to you within 24 hours.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "website": "Current Website (if any)",
+      "projectType": "Project Type",
+      "budget": "Budget",
+      "deadline": "Deadline",
+      "description": "Describe your project",
+      "submit": "Submit Request",
+      "success": "Your request has been successfully submitted! We'll be in touch soon.",
+      "error": "An error occurred while submitting your request. Please try again."
+    }
+  }
+}

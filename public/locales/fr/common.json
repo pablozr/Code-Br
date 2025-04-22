@@ -1,0 +1,104 @@
+{
+  "header": {
+    "home": "Accueil",
+    "services": "Services",
+    "pricing": "Tarifs",
+    "about": "À Propos",
+    "contact": "Contact",
+    "quote": "Demander un Devis",
+    "language": "Langue"
+  },
+  "hero": {
+    "title": "Sites Web Professionnels qui Convertissent les Visiteurs en Clients",
+    "subtitle": "Qualité et précision",
+    "description": "Du concept au site web fini en quelques semaines, sans complications. Nous développons des sites web qui stimulent votre entreprise avec un design percutant et une technologie de pointe.",
+    "cta": "Demander un Devis",
+    "examples": "Voir des Exemples",
+    "badge": "Création de Sites Web Professionnels",
+    "projects": "+100 Projets Livrés",
+    "support": "Support Continu",
+    "delivery": "Livraison en 4 Semaines Maximum"
+  },
+  "services": {
+    "title": "Nos Services",
+    "subtitle": "Solutions complètes pour votre présence numérique",
+    "landing": {
+      "title": "Pages d'Atterrissage",
+      "description": "Pages à haute conversion axées sur les résultats."
+    },
+    "ecommerce": {
+      "title": "E-commerce",
+      "description": "Boutiques en ligne complètes et optimisées pour les ventes."
+    },
+    "corporate": {
+      "title": "Sites Corporatifs",
+      "description": "Présence numérique professionnelle pour votre entreprise."
+    },
+    "custom": {
+      "title": "Projets Personnalisés",
+      "description": "Solutions sur mesure pour des besoins spécifiques."
+    }
+  },
+  "workflow": {
+    "title": "Notre Processus de Travail",
+    "subtitle": "Nous développons des sites web avec un processus structuré et transparent, garantissant des résultats exceptionnels à chaque étape du projet.",
+    "steps": {
+      "discovery": {
+        "title": "Découverte et Stratégie",
+        "description": "Nous plongeons profondément dans votre entreprise pour comprendre vos objectifs, défis et opportunités numériques."
+      },
+      "design": {
+        "title": "Design et Prototypage",
+        "description": "Nous transformons les concepts en expériences visuelles interactives qui enchantent et engagent vos utilisateurs."
+      },
+      "development": {
+        "title": "Développement",
+        "description": "Nous codons votre projet avec les technologies les plus avancées, garantissant performance, sécurité et évolutivité."
+      },
+      "launch": {
+        "title": "Lancement",
+        "description": "Nous implémentons votre projet dans un environnement de production avec une surveillance continue pour assurer une transition en douceur."
+      },
+      "growth": {
+        "title": "Croissance et Optimisation",
+        "description": "Nous analysons les données et mettons en œuvre des améliorations continues pour maximiser le ROI et stimuler la croissance de votre entreprise."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "Ce que disent nos clients",
+    "subtitle": "Histoires de réussite de ceux qui ont fait confiance à notre travail"
+  },
+  "cta": {
+    "title": "Prêt à transformer votre présence numérique?",
+    "description": "Contactez-nous dès aujourd'hui et découvrez comment nous pouvons aider votre entreprise à se développer en ligne.",
+    "button": "Demander un Devis"
+  },
+  "footer": {
+    "company": "Entreprise",
+    "services": "Services",
+    "legal": "Légal",
+    "contact": "Contact",
+    "copyright": "© 2025 CodeBR. Tous droits réservés.",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation"
+  },
+  "quote": {
+    "title": "Demander un Devis",
+    "subtitle": "Remplissez le formulaire ci-dessous et nous vous répondrons dans les 24 heures.",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "company": "Entreprise",
+      "website": "Site Web Actuel (si existant)",
+      "projectType": "Type de Projet",
+      "budget": "Budget",
+      "deadline": "Délai",
+      "description": "Décrivez votre projet",
+      "submit": "Envoyer la Demande",
+      "success": "Votre demande a été soumise avec succès! Nous vous contacterons bientôt.",
+      "error": "Une erreur s'est produite lors de la soumission de votre demande. Veuillez réessayer."
+    }
+  }
+}

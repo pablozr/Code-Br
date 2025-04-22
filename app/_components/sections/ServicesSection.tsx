@@ -73,14 +73,14 @@ import {
 import { motion } from 'framer-motion';
 
 // Componentes com motion
-const MotionBox = motion(Box as any);
-const MotionCard = motion(Card as any);
-const MotionTitle = motion(Title as any);
-const MotionThemeIcon = motion(ThemeIcon as any);
-const MotionFlex = motion(Flex as any);
-const MotionGroup = motion(Group as any);
-const MotionBadge = motion(Badge as any);
-const MotionButton = motion(Button as any);
+const MotionBox = motion.create(Box);
+const MotionCard = motion.create(Card);
+const MotionTitle = motion.create(Title);
+const MotionThemeIcon = motion.create(ThemeIcon);
+const MotionFlex = motion.create(Flex);
+const MotionGroup = motion.create(Group);
+const MotionBadge = motion.create(Badge);
+const MotionButton = motion.create(Button);
 
 // Componente para o efeito de circuit board
 function CircuitBackground({ color = 'rgba(153, 105, 229, 0.15)' }: { color?: string }) {

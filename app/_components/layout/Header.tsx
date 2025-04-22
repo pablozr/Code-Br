@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import {
-  AppShell,
   Burger,
   Group,
   Button,
@@ -16,44 +15,85 @@ import {
   Divider
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { usePathname } from 'next/navigation';
+import { usePathname, useParams } from 'next/navigation';
 import { useScroll, useMotionValueEvent } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 
-const mainLinks = [
-  { label: 'Início', href: '/' },
-  { label: 'Serviços', href: '/#services' },
-  { label: 'Sobre', href: '/#about' },
-  { label: 'Contato', href: '/contact' },
-];
+
+
+// Os links serão gerados dinamicamente com base nas traduções
 
 
 export function Header() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const params = useParams();
   const { scrollY } = useScroll();
+  const { t, i18n } = useTranslation('common');
+  const lang = (params?.lang as string) || 'pt-BR';
+
+  // Debug
+  console.log('Header rendering with:', {
+    pathname,
+    params,
+    lang,
+    i18nLanguage: i18n.language,
+    translations: t('header.home'),
+    mainLinks: [
+      { label: t('header.home'), href: `/${lang}` },
+      { label: t('header.services'), href: `/${lang}/#services` },
+      { label: t('header.about'), href: `/${lang}/#about` },
+      { label: t('header.contact'), href: `/${lang}/contact` },
+    ]
+  });
+
+  // Gerar links com base nas traduções com fallback para textos estáticos
+  const mainLinks = [
+    { label: t('header.home') || 'Início', href: `/${lang}` },
+    { label: t('header.services') || 'Serviços', href: `/${lang}/#services` },
+    { label: t('header.about') || 'Sobre', href: `/${lang}/#about` },
+    { label: t('header.contact') || 'Contato', href: `/${lang}/contact` },
+  ];
 
   // Detectar rolagem para mudar o estilo do header
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
   });
 
-  const isActive = (path: string) => pathname === path;
+  // Verificar se o caminho atual corresponde ao link (ignorando o parâmetro de idioma)
+  const isActive = (path: string) => {
+    // Remover o idioma do pathname atual para comparação
+    const currentPath = pathname.replace(new RegExp(`^\/${lang}`), '');
+    // Remover o idioma do path do link para comparação
+    const linkPath = path.replace(new RegExp(`^\/${lang}`), '');
+
+    return currentPath === linkPath || pathname === path;
+  };
 
   return (
     <>
-      <AppShell.Header
-        withBorder={false}
-        bg={scrolled ? "rgba(10, 10, 10, 0.95)" : "transparent"}
+      <header
         style={{
-          backdropFilter: scrolled ? 'blur(10px)' : 'none',
-          borderBottom: scrolled ? `1px solid rgba(255, 255, 255, 0.05)` : 'none',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '60px', // Reduzindo a altura
+          zIndex: 100,
+          background: "rgba(10, 10, 10, 0.95)",
+          backdropFilter: 'blur(10px)',
+          borderBottom: `1px solid rgba(255, 255, 255, 0.08)`,
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           transition: 'all 0.3s ease',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        <Container size="xl" h="100%">
-          <Group h="100%" justify="space-between">
-            <Group>
+        <Container size="xl" style={{ width: '100%', height: '100%', padding: '0 16px', display: 'flex', alignItems: 'center' }}>
+          <Group style={{ width: '100%', height: '100%' }} justify="space-between" align="center">
+            <Group style={{ flexShrink: 0 }}>
               <Box
                 style={{
                   display: 'flex',
@@ -62,167 +102,125 @@ export function Header() {
                   cursor: 'pointer',
                 }}
                 component={Link}
-                href="/"
+                href={`/${lang}`}
               >
                 <Box
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'linear-gradient(135deg, #7641C0, #9969E5)',
-                    borderRadius: '12px',
-                    padding: '8px',
+                    background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
                     position: 'relative',
-                    overflow: 'hidden',
-                    boxShadow: '0 0 20px rgba(118,65,192,0.3)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-2px)',
+                      filter: 'brightness(1.2)',
+                    }
                   }}
                 >
                   <Text
                     fw={700}
-                    size="lg"
+                    size="md" // Reduzindo ainda mais o tamanho
                     style={{
-                      color: 'white',
                       fontFamily: 'monospace',
-                      letterSpacing: '-0.5px',
+                      background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
                     }}
                   >
-                    &lt; /&gt;
+                    &lt;/&gt;
                   </Text>
 
-                  {/* Efeito de brilho */}
-                  <Box
+                  <Text
+                    fw={700}
+                    size="md" // Reduzindo ainda mais o tamanho
                     style={{
-                      position: 'absolute',
-                      top: '-50%',
-                      left: '-50%',
-                      width: '200%',
-                      height: '200%',
-                      background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
-                      transform: 'rotate(45deg)',
-                      animation: 'shine 3s infinite',
+                      letterSpacing: '-0.5px',
+                      marginLeft: '4px', // Reduzindo ainda mais o espaçamento
+                      background: 'linear-gradient(90deg, #6030A0, #9461FF, #B490FF)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
                     }}
-                  />
-                </Box>
+                  >
+                    CodeBR
+                  </Text>
 
-                <Title
-                  order={3}
-                  fw={700}
-                  c="white"
-                  style={{
-                    letterSpacing: '-0.5px',
-                    background: 'linear-gradient(90deg, #fff, #9969E5)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  CodeBR
-                </Title>
+
+                </Box>
               </Box>
             </Group>
 
             {/* Desktop navigation */}
-            <Group gap="xl" visibleFrom="md">
+            <Group gap="xs" visibleFrom="md" style={{ flexGrow: 1, justifyContent: 'center' }}>
               {mainLinks.map((link) => (
                 <Link key={link.href} href={link.href} passHref>
                   <Text
                     component="a"
-                    c={isActive(link.href) ? 'purple.4' : 'gray.3'}
+                    c={isActive(link.href) ? 'white' : 'gray.3'}
                     fw={500}
-                    style={{
+                    size="xs"
+                    sx={(theme) => ({
                       textDecoration: 'none',
                       transition: 'all 0.2s ease',
                       position: 'relative',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      background: isActive(link.href) ? 'rgba(118, 65, 192, 0.1)' : 'transparent',
+                      padding: '4px 0',
+                      whiteSpace: 'nowrap',
                       '&:hover': {
-                        color: '#9969E5',
-                        background: 'rgba(118, 65, 192, 0.05)',
-                        transform: 'translateY(-2px)'
+                        color: 'white',
                       },
-                    }}
+                    })}
                   >
+                    {link.label}
+
+                    {/* Linha inferior simples */}
                     <Box
-                      style={{
-                        position: 'relative',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                      }}
-                    >
-                      {/* Indicador de ativo */}
-                      {isActive(link.href) && (
-                        <Box
-                          style={{
-                            width: '6px',
-                            height: '6px',
-                            borderRadius: '50%',
-                            background: 'linear-gradient(90deg, #7641C0, #9969E5)',
-                            boxShadow: '0 0 10px rgba(118, 65, 192, 0.5)',
-                          }}
-                        />
-                      )}
-
-                      {link.label}
-
-                      {/* Linha inferior animada no hover */}
-                      <Box
-                        style={{
-                          position: 'absolute',
-                          bottom: '-4px',
-                          left: isActive(link.href) ? '0' : '50%',
-                          width: isActive(link.href) ? '100%' : '0',
-                          height: '2px',
-                          background: 'linear-gradient(90deg, #7641C0, #9969E5)',
-                          borderRadius: '2px',
-                          transition: 'all 0.3s ease',
-                          opacity: isActive(link.href) ? 1 : 0,
-                          transform: isActive(link.href) ? 'none' : 'translateX(-50%)',
-                          '&:hover': {
-                            width: '100%',
-                            left: '0',
-                            opacity: 1,
-                            transform: 'none',
-                          },
-                        }}
-                      />
-                    </Box>
+                      sx={(theme) => ({
+                        position: 'absolute',
+                        bottom: '0',
+                        left: '0',
+                        width: isActive(link.href) ? '100%' : '0',
+                        height: '2px',
+                        background: 'white',
+                        transition: 'all 0.2s ease',
+                        opacity: isActive(link.href) ? 1 : 0,
+                        '&:hover': {
+                          width: '100%',
+                          opacity: 1,
+                        },
+                      })}
+                    />
                   </Text>
                 </Link>
               ))}
             </Group>
 
-            <Group gap="md" visibleFrom="md">
+            <Group gap="sm" visibleFrom="md" style={{ flexShrink: 0 }}>
+              <LanguageSwitcher />
+
               <Button
                 component={Link}
-                href="/orcamento"
+                href={`/${lang}/orcamento`}
                 variant="gradient"
-                gradient={{ from: 'rgba(118,65,192,0.9)', to: 'rgba(153,105,229,0.9)', deg: 135 }}
+                gradient={{ from: '#6030A0', to: '#B490FF', deg: 45 }}
                 radius="md"
-                style={{
-                  boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
+                size="xs"
+                sx={(theme) => ({
                   transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 15px rgba(118, 65, 192, 0.3)',
+                  border: '1px solid rgba(153, 105, 229, 0.3)',
                   position: 'relative',
                   overflow: 'hidden',
+                  padding: '0 10px',
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap',
                   '&:hover': {
                     transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
-                  }
-                }}
+                    boxShadow: '0 8px 25px rgba(118, 65, 192, 0.4)',
+                  },
+                })}
               >
-                <Box
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
-                    animation: 'shine 3s infinite',
-                    zIndex: 0,
-                  }}
-                />
-                <Text style={{ position: 'relative', zIndex: 1 }}>Solicitar Orçamento</Text>
+                {t('header.quote') || 'Solicitar Orçamento'}
               </Button>
             </Group>
 
@@ -236,7 +234,7 @@ export function Header() {
             />
           </Group>
         </Container>
-      </AppShell.Header>
+      </header>
 
       {/* Mobile drawer */}
       <Drawer
@@ -251,79 +249,60 @@ export function Header() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: '10px',
               }}
             >
               <Box
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'linear-gradient(135deg, #7641C0, #9969E5)',
-                  borderRadius: '12px',
-                  padding: '8px',
+                  background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
                   position: 'relative',
-                  overflow: 'hidden',
-                  boxShadow: '0 0 20px rgba(118,65,192,0.3)',
                 }}
               >
                 <Text
                   fw={700}
-                  size="lg"
+                  size="xl"
                   style={{
-                    color: 'white',
                     fontFamily: 'monospace',
-                    letterSpacing: '-0.5px',
+                    background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    textShadow: '0 0 15px rgba(118,65,192,0.5)',
                   }}
                 >
-                  &lt; /&gt;
+                  &lt;/&gt;
                 </Text>
 
-                {/* Efeito de brilho */}
-                <Box
+                <Text
+                  fw={700}
+                  size="xl"
                   style={{
-                    position: 'absolute',
-                    top: '-50%',
-                    left: '-50%',
-                    width: '200%',
-                    height: '200%',
-                    background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
-                    transform: 'rotate(45deg)',
-                    animation: 'shine 3s infinite',
+                    letterSpacing: '-0.5px',
+                    marginLeft: '8px',
+                    background: 'linear-gradient(90deg, #7641C0, #9969E5)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    textShadow: '0 0 15px rgba(118,65,192,0.3)',
                   }}
-                />
+                >
+                  CodeBR
+                </Text>
               </Box>
-
-              <Title
-                order={3}
-                fw={700}
-                c="white"
-                style={{
-                  letterSpacing: '-0.5px',
-                  background: 'linear-gradient(90deg, #fff, #9969E5)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                CodeBR
-              </Title>
             </Box>
           </Group>
         }
         styles={{
           body: {
-            background: 'linear-gradient(180deg, rgba(10,10,10,0.98) 0%, rgba(15,15,15,0.98) 100%)',
-            backdropFilter: 'blur(10px)',
+            background: '#0A0A0A',
           },
           header: {
-            background: 'linear-gradient(180deg, rgba(10,10,10,0.98) 0%, rgba(15,15,15,0.98) 100%)',
-            backdropFilter: 'blur(10px)',
+            background: '#0A0A0A',
           },
           close: {
             color: 'white',
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-            }
           }
         }}
       >
@@ -334,21 +313,16 @@ export function Header() {
               key={link.href}
               component={Link}
               href={link.href}
-              variant={isActive(link.href) ? "light" : "subtle"}
-              color={isActive(link.href) ? "purple" : "gray"}
+              variant="subtle"
+              color="gray"
               fullWidth
               size="lg"
-              leftSection={isActive(link.href) && (
-                <Box
-                  w={4}
-                  h={4}
-                  style={{
-                    borderRadius: '50%',
-                    background: 'linear-gradient(90deg, #7641C0, #9969E5)',
-                  }}
-                />
-              )}
               onClick={close}
+              style={{
+                color: isActive(link.href) ? 'white' : undefined,
+                borderLeft: isActive(link.href) ? '2px solid white' : 'none',
+                borderRadius: 0,
+              }}
             >
               {link.label}
             </Button>
@@ -356,37 +330,31 @@ export function Header() {
           <Divider my="xl" color="dark.7" />
           <Button
             component={Link}
-            href="/orcamento"
-            variant="gradient"
-            gradient={{ from: 'rgba(118,65,192,0.9)', to: 'rgba(153,105,229,0.9)', deg: 135 }}
+            href={`/${lang}/orcamento`}
+            variant="outline"
+            color="gray"
             fullWidth
             size="lg"
+            radius="sm"
             onClick={close}
             style={{
-              boxShadow: '0 4px 15px -3px rgba(118,65,192,0.3)',
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'all 0.3s ease',
+              transition: 'all 0.2s ease',
+              borderColor: 'rgba(255,255,255,0.2)',
               '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 20px -4px rgba(118,65,192,0.4)',
-              }
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                borderColor: 'rgba(255,255,255,0.3)',
+              },
             }}
           >
-            <Box
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
-                animation: 'shine 3s infinite',
-                zIndex: 0,
-              }}
-            />
-            <Text style={{ position: 'relative', zIndex: 1 }}>Solicitar Orçamento</Text>
+            {t('header.quote') || 'Solicitar Orçamento'}
           </Button>
+
+          <Box mt="md">
+            <Text fw={500} size="sm" mb="xs" c="gray.5">
+              {t('header.language') || 'Idioma'}:
+            </Text>
+            <LanguageSwitcher />
+          </Box>
         </Stack>
       </Drawer>
     </>

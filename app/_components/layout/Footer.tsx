@@ -23,41 +23,48 @@ import {
   IconCode
 } from '@tabler/icons-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const footerLinks = [
-  {
-    title: 'Serviços',
-    links: [
-      { label: 'Landing Pages', href: '/#services' },
-      { label: 'E-commerce', href: '/#services' },
-      { label: 'Projetos Personalizados', href: '/#services' },
-      { label: 'Solicitar Orçamento', href: '/orcamento' },
-    ],
-  },
-  {
-    title: 'Empresa',
-    links: [
-      { label: 'Sobre Nós', href: '/about' },
-      { label: 'Contato', href: '/contact' },
-      { label: 'Blog', href: '/blog' },
-      { label: 'Carreiras', href: '/careers' },
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      { label: 'Termos de Serviço', href: '/terms' },
-      { label: 'Política de Privacidade', href: '/privacy' },
-      { label: 'Cookies', href: '/cookies' },
-    ],
-  },
-];
+// Os links serão gerados dinamicamente com base nas traduções
 
 export function Footer() {
   const pathname = usePathname();
+  const params = useParams();
+  const { t } = useTranslation('common');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const lang = (params?.lang as string) || 'pt-BR';
+
+  // Gerar links do footer com base nas traduções
+  const footerLinks = [
+    {
+      title: t('footer.services'),
+      links: [
+        { label: t('services.landing.title'), href: `/${lang}/#services` },
+        { label: t('services.ecommerce.title'), href: `/${lang}/#services` },
+        { label: t('services.custom.title'), href: `/${lang}/#services` },
+        { label: t('header.quote'), href: `/${lang}/orcamento` },
+      ],
+    },
+    {
+      title: t('footer.company'),
+      links: [
+        { label: t('header.about'), href: `/${lang}/#about` },
+        { label: t('header.contact'), href: `/${lang}/contact` },
+        { label: 'Blog', href: `/${lang}/blog` },
+        { label: 'Carreiras', href: `/${lang}/careers` },
+      ],
+    },
+    {
+      title: t('footer.legal'),
+      links: [
+        { label: t('footer.terms'), href: `/${lang}/terms` },
+        { label: t('footer.privacy'), href: `/${lang}/privacy` },
+        { label: 'Cookies', href: `/${lang}/cookies` },
+      ],
+    },
+  ];
 
   // Detectar quando o usuário rolou para baixo o suficiente para mostrar o botão de voltar ao topo
   useEffect(() => {
@@ -280,7 +287,7 @@ export function Footer() {
 
         <Group justify="space-between" align="center">
           <Text size="sm" c="gray.6">
-            © {new Date().getFullYear()} CodeBR. Todos os direitos reservados.
+            {t('footer.copyright').replace('2025', new Date().getFullYear().toString())}
           </Text>
 
           <Text size="sm" c="gray.6">
