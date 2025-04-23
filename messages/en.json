@@ -1,0 +1,212 @@
+{
+  "header": {
+    "home": "Home",
+    "services": "Services",
+    "pricing": "Pricing",
+    "about": "About Us",
+    "contact": "Contact",
+    "quote": "Request Quote",
+    "language": "Language"
+  },
+  "hero": {
+    "title": "Professional Websites that Convert Visitors into Customers",
+    "subtitle": "Quality and precision",
+    "description": "From concept to finished website in weeks, without complications. We develop websites that boost your business with impactful design and cutting-edge technology.",
+    "cta": "Request Quote",
+    "examples": "View Examples",
+    "badge": "Professional Website Creation",
+    "projects": "+100 Projects Delivered",
+    "support": "Continuous Support",
+    "delivery": "Delivery in up to 4 Weeks"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Complete solutions for your digital presence",
+    "landing": {
+      "title": "Landing Pages",
+      "description": "High-conversion pages focused on results."
+    },
+    "ecommerce": {
+      "title": "E-commerce",
+      "description": "Complete and optimized online stores for sales."
+    },
+    "corporate": {
+      "title": "Corporate Websites",
+      "description": "Professional digital presence for your company."
+    },
+    "custom": {
+      "title": "Custom Projects",
+      "description": "Tailored solutions for specific needs."
+    }
+  },
+  "workflow": {
+    "title": "Our Work Process",
+    "subtitle": "We develop websites with a structured and transparent process, ensuring exceptional results at every stage of the project.",
+    "steps": {
+      "discovery": {
+        "title": "Discovery and Strategy",
+        "description": "We dive deep into your business to understand your goals, challenges, and digital opportunities."
+      },
+      "design": {
+        "title": "Design and Prototyping",
+        "description": "We transform concepts into interactive visual experiences that delight and engage your users."
+      },
+      "development": {
+        "title": "Development",
+        "description": "We code your project with the most advanced technologies, ensuring performance, security, and scalability."
+      },
+      "launch": {
+        "title": "Launch",
+        "description": "We implement your project in a production environment with continuous monitoring to ensure a smooth transition."
+      },
+      "growth": {
+        "title": "Growth and Optimization",
+        "description": "We analyze data and implement continuous improvements to maximize ROI and drive your business growth."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "What our clients say",
+    "subtitle": "Success stories from those who trusted our work",
+    "items": {
+      "client1": {
+        "name": "John Smith",
+        "position": "CEO, TechCorp",
+        "text": "The professionalism and quality of work exceeded all expectations."
+      },
+      "client2": {
+        "name": "Mary Johnson",
+        "position": "Marketing Director, InnovateX",
+        "text": "Impressive results since day one of the website launch."
+      },
+      "client3": {
+        "name": "Peter Williams",
+        "position": "Founder, StartupUS",
+        "text": "The best decision we made for our digital presence."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to transform your digital presence?",
+    "description": "Contact us today and discover how we can help your business grow online.",
+    "button": "Request Quote"
+  },
+  "footer": {
+    "company": "Company",
+    "services": "Services",
+    "legal": "Legal",
+    "contact": "Contact",
+    "copyright": "© 2025 CodeBR. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "quote": {
+    "title": "Request a Quote",
+    "subtitle": "Fill out the form below and we'll get back to you within 24 hours.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "website": "Current website (if any)",
+      "projectType": "Project Type",
+      "budget": "Budget",
+      "deadline": "Deadline",
+      "description": "Describe your project",
+      "features": "Desired features",
+      "namePlaceholder": "Your full name",
+      "emailPlaceholder": "your.email@example.com",
+      "submit": "Submit Request",
+      "success": "Your request has been successfully submitted! We'll be in touch soon.",
+      "error": "An error occurred while submitting your request. Please try again."
+    },
+    "services": {
+      "landing": {
+        "title": "Landing Page"
+      },
+      "ecommerce": {
+        "title": "E-commerce"
+      },
+      "corporate": {
+        "title": "Corporate Website"
+      },
+      "custom": {
+        "title": "Custom Project"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "info": {
+      "title": "Contact Information",
+      "description": "We're ready to help with your project. Contact us through the channels below or fill out the form.",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
+    },
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "namePlaceholder": "Your full name",
+      "emailPlaceholder": "your.email@example.com",
+      "messagePlaceholder": "Describe how we can help...",
+      "submit": "Send Message"
+    }
+  },
+  "transformation": {
+    "title": "Website Visual Transformation",
+    "subtitle": "Follow each step of your project development",
+    "wireframe": {
+      "title": "Base Structure",
+      "description": "Layout definition and element organization for an intuitive experience"
+    },
+    "design": {
+      "title": "Visual Design",
+      "description": "Creation of visual identity and modern interface elements"
+    },
+    "development": {
+      "title": "Development",
+      "description": "Implementation with modern technologies focusing on performance",
+      "site": "development.site.com"
+    },
+    "final": {
+      "title": "Final Project",
+      "description": "Optimized and secure website, ready to grow with your business"
+    },
+    "menu": {
+      "logo": "Logo",
+      "home": "Home",
+      "services": "Services",
+      "contact": "Contact"
+    },
+    "hero": {
+      "title": "Hero Section",
+      "welcome": "Transform Your Digital Presence",
+      "subtitle": "Modern solutions to boost your business",
+      "cta": "Get Started"
+    },
+    "features": {
+      "wireframe": {
+        "navigation": "Intuitive Navigation",
+        "layout": "Responsive Layout",
+        "structure": "Modular Structure"
+      },
+      "design": {
+        "branding": "Visual Identity",
+        "interface": "Modern Interface",
+        "experience": "User Experience"
+      },
+      "development": {
+        "responsive": "Adaptive Design",
+        "modern": "Modern Technologies",
+        "performance": "High Performance"
+      },
+      "final": {
+        "seo": "SEO Optimization",
+        "security": "Advanced Security",
+        "analytics": "Data Analytics"
+      }
+    }
+  }
+}

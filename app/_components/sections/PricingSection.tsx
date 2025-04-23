@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Box, Container, Group, Text, ThemeIcon, SimpleGrid, Title, Flex, Badge, Button, Switch, Card, List } from '@mantine/core';
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
+import { ParticlesWrapper } from '@/app/_components/effects/ParticlesWrapper';
 import {
   IconCheck,
   IconX,
@@ -32,113 +34,7 @@ const MotionBadge = motion.div;
 const MotionButton = motion.button;
 const MotionCard = motion.div;
 
-// Componente Particle para as partículas que sobem
-function Particle({ delay = 0, size = 3 }: { delay?: number, size?: number }) {
-  // Gerar uma cor aleatória entre diferentes tons de roxo
-  const colors = [
-    '#9969E5', // Roxo mais brilhante
-    '#7641C0', // Roxo principal
-    '#B285FF', // Lilás claro
-    '#A570FF', // Roxo médio
-  ];
-  const color = colors[Math.floor(Math.random() * colors.length)];
-
-  // Gerar um tamanho aleatório baseado no tamanho passado (mantendo as partículas pequenas)
-  const particleSize = size * (0.7 + Math.random() * 0.5); // Entre 70% e 120% do tamanho original
-
-  // Posição X inicial aleatória, concentrada mais no centro
-  const startX = Math.random() * 140 - 70; // Entre -70 e 70px
-
-  // Movimento X aleatório para dar um efeito de dispersão (mais sutil)
-  const moveX = (Math.random() * 20 - 10) + (Math.random() > 0.5 ? 5 : -5);
-
-  return (
-    <MotionBox
-      style={{
-        position: 'absolute',
-        width: `${particleSize}px`,
-        height: `${particleSize}px`,
-        borderRadius: '50%',
-        background: color,
-        boxShadow: `0 0 ${particleSize*1.2}px ${color}`,
-        zIndex: 10,
-      }}
-      initial={{
-        opacity: 0,
-        y: 5, // Começa um pouco abaixo para parecer que está saindo do card
-        x: startX,
-        scale: 0.3,
-      }}
-      animate={{
-        opacity: [0, 0.8, 0],
-        y: [5, -60 - Math.random() * 40], // Sobe até uma altura menor e aleatória
-        x: [startX, startX + moveX],
-        scale: [0.3, 0.7, 0.2],
-      }}
-      transition={{
-        duration: 2 + Math.random() * 2, // Duração mais longa: entre 2 e 4 segundos
-        repeat: Infinity,
-        delay: delay,
-        ease: 'easeOut',
-      }}
-    />
-  );
-}
-
-// Componente ParticleGroup para animar múltiplas partículas
-function ParticleGroup() {
-  // Gerar partículas muito pequenas (mais numerosas)
-  const tinyParticles = Array.from({ length: 20 }).map((_, index) => (
-    <Particle key={`tiny-${index}`} delay={index * 0.15} size={2} />
-  ));
-
-  // Gerar partículas pequenas
-  const smallParticles = Array.from({ length: 15 }).map((_, index) => (
-    <Particle key={`small-${index}`} delay={index * 0.2 + 0.1} size={3} />
-  ));
-
-  // Gerar partículas médias (menos numerosas)
-  const mediumParticles = Array.from({ length: 8 }).map((_, index) => (
-    <Particle key={`medium-${index}`} delay={index * 0.25 + 0.15} size={4} />
-  ));
-
-  // Gerar poucas partículas grandes
-  const largeParticles = Array.from({ length: 5 }).map((_, index) => (
-    <Particle key={`large-${index}`} delay={index * 0.3 + 0.2} size={5} />
-  ));
-
-  return (
-    <Box
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        width: '100%',
-        height: '1px', // Altura mínima para não ocupar espaço
-        overflow: 'visible',
-        zIndex: 20,
-        pointerEvents: 'none', // Para não interferir com cliques
-      }}
-    >
-      <Box
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '1px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {tinyParticles}
-        {smallParticles}
-        {mediumParticles}
-        {largeParticles}
-      </Box>
-    </Box>
-  );
-}
+// Componentes com partículas foram movidos para ClientParticles.tsx
 
 // Tipos para os serviços
 interface ServiceFeature {
@@ -157,6 +53,169 @@ interface Service {
   icon: React.ReactNode;
   color: string;
 }
+
+// Traduções para a seção de preços
+const pricingTexts = {
+  'pt-BR': {
+    sectionTitle: 'Nossas soluções',
+    mainTitle: 'Soluções personalizadas para seu projeto',
+    mainDescription: 'Desenvolvemos websites e aplicações web de alta qualidade, utilizando as tecnologias mais modernas do mercado.',
+    // Landing Page
+    landingPageTitle: 'Landing Page',
+    landingPageDescription: 'Página única de alta conversão para apresentar seu produto ou serviço',
+    landingPageFeatures: [
+      'Design responsivo e moderno',
+      'Otimização para SEO',
+      'Formulário de contato',
+      'Integração com Analytics',
+      'Entrega em até 7 dias'
+    ],
+    // Site Institucional
+    corporateSiteTitle: 'Site Institucional',
+    corporateSiteDescription: 'Site completo para empresas que desejam uma presença online profissional',
+    corporateSiteBadge: 'Mais Popular',
+    corporateSiteFeatures: [
+      'Até 5 páginas personalizadas',
+      'Design exclusivo para sua marca',
+      'Otimização para SEO',
+      'Blog integrado (opcional)',
+      'Painel administrativo'
+    ],
+    // E-commerce
+    ecommerceTitle: 'E-commerce',
+    ecommerceDescription: 'Loja online completa para vender seus produtos ou serviços',
+    ecommerceFeatures: [
+      'Catálogo de produtos ilimitado',
+      'Integração com meios de pagamento',
+      'Gestão de estoque e pedidos',
+      'Design personalizado',
+      'Painel administrativo completo'
+    ],
+    // Textos comuns
+    requestQuote: 'Solicitar Orçamento',
+    startingFrom: 'A partir de',
+    customPrice: 'Preço personalizado de acordo com as necessidades específicas do seu projeto.',
+    includes: 'Inclui:',
+    // Disclaimer e garantia
+    important: 'Importante',
+    disclaimerText: 'Os valores não incluem custos de domínio, hospedagem, banco de dados e assinaturas de serviços de terceiros (como Shopify). Estes custos serão de responsabilidade do cliente. Nosso serviço é focado em criar o site com a melhor qualidade e infraestrutura possível.',
+    qualityGuarantee: 'Garantia de Qualidade',
+    guaranteeText: 'Oferecemos 30 dias de garantia após a entrega do projeto para ajustes e correções, garantindo sua total satisfação com o resultado final.',
+    // CTA final
+    projectInMind: 'Tem um projeto em mente?',
+    contactUs: 'Entre em contato',
+    freeConsultation: 'para uma consulta gratuita.',
+    // Manutenção
+    monthlyMaintenance: 'Manutenção Mensal',
+    maintenanceText: 'Oferecemos planos de manutenção mensal que incluem atualizações de segurança, backup, monitoramento de performance, correções de bugs e pequenas alterações de conteúdo. O valor da manutenção é calculado de acordo com a complexidade do projeto e será apresentado junto com o orçamento final.'
+  },
+  'en': {
+    sectionTitle: 'Our solutions',
+    mainTitle: 'Custom solutions for your project',
+    mainDescription: 'We develop high-quality websites and web applications using the most modern technologies on the market.',
+    // Landing Page
+    landingPageTitle: 'Landing Page',
+    landingPageDescription: 'High-conversion single page to showcase your product or service',
+    landingPageFeatures: [
+      'Responsive and modern design',
+      'SEO optimization',
+      'Contact form',
+      'Analytics integration',
+      'Delivery in up to 7 days'
+    ],
+    // Site Institucional
+    corporateSiteTitle: 'Corporate Website',
+    corporateSiteDescription: 'Complete website for companies that want a professional online presence',
+    corporateSiteBadge: 'Most Popular',
+    corporateSiteFeatures: [
+      'Up to 5 custom pages',
+      'Exclusive design for your brand',
+      'SEO optimization',
+      'Integrated blog (optional)',
+      'Admin panel'
+    ],
+    // E-commerce
+    ecommerceTitle: 'E-commerce',
+    ecommerceDescription: 'Complete online store to sell your products or services',
+    ecommerceFeatures: [
+      'Unlimited product catalog',
+      'Payment gateway integration',
+      'Inventory and order management',
+      'Custom design',
+      'Complete admin panel'
+    ],
+    // Textos comuns
+    requestQuote: 'Request Quote',
+    startingFrom: 'Starting from',
+    customPrice: 'Custom price according to the specific needs of your project.',
+    includes: 'Includes:',
+    // Disclaimer e garantia
+    important: 'Important',
+    disclaimerText: 'Prices do not include costs for domain, hosting, database, and third-party service subscriptions (such as Shopify). These costs will be the responsibility of the client. Our service is focused on creating the website with the best possible quality and infrastructure.',
+    qualityGuarantee: 'Quality Guarantee',
+    guaranteeText: 'We offer a 30-day guarantee after project delivery for adjustments and corrections, ensuring your complete satisfaction with the final result.',
+    // CTA final
+    projectInMind: 'Have a project in mind?',
+    contactUs: 'Contact us',
+    freeConsultation: 'for a free consultation.',
+    // Manutenção
+    monthlyMaintenance: 'Monthly Maintenance',
+    maintenanceText: 'We offer monthly maintenance plans that include security updates, backup, performance monitoring, bug fixes, and minor content changes. The maintenance cost is calculated according to the complexity of the project and will be presented along with the final quote.'
+  },
+  'fr': {
+    sectionTitle: 'Nos solutions',
+    mainTitle: 'Solutions personnalisées pour votre projet',
+    mainDescription: 'Nous développons des sites web et des applications web de haute qualité, en utilisant les technologies les plus modernes du marché.',
+    // Landing Page
+    landingPageTitle: 'Landing Page',
+    landingPageDescription: 'Page unique à haute conversion pour présenter votre produit ou service',
+    landingPageFeatures: [
+      'Design responsive et moderne',
+      'Optimisation SEO',
+      'Formulaire de contact',
+      'Intégration Analytics',
+      'Livraison sous 7 jours'
+    ],
+    // Site Institucional
+    corporateSiteTitle: 'Site Institutionnel',
+    corporateSiteDescription: 'Site complet pour les entreprises qui souhaitent une présence en ligne professionnelle',
+    corporateSiteBadge: 'Plus Populaire',
+    corporateSiteFeatures: [
+      'Jusqu\'à 5 pages personnalisées',
+      'Design exclusif pour votre marque',
+      'Optimisation SEO',
+      'Blog intégré (optionnel)',
+      'Panneau d\'administration'
+    ],
+    // E-commerce
+    ecommerceTitle: 'E-commerce',
+    ecommerceDescription: 'Boutique en ligne complète pour vendre vos produits ou services',
+    ecommerceFeatures: [
+      'Catalogue de produits illimité',
+      'Intégration des moyens de paiement',
+      'Gestion des stocks et des commandes',
+      'Design personnalisé',
+      'Panneau d\'administration complet'
+    ],
+    // Textos comuns
+    requestQuote: 'Demander un Devis',
+    startingFrom: 'À partir de',
+    customPrice: 'Prix personnalisé selon les besoins spécifiques de votre projet.',
+    includes: 'Inclut:',
+    // Disclaimer e garantia
+    important: 'Important',
+    disclaimerText: 'Les prix n\'incluent pas les coûts de domaine, d\'hébergement, de base de données et d\'abonnements à des services tiers (comme Shopify). Ces coûts seront à la charge du client. Notre service est axé sur la création du site avec la meilleure qualité et infrastructure possible.',
+    qualityGuarantee: 'Garantie de Qualité',
+    guaranteeText: 'Nous offrons une garantie de 30 jours après la livraison du projet pour les ajustements et corrections, assurant votre entière satisfaction avec le résultat final.',
+    // CTA final
+    projectInMind: 'Vous avez un projet en tête?',
+    contactUs: 'Contactez-nous',
+    freeConsultation: 'pour une consultation gratuite.',
+    // Manutenção
+    monthlyMaintenance: 'Maintenance Mensuelle',
+    maintenanceText: 'Nous proposons des plans de maintenance mensuelle qui comprennent des mises à jour de sécurité, des sauvegardes, une surveillance des performances, des corrections de bugs et des modifications mineures du contenu. Le coût de la maintenance est calculé en fonction de la complexité du projet et sera présenté avec le devis final.'
+  }
+};
 
 // Estilos CSS para os efeitos de hover
 const hoverStyles = `
@@ -177,49 +236,38 @@ const hoverStyles = `
 `;
 
 export function PricingSection() {
-  // Dados dos serviços
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const t = pricingTexts[locale as keyof typeof pricingTexts] || pricingTexts['pt-BR'];
+
+  // Dados dos serviços com traduções
   const services = [
     {
-      title: 'Landing Page',
-      description: 'Página única de alta conversão para apresentar seu produto ou serviço',
-      features: [
-        { title: 'Design responsivo e moderno', included: true, highlight: true },
-        { title: 'Otimização para SEO', included: true, highlight: true },
-        { title: 'Formulário de contato', included: true, highlight: true },
-        { title: 'Integração com Analytics', included: true, highlight: true },
-        { title: 'Entrega em até 7 dias', included: true, highlight: true },
-      ],
-      cta: 'Solicitar Orçamento',
+      title: t.landingPageTitle,
+      description: t.landingPageDescription,
+      features: t.landingPageFeatures.map(feature => ({ title: feature, included: true, highlight: true })),
+      cta: t.requestQuote,
       icon: <IconDeviceDesktop size={24} />,
       color: 'rgba(118, 65, 192, 0.7)'
     },
     {
-      title: 'Site Institucional',
-      description: 'Site completo para empresas que desejam uma presença online profissional',
-      badge: 'Mais Popular',
+      title: t.corporateSiteTitle,
+      description: t.corporateSiteDescription,
+      badge: t.corporateSiteBadge,
       popular: true,
-      features: [
-        { title: 'Até 5 páginas personalizadas', included: true, highlight: true },
-        { title: 'Design exclusivo para sua marca', included: true, highlight: true },
-        { title: 'Otimização para SEO', included: true, highlight: true },
-        { title: 'Blog integrado (opcional)', included: true, highlight: true },
-        { title: 'Painel administrativo', included: true, highlight: true },
-      ],
-      cta: 'Solicitar Orçamento',
+      features: t.corporateSiteFeatures.map(feature => ({ title: feature, included: true, highlight: true })),
+      cta: t.requestQuote,
       icon: <IconRocket size={24} />,
       color: 'rgba(153, 105, 229, 0.8)'
     },
     {
-      title: 'E-commerce',
-      description: 'Loja online completa para vender seus produtos ou serviços',
-      features: [
-        { title: 'Catálogo de produtos ilimitado', included: true, highlight: true },
-        { title: 'Integração com meios de pagamento', included: true, highlight: true },
-        { title: 'Gestão de estoque e pedidos', included: true, highlight: true },
-        { title: 'Design personalizado', included: true, highlight: true },
-        { title: 'Painel administrativo completo', included: true, highlight: true },
-      ],
-      cta: 'Solicitar Orçamento',
+      title: t.ecommerceTitle,
+      description: t.ecommerceDescription,
+      features: t.ecommerceFeatures.map(feature => ({ title: feature, included: true, highlight: true })),
+      cta: t.requestQuote,
       icon: <IconCrown size={24} />,
       color: 'rgba(118, 65, 192, 0.9)'
     }
@@ -278,7 +326,7 @@ export function PricingSection() {
               letterSpacing: '1px',
             }}
           >
-            Nossas soluções
+            {t.sectionTitle}
           </div>
 
           <Title
@@ -292,7 +340,13 @@ export function PricingSection() {
               letterSpacing: '-0.5px',
             }}
           >
-            Soluções <Text span c="purple.4" inherit>personalizadas</Text> para seu projeto
+            {t.mainTitle.split(' personalizadas ').length > 1 ? (
+              <>
+                {t.mainTitle.split(' personalizadas ')[0]}{' '}
+                <Text span c="purple.4" inherit>personalizadas</Text>
+                {' '}{t.mainTitle.split(' personalizadas ')[1]}
+              </>
+            ) : t.mainTitle}
           </Title>
 
           <Text
@@ -303,7 +357,7 @@ export function PricingSection() {
             lh={1.6}
             mb={60}
           >
-            Desenvolvemos websites e aplicações web de alta qualidade, utilizando as tecnologias mais modernas do mercado.
+            {t.mainDescription}
           </Text>
 
           {/* Cards de serviços */}
@@ -439,7 +493,7 @@ export function PricingSection() {
                         pointerEvents: 'none',
                       }}
                     >
-                      <ParticleGroup />
+                      <ParticlesWrapper />
                     </Box>
                   </>
                 )}
@@ -546,7 +600,7 @@ export function PricingSection() {
                         }}
                       >
                         <Text size="sm" c="gray.4" mb={4} fw={500}>
-                          A partir de
+                          {t.startingFrom}
                         </Text>
                         <Text fw={800} size="2rem" mb={0} style={{
                           background: 'linear-gradient(135deg, #9969E5, #7641C0)',
@@ -554,19 +608,34 @@ export function PricingSection() {
                           WebkitTextFillColor: 'transparent',
                           lineHeight: 1.2,
                         }}>
-                          {service.title === 'Landing Page' && 'R$ 3.000'}
-                          {service.title === 'Site Institucional' && 'R$ 6.000'}
-                          {service.title === 'E-commerce' && 'R$ 12.000'}
+                          {(() => {
+                            // Preços em diferentes moedas
+                            if (locale === 'en') {
+                              if (service.title === t.landingPageTitle) return '$800';
+                              if (service.title === t.corporateSiteTitle) return '$1,500';
+                              if (service.title === t.ecommerceTitle) return '$3,000';
+                            } else if (locale === 'fr') {
+                              if (service.title === t.landingPageTitle) return 'CHF 800';
+                              if (service.title === t.corporateSiteTitle) return 'CHF 1\'500';
+                              if (service.title === t.ecommerceTitle) return 'CHF 3\'000';
+                            } else {
+                              if (service.title === t.landingPageTitle) return 'R$ 3.000';
+                              if (service.title === t.corporateSiteTitle) return 'R$ 6.000';
+                              if (service.title === t.ecommerceTitle) return 'R$ 12.000';
+                            }
+                            return '';
+                          })()
+                          }
                         </Text>
                       </Box>
                       <Text size="sm" c="gray.4" lh={1.6}>
-                        Preço personalizado de acordo com as necessidades específicas do seu projeto.
+                        {t.customPrice}
                       </Text>
                     </Box>
 
                     {/* Features */}
                     <Box mb="xl">
-                      <Text fw={600} size="sm" c="white" mb="sm">Inclui:</Text>
+                      <Text fw={600} size="sm" c="white" mb="sm">{t.includes}</Text>
                       <List
                         spacing="sm"
                         size="sm"
@@ -657,8 +726,8 @@ export function PricingSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          mt={60}
           style={{
+            marginTop: '60px',
             background: 'linear-gradient(135deg, rgba(153,105,229,0.1), rgba(118,65,192,0.05))',
             border: '1px solid rgba(153,105,229,0.2)',
             borderRadius: '12px',
@@ -671,11 +740,10 @@ export function PricingSection() {
             <Box>
               <Text fw={700} size="md" c="white" mb="xs">
                 <IconBolt size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
-                Importante
+                {t.important}
               </Text>
               <Text size="sm" c="gray.4" lh={1.6}>
-                Os valores não incluem custos de domínio, hospedagem, banco de dados e assinaturas de serviços de terceiros (como Shopify).
-                Estes custos serão de responsabilidade do cliente. Nosso serviço é focado em criar o site com a melhor qualidade e infraestrutura possível.
+                {t.disclaimerText}
               </Text>
             </Box>
 
@@ -683,10 +751,10 @@ export function PricingSection() {
             <Box>
               <Text fw={700} size="md" c="white" mb="xs">
                 <IconTrophy size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
-                Garantia de Qualidade
+                {t.qualityGuarantee}
               </Text>
               <Text size="sm" c="gray.4" lh={1.6}>
-                Oferecemos 30 dias de garantia após a entrega do projeto para ajustes e correções, garantindo sua total satisfação com o resultado final.
+                {t.guaranteeText}
               </Text>
             </Box>
 
@@ -694,12 +762,10 @@ export function PricingSection() {
             <Box>
               <Text fw={700} size="md" c="white" mb="xs">
                 <IconSettings size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
-                Manutenção Mensal
+                {t.monthlyMaintenance}
               </Text>
               <Text size="sm" c="gray.4" lh={1.6}>
-                Oferecemos planos de manutenção mensal que incluem atualizações de segurança, backup, monitoramento de performance, 
-                correções de bugs e pequenas alterações de conteúdo. O valor da manutenção é calculado de acordo com a complexidade 
-                do projeto e será apresentado junto com o orçamento final.
+                {t.maintenanceText}
               </Text>
             </Box>
           </Flex>
@@ -716,7 +782,7 @@ export function PricingSection() {
           }}
         >
           <Text c="gray.5" size="sm">
-            Tem um projeto em mente? <Text component="span" c="purple.4" fw={600} style={{ cursor: 'pointer' }}>Entre em contato</Text> para uma consulta gratuita.
+            {t.projectInMind} <Text component="span" c="purple.4" fw={600} style={{ cursor: 'pointer' }}>{t.contactUs}</Text> {t.freeConsultation}
           </Text>
         </MotionBox>
       </Container>

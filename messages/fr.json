@@ -1,0 +1,212 @@
+{
+  "header": {
+    "home": "Accueil",
+    "services": "Services",
+    "pricing": "Tarifs",
+    "about": "À Propos",
+    "contact": "Contact",
+    "quote": "Demander un Devis",
+    "language": "Langue"
+  },
+  "hero": {
+    "title": "Sites Web Professionnels qui Convertissent les Visiteurs en Clients",
+    "subtitle": "Qualité et précision",
+    "description": "Du concept au site web fini en quelques semaines, sans complications. Nous développons des sites web qui stimulent votre entreprise avec un design percutant et une technologie de pointe.",
+    "cta": "Demander un Devis",
+    "examples": "Voir des Exemples",
+    "badge": "Création de Sites Web Professionnels",
+    "projects": "+100 Projets Livrés",
+    "support": "Support Continu",
+    "delivery": "Livraison en 4 Semaines Maximum"
+  },
+  "services": {
+    "title": "Nos Services",
+    "subtitle": "Solutions complètes pour votre présence numérique",
+    "landing": {
+      "title": "Pages d'Atterrissage",
+      "description": "Pages à haute conversion axées sur les résultats."
+    },
+    "ecommerce": {
+      "title": "E-commerce",
+      "description": "Boutiques en ligne complètes et optimisées pour les ventes."
+    },
+    "corporate": {
+      "title": "Sites Web d'Entreprise",
+      "description": "Présence numérique professionnelle pour votre entreprise."
+    },
+    "custom": {
+      "title": "Projets Personnalisés",
+      "description": "Solutions sur mesure pour des besoins spécifiques."
+    }
+  },
+  "workflow": {
+    "title": "Notre Processus de Travail",
+    "subtitle": "Nous développons des sites web avec un processus structuré et transparent, garantissant des résultats exceptionnels à chaque étape du projet.",
+    "steps": {
+      "discovery": {
+        "title": "Découverte et Stratégie",
+        "description": "Nous plongeons profondément dans votre entreprise pour comprendre vos objectifs, défis et opportunités numériques."
+      },
+      "design": {
+        "title": "Design et Prototypage",
+        "description": "Nous transformons les concepts en expériences visuelles interactives qui enchantent et engagent vos utilisateurs."
+      },
+      "development": {
+        "title": "Développement",
+        "description": "Nous codons votre projet avec les technologies les plus avancées, garantissant performance, sécurité et évolutivité."
+      },
+      "launch": {
+        "title": "Lancement",
+        "description": "Nous implémentons votre projet dans un environnement de production avec une surveillance continue pour assurer une transition en douceur."
+      },
+      "growth": {
+        "title": "Croissance et Optimisation",
+        "description": "Nous analysons les données et mettons en œuvre des améliorations continues pour maximiser le ROI et stimuler la croissance de votre entreprise."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "Ce que disent nos clients",
+    "subtitle": "Histoires de réussite de ceux qui ont fait confiance à notre travail",
+    "items": {
+      "client1": {
+        "name": "Jean Dupont",
+        "position": "PDG, TechCorp",
+        "text": "Le professionnalisme et la qualité du travail ont dépassé toutes les attentes."
+      },
+      "client2": {
+        "name": "Marie Durand",
+        "position": "Directrice Marketing, InnovateX",
+        "text": "Résultats impressionnants dès le premier jour du lancement du site."
+      },
+      "client3": {
+        "name": "Pierre Martin",
+        "position": "Fondateur, StartupFR",
+        "text": "La meilleure décision que nous ayons prise pour notre présence numérique."
+      }
+    }
+  },
+  "cta": {
+    "title": "Prêt à transformer votre présence numérique?",
+    "description": "Contactez-nous aujourd'hui et découvrez comment nous pouvons aider votre entreprise à se développer en ligne.",
+    "button": "Demander un Devis"
+  },
+  "footer": {
+    "company": "Entreprise",
+    "services": "Services",
+    "legal": "Légal",
+    "contact": "Contact",
+    "copyright": "© 2025 CodeBR. Tous droits réservés.",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation"
+  },
+  "quote": {
+    "title": "Demandez un Devis",
+    "subtitle": "Remplissez le formulaire ci-dessous et nous vous répondrons dans les 24 heures.",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "company": "Entreprise",
+      "website": "Site web actuel (si existant)",
+      "projectType": "Type de Projet",
+      "budget": "Budget",
+      "deadline": "Délai",
+      "description": "Décrivez votre projet",
+      "features": "Fonctionnalités souhaitées",
+      "namePlaceholder": "Votre nom complet",
+      "emailPlaceholder": "votre.email@exemple.com",
+      "submit": "Envoyer la Demande",
+      "success": "Votre demande a été soumise avec succès! Nous vous contacterons bientôt.",
+      "error": "Une erreur s'est produite lors de la soumission de votre demande. Veuillez réessayer."
+    },
+    "services": {
+      "landing": {
+        "title": "Page d'Atterrissage"
+      },
+      "ecommerce": {
+        "title": "E-commerce"
+      },
+      "corporate": {
+        "title": "Site Web d'Entreprise"
+      },
+      "custom": {
+        "title": "Projet Personnalisé"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contactez-Nous",
+    "info": {
+      "title": "Informations de Contact",
+      "description": "Nous sommes prêts à vous aider avec votre projet. Contactez-nous via les canaux ci-dessous ou remplissez le formulaire.",
+      "email": "Email",
+      "phone": "Téléphone",
+      "address": "Adresse"
+    },
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "message": "Message",
+      "namePlaceholder": "Votre nom complet",
+      "emailPlaceholder": "votre.email@exemple.com",
+      "messagePlaceholder": "Décrivez comment nous pouvons vous aider...",
+      "submit": "Envoyer le Message"
+    }
+  },
+  "transformation": {
+    "title": "Transformation Visuelle du Site Web",
+    "subtitle": "Suivez chaque étape du développement de votre projet",
+    "wireframe": {
+      "title": "Structure de Base",
+      "description": "Définition de la mise en page et organisation des éléments pour une expérience intuitive"
+    },
+    "design": {
+      "title": "Design Visuel",
+      "description": "Création de l'identité visuelle et des éléments d'interface modernes"
+    },
+    "development": {
+      "title": "Développement",
+      "description": "Implémentation avec des technologies modernes axées sur la performance",
+      "site": "developpement.site.fr"
+    },
+    "final": {
+      "title": "Projet Final",
+      "description": "Site web optimisé et sécurisé, prêt à évoluer avec votre entreprise"
+    },
+    "menu": {
+      "logo": "Logo",
+      "home": "Accueil",
+      "services": "Services",
+      "contact": "Contact"
+    },
+    "hero": {
+      "title": "Section Principale",
+      "welcome": "Transformez Votre Présence Numérique",
+      "subtitle": "Solutions modernes pour booster votre entreprise",
+      "cta": "Commencer"
+    },
+    "features": {
+      "wireframe": {
+        "navigation": "Navigation Intuitive",
+        "layout": "Mise en Page Responsive",
+        "structure": "Structure Modulaire"
+      },
+      "design": {
+        "branding": "Identité Visuelle",
+        "interface": "Interface Moderne",
+        "experience": "Expérience Utilisateur"
+      },
+      "development": {
+        "responsive": "Design Adaptatif",
+        "modern": "Technologies Modernes",
+        "performance": "Haute Performance"
+      },
+      "final": {
+        "seo": "Optimisation SEO",
+        "security": "Sécurité Avancée",
+        "analytics": "Analyse de Données"
+      }
+    }
+  }
+}

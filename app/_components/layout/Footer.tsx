@@ -23,45 +23,107 @@ import {
   IconCode
 } from '@tabler/icons-react';
 import Link from 'next/link';
-import { usePathname, useParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
-// Os links serão gerados dinamicamente com base nas traduções
+// Traduções para o Footer
+const footerTexts = {
+  'pt-BR': {
+    companyDescription: 'Criamos websites profissionais com tecnologia de ponta. Design moderno e performance excepcional para o seu negócio.',
+    companyLabel: 'Criação de Websites',
+    services: 'Serviços',
+    company: 'Empresa',
+    legal: 'Legal',
+    landingPages: 'Landing Pages',
+    ecommerce: 'E-commerce',
+    customProjects: 'Projetos Personalizados',
+    requestQuote: 'Solicitar Orçamento',
+    about: 'Sobre',
+    contact: 'Contato',
+    blog: 'Blog',
+    careers: 'Carreiras',
+    terms: 'Termos de Uso',
+    privacy: 'Política de Privacidade',
+    cookies: 'Cookies',
+    copyright: '© 2025 CodeBR. Todos os direitos reservados.',
+    techNote: 'Feito com tecnologia de ponta 🚀'
+  },
+  'en': {
+    companyDescription: 'We create professional websites with cutting-edge technology. Modern design and exceptional performance for your business.',
+    companyLabel: 'Website Creation',
+    services: 'Services',
+    company: 'Company',
+    legal: 'Legal',
+    landingPages: 'Landing Pages',
+    ecommerce: 'E-commerce',
+    customProjects: 'Custom Projects',
+    requestQuote: 'Request Quote',
+    about: 'About',
+    contact: 'Contact',
+    blog: 'Blog',
+    careers: 'Careers',
+    terms: 'Terms of Use',
+    privacy: 'Privacy Policy',
+    cookies: 'Cookies',
+    copyright: '© 2025 CodeBR. All rights reserved.',
+    techNote: 'Made with cutting-edge technology 🚀'
+  },
+  'fr': {
+    companyDescription: 'Nous créons des sites web professionnels avec une technologie de pointe. Design moderne et performance exceptionnelle pour votre entreprise.',
+    companyLabel: 'Création de Sites Web',
+    services: 'Services',
+    company: 'Entreprise',
+    legal: 'Légal',
+    landingPages: 'Pages d\'Atterrissage',
+    ecommerce: 'E-commerce',
+    customProjects: 'Projets Personnalisés',
+    requestQuote: 'Demander un Devis',
+    about: 'À Propos',
+    contact: 'Contact',
+    blog: 'Blog',
+    careers: 'Carrières',
+    terms: 'Conditions d\'Utilisation',
+    privacy: 'Politique de Confidentialité',
+    cookies: 'Cookies',
+    copyright: '© 2025 CodeBR. Tous droits réservés.',
+    techNote: 'Fait avec une technologie de pointe 🚀'
+  }
+};
 
 export function Footer() {
   const pathname = usePathname();
-  const params = useParams();
-  const { t } = useTranslation('common');
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const lang = (params?.lang as string) || 'pt-BR';
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const t = footerTexts[locale as keyof typeof footerTexts] || footerTexts['pt-BR'];
 
   // Gerar links do footer com base nas traduções
   const footerLinks = [
     {
-      title: t('footer.services'),
+      title: t.services,
       links: [
-        { label: t('services.landing.title'), href: `/${lang}/#services` },
-        { label: t('services.ecommerce.title'), href: `/${lang}/#services` },
-        { label: t('services.custom.title'), href: `/${lang}/#services` },
-        { label: t('header.quote'), href: `/${lang}/orcamento` },
+        { label: t.landingPages, href: `/${locale}/#services` },
+        { label: t.ecommerce, href: `/${locale}/#services` },
+        { label: t.customProjects, href: `/${locale}/#services` },
+        { label: t.requestQuote, href: `/${locale}/orcamento` },
       ],
     },
     {
-      title: t('footer.company'),
+      title: t.company,
       links: [
-        { label: t('header.about'), href: `/${lang}/#about` },
-        { label: t('header.contact'), href: `/${lang}/contact` },
-        { label: 'Blog', href: `/${lang}/blog` },
-        { label: 'Carreiras', href: `/${lang}/careers` },
+        { label: t.about, href: `/${locale}/#about` },
+        { label: t.contact, href: `/${locale}/contact` },
+        { label: t.blog, href: `/${locale}/blog` },
+        { label: t.careers, href: `/${locale}/careers` },
       ],
     },
     {
-      title: t('footer.legal'),
+      title: t.legal,
       links: [
-        { label: t('footer.terms'), href: `/${lang}/terms` },
-        { label: t('footer.privacy'), href: `/${lang}/privacy` },
-        { label: 'Cookies', href: `/${lang}/cookies` },
+        { label: t.terms, href: `/${locale}/terms` },
+        { label: t.privacy, href: `/${locale}/privacy` },
+        { label: t.cookies, href: `/${locale}/cookies` },
       ],
     },
   ];
@@ -172,12 +234,12 @@ export function Footer() {
               </ThemeIcon>
               <Box>
                 <Title order={3} fw={700} c="white" style={{ letterSpacing: '-0.5px' }}>CodeBR</Title>
-                <Text size="xs" c="gray.5">Criação de Websites</Text>
+                <Text size="xs" c="gray.5">{t.companyLabel}</Text>
               </Box>
             </Group>
 
             <Text size="sm" c="gray.5" mt="xs" lh={1.7}>
-              Criamos websites profissionais com tecnologia de ponta. Design moderno e performance excepcional para o seu negócio.
+              {t.companyDescription}
             </Text>
 
             <Group gap="md" mt="md">
@@ -256,28 +318,29 @@ export function Footer() {
                 {group.title}
               </Text>
 
-              {group.links.map((link) => (
-                <Link key={link.href} href={link.href} passHref>
-                  <Text
-                    component="a"
-                    c="gray.5"
-                    size="sm"
-                    style={{
-                      textDecoration: 'none',
-                      display: 'block',
-                      padding: '6px 0',
-                    }}
-                    sx={{
-                      transition: 'all 0.2s ease',
-                      '&:hover': {
-                        color: '#9969E5',
-                        transform: 'translateX(3px)',
-                      },
-                    }}
-                  >
-                    {link.label}
-                  </Text>
-                </Link>
+              {group.links.map((link, index) => (
+                <Box key={`${group.title}-${index}-${link.label}`}>
+                  <Link href={link.href} style={{ textDecoration: 'none' }}>
+                    <Text
+                      c="gray.5"
+                      size="sm"
+                      styles={{
+                        root: {
+                          textDecoration: 'none',
+                          display: 'block',
+                          padding: '6px 0',
+                          transition: 'all 0.2s ease',
+                          '&:hover': {
+                            color: '#9969E5',
+                            transform: 'translateX(3px)',
+                          },
+                        }
+                      }}
+                    >
+                      {link.label}
+                    </Text>
+                  </Link>
+                </Box>
               ))}
             </Stack>
           ))}
@@ -287,11 +350,11 @@ export function Footer() {
 
         <Group justify="space-between" align="center">
           <Text size="sm" c="gray.6">
-            {t('footer.copyright').replace('2025', new Date().getFullYear().toString())}
+            {t.copyright.replace('2025', new Date().getFullYear().toString())}
           </Text>
 
           <Text size="sm" c="gray.6">
-            Feito com tecnologia de ponta 🚀
+            {t.techNote}
           </Text>
         </Group>
       </Container>

@@ -9,6 +9,7 @@ import {
   Box,
   Stack
 } from '@mantine/core';
+import { usePathname } from 'next/navigation';
 import { IconArrowRight, IconBrandWhatsapp } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 
@@ -17,7 +18,44 @@ const MotionTitle = motion.create(Title);
 const MotionText = motion.create(Text);
 const MotionGroup = motion.create(Group);
 
+// Traduções para a seção CTA
+const ctaTexts = {
+  'pt-BR': {
+    badge: 'Vamos Trabalhar Juntos',
+    title: 'Pronto para',
+    titleHighlight: 'Transformar',
+    titleEnd: 'sua Presença Online?',
+    description: 'Dê o próximo passo para revolucionar sua presença digital. Nosso time de especialistas está pronto para criar soluções que geram resultados reais e mensuráveis para o seu negócio. Vamos construir algo extraordinário juntos.',
+    ctaButton: 'Solicitar Orçamento Gratuito',
+    whatsappButton: 'Fale pelo WhatsApp'
+  },
+  'en': {
+    badge: 'Let\'s Work Together',
+    title: 'Ready to',
+    titleHighlight: 'Transform',
+    titleEnd: 'your Online Presence?',
+    description: 'Take the next step to revolutionize your digital presence. Our team of experts is ready to create solutions that generate real and measurable results for your business. Let\'s build something extraordinary together.',
+    ctaButton: 'Request Free Quote',
+    whatsappButton: 'Chat on WhatsApp'
+  },
+  'fr': {
+    badge: 'Travaillons Ensemble',
+    title: 'Prêt à',
+    titleHighlight: 'Transformer',
+    titleEnd: 'votre Présence en Ligne?',
+    description: 'Franchissez la prochaine étape pour révolutionner votre présence numérique. Notre équipe d\'experts est prête à créer des solutions qui génèrent des résultats réels et mesurables pour votre entreprise. Construisons ensemble quelque chose d\'extraordinaire.',
+    ctaButton: 'Demander un Devis Gratuit',
+    whatsappButton: 'Discuter sur WhatsApp'
+  }
+};
+
 export function CtaSection() {
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const t = ctaTexts[locale as keyof typeof ctaTexts] || ctaTexts['pt-BR'];
 
   return (
     <Box
@@ -127,7 +165,7 @@ export function CtaSection() {
               transition={{ duration: 0.3 }}
               viewport={{ once: true, margin: "-100px" }}
             >
-              Vamos Trabalhar Juntos
+              {t.badge}
             </MotionText>
           </Box>
 
@@ -146,11 +184,11 @@ export function CtaSection() {
             transition={{ duration: 0.5 }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            Pronto para <Text span style={{
+            {t.title} <Text span style={{
               background: 'linear-gradient(135deg, #9969E5, #7641C0)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-            }} inherit>Transformar</Text> sua Presença Online?
+            }} inherit>{t.titleHighlight}</Text> {t.titleEnd}
           </MotionTitle>
 
           <MotionText
@@ -164,9 +202,7 @@ export function CtaSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            Dê o próximo passo para revolucionar sua presença digital. Nosso time de especialistas
-            está pronto para criar soluções que geram resultados reais e mensuráveis para o seu negócio.
-            Vamos construir algo extraordinário juntos.
+            {t.description}
           </MotionText>
 
           <MotionGroup
@@ -198,7 +234,7 @@ export function CtaSection() {
                 }
               }}
             >
-              Solicitar Orçamento Gratuito
+              {t.ctaButton}
             </Button>
 
             <Button
@@ -225,7 +261,7 @@ export function CtaSection() {
                 }
               }}
             >
-              Fale pelo WhatsApp
+              {t.whatsappButton}
             </Button>
           </MotionGroup>
         </Stack>

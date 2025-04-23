@@ -1,0 +1,212 @@
+{
+  "header": {
+    "home": "Início",
+    "services": "Serviços",
+    "pricing": "Preços",
+    "about": "Sobre Nós",
+    "contact": "Contato",
+    "quote": "Solicitar Orçamento",
+    "language": "Idioma"
+  },
+  "hero": {
+    "title": "Sites Profissionais que Convertem Visitantes em Clientes",
+    "subtitle": "Qualidade e precisão",
+    "description": "Do conceito ao site pronto em semanas, sem complicações. Desenvolvemos websites que impulsionam seu negócio com design impactante e tecnologia de ponta.",
+    "cta": "Solicitar Orçamento",
+    "examples": "Ver Exemplos",
+    "badge": "Criação de Sites Profissionais",
+    "projects": "+100 Projetos Entregues",
+    "support": "Suporte Contínuo",
+    "delivery": "Entrega em até 4 Semanas"
+  },
+  "services": {
+    "title": "Nossos Serviços",
+    "subtitle": "Soluções completas para sua presença digital",
+    "landing": {
+      "title": "Landing Pages",
+      "description": "Páginas de alta conversão focadas em resultados."
+    },
+    "ecommerce": {
+      "title": "E-commerce",
+      "description": "Lojas online completas e otimizadas para vendas."
+    },
+    "corporate": {
+      "title": "Sites Corporativos",
+      "description": "Presença digital profissional para sua empresa."
+    },
+    "custom": {
+      "title": "Projetos Personalizados",
+      "description": "Soluções sob medida para necessidades específicas."
+    }
+  },
+  "workflow": {
+    "title": "Nosso Processo de Trabalho",
+    "subtitle": "Desenvolvemos websites com um processo estruturado e transparente, garantindo resultados excepcionais em cada etapa do projeto.",
+    "steps": {
+      "discovery": {
+        "title": "Descoberta e Estratégia",
+        "description": "Mergulhamos profundamente no seu negócio para entender seus objetivos, desafios e oportunidades digitais."
+      },
+      "design": {
+        "title": "Design e Prototipagem",
+        "description": "Transformamos conceitos em experiências visuais interativas que encantam e engajam seus usuários."
+      },
+      "development": {
+        "title": "Desenvolvimento",
+        "description": "Codificamos seu projeto com as tecnologias mais avançadas, garantindo performance, segurança e escalabilidade."
+      },
+      "launch": {
+        "title": "Lançamento",
+        "description": "Implementamos seu projeto em ambiente de produção com monitoramento contínuo para garantir uma transição suave."
+      },
+      "growth": {
+        "title": "Crescimento e Otimização",
+        "description": "Analisamos dados e implementamos melhorias contínuas para maximizar o ROI e impulsionar o crescimento do seu negócio."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "O que nossos clientes dizem",
+    "subtitle": "Histórias de sucesso de quem confiou em nosso trabalho",
+    "items": {
+      "client1": {
+        "name": "João Silva",
+        "position": "CEO, TechCorp",
+        "text": "O profissionalismo e qualidade do trabalho superaram todas as expectativas."
+      },
+      "client2": {
+        "name": "Maria Santos",
+        "position": "Diretora de Marketing, InnovateX",
+        "text": "Resultados impressionantes desde o primeiro dia de lançamento do site."
+      },
+      "client3": {
+        "name": "Pedro Oliveira",
+        "position": "Fundador, StartupBR",
+        "text": "A melhor decisão que tomamos para nossa presença digital."
+      }
+    }
+  },
+  "cta": {
+    "title": "Pronto para transformar sua presença digital?",
+    "description": "Entre em contato conosco hoje mesmo e descubra como podemos ajudar seu negócio a crescer online.",
+    "button": "Solicitar Orçamento"
+  },
+  "footer": {
+    "company": "Empresa",
+    "services": "Serviços",
+    "legal": "Legal",
+    "contact": "Contato",
+    "copyright": "© 2025 CodeBR. Todos os direitos reservados.",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Uso"
+  },
+  "quote": {
+    "title": "Solicite um Orçamento",
+    "subtitle": "Preencha o formulário abaixo e entraremos em contato em até 24 horas.",
+    "form": {
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "company": "Empresa",
+      "website": "Website atual (se houver)",
+      "projectType": "Tipo de Projeto",
+      "budget": "Orçamento",
+      "deadline": "Prazo",
+      "description": "Descreva seu projeto",
+      "features": "Funcionalidades desejadas",
+      "namePlaceholder": "Seu nome completo",
+      "emailPlaceholder": "seu.email@exemplo.com",
+      "submit": "Enviar Solicitação",
+      "success": "Sua solicitação foi enviada com sucesso! Entraremos em contato em breve.",
+      "error": "Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente."
+    },
+    "services": {
+      "landing": {
+        "title": "Landing Page"
+      },
+      "ecommerce": {
+        "title": "E-commerce"
+      },
+      "corporate": {
+        "title": "Site Corporativo"
+      },
+      "custom": {
+        "title": "Projeto Personalizado"
+      }
+    }
+  },
+  "contact": {
+    "title": "Entre em Contato",
+    "info": {
+      "title": "Informações de Contato",
+      "description": "Estamos prontos para ajudar com seu projeto. Entre em contato conosco através dos canais abaixo ou preencha o formulário.",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "address": "Endereço"
+    },
+    "form": {
+      "name": "Nome",
+      "email": "E-mail",
+      "message": "Mensagem",
+      "namePlaceholder": "Seu nome completo",
+      "emailPlaceholder": "seu.email@exemplo.com",
+      "messagePlaceholder": "Descreva como podemos ajudar...",
+      "submit": "Enviar Mensagem"
+    }
+  },
+  "transformation": {
+    "title": "Transformação Visual do Website",
+    "subtitle": "Acompanhe cada etapa do desenvolvimento do seu projeto",
+    "wireframe": {
+      "title": "Estrutura Base",
+      "description": "Definição do layout e organização dos elementos para uma experiência intuitiva"
+    },
+    "design": {
+      "title": "Design Visual",
+      "description": "Criação da identidade visual e elementos de interface modernos"
+    },
+    "development": {
+      "title": "Desenvolvimento",
+      "description": "Implementação com tecnologias modernas focando em performance",
+      "site": "desenvolvimento.site.com.br"
+    },
+    "final": {
+      "title": "Projeto Final",
+      "description": "Site otimizado e seguro, pronto para crescer com seu negócio"
+    },
+    "menu": {
+      "logo": "Logo",
+      "home": "Início",
+      "services": "Serviços",
+      "contact": "Contato"
+    },
+    "hero": {
+      "title": "Área Principal",
+      "welcome": "Transforme Sua Presença Digital",
+      "subtitle": "Soluções modernas para impulsionar seu negócio",
+      "cta": "Comece Agora"
+    },
+    "features": {
+      "wireframe": {
+        "navigation": "Navegação Intuitiva",
+        "layout": "Layout Responsivo",
+        "structure": "Estrutura Modular"
+      },
+      "design": {
+        "branding": "Identidade Visual",
+        "interface": "Interface Moderna",
+        "experience": "Experiência do Usuário"
+      },
+      "development": {
+        "responsive": "Design Adaptativo",
+        "modern": "Tecnologias Modernas",
+        "performance": "Alta Performance"
+      },
+      "final": {
+        "seo": "Otimização SEO",
+        "security": "Segurança Avançada",
+        "analytics": "Análise de Dados"
+      }
+    }
+  }
+}

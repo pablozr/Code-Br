@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import {
   Burger,
   Group,
   Button,
-  Title,
   Container,
   Drawer,
   Stack,
@@ -15,10 +13,11 @@ import {
   Divider
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { usePathname, useParams } from 'next/navigation';
 import { useScroll, useMotionValueEvent } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../LanguageSwitcher';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+
 
 
 
@@ -27,34 +26,49 @@ import { LanguageSwitcher } from '../LanguageSwitcher';
 
 export function Header() {
   const [opened, { toggle, close }] = useDisclosure(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [, setScrolled] = useState(false);
   const pathname = usePathname();
-  const params = useParams();
   const { scrollY } = useScroll();
-  const { t, i18n } = useTranslation('common');
-  const lang = (params?.lang as string) || 'pt-BR';
+  // Textos do header
+  const headerTexts = {
+    'pt-BR': {
+      home: 'Início',
+      services: 'Serviços',
+      about: 'Sobre',
+      contact: 'Contato',
+      quote: 'Solicitar Orçamento'
+    },
+    'en': {
+      home: 'Home',
+      services: 'Services',
+      about: 'About',
+      contact: 'Contact',
+      quote: 'Request Quote'
+    },
+    'fr': {
+      home: 'Accueil',
+      services: 'Services',
+      about: 'À Propos',
+      contact: 'Contact',
+      quote: 'Demander un Devis'
+    }
+  };
+  const locale = pathname.split('/')[1] || 'pt-BR';
 
-  // Debug
-  console.log('Header rendering with:', {
-    pathname,
-    params,
-    lang,
-    i18nLanguage: i18n.language,
-    translations: t('header.home'),
-    mainLinks: [
-      { label: t('header.home'), href: `/${lang}` },
-      { label: t('header.services'), href: `/${lang}/#services` },
-      { label: t('header.about'), href: `/${lang}/#about` },
-      { label: t('header.contact'), href: `/${lang}/contact` },
-    ]
-  });
+  // Obter os textos para o idioma atual
+  const t = headerTexts[locale as keyof typeof headerTexts] || headerTexts['pt-BR'];
 
-  // Gerar links com base nas traduções com fallback para textos estáticos
+  // Helper function to get the path with a locale
+  function getPathWithLocale(path: string) {
+    return `/${locale}${path}`;
+  }
+
+  // Gerar links com base nas traduções
   const mainLinks = [
-    { label: t('header.home') || 'Início', href: `/${lang}` },
-    { label: t('header.services') || 'Serviços', href: `/${lang}/#services` },
-    { label: t('header.about') || 'Sobre', href: `/${lang}/#about` },
-    { label: t('header.contact') || 'Contato', href: `/${lang}/contact` },
+    { label: t.home, href: getPathWithLocale('/') },
+    { label: t.services, href: getPathWithLocale('/#services') },
+    { label: t.about, href: getPathWithLocale('/#about') },
+    { label: t.contact, href: getPathWithLocale('/contact') },
   ];
 
   // Detectar rolagem para mudar o estilo do header
@@ -65,9 +79,9 @@ export function Header() {
   // Verificar se o caminho atual corresponde ao link (ignorando o parâmetro de idioma)
   const isActive = (path: string) => {
     // Remover o idioma do pathname atual para comparação
-    const currentPath = pathname.replace(new RegExp(`^\/${lang}`), '');
+    const currentPath = pathname.replace(new RegExp(`^\/${locale}`), '');
     // Remover o idioma do path do link para comparação
-    const linkPath = path.replace(new RegExp(`^\/${lang}`), '');
+    const linkPath = path.replace(new RegExp(`^\/${locale}`), '');
 
     return currentPath === linkPath || pathname === path;
   };
@@ -80,7 +94,7 @@ export function Header() {
           top: 0,
           left: 0,
           right: 0,
-          height: '60px', // Reduzindo a altura
+          height: '70px', // Aumentando a altura
           zIndex: 100,
           background: "rgba(10, 10, 10, 0.95)",
           backdropFilter: 'blur(10px)',
@@ -102,7 +116,7 @@ export function Header() {
                   cursor: 'pointer',
                 }}
                 component={Link}
-                href={`/${lang}`}
+                href={getPathWithLocale('/')}
               >
                 <Box
                   style={{
@@ -121,9 +135,10 @@ export function Header() {
                 >
                   <Text
                     fw={700}
-                    size="md" // Reduzindo ainda mais o tamanho
+                    size="xl" // Aumentando ainda mais o tamanho
                     style={{
                       fontFamily: 'monospace',
+                      fontSize: '1.5rem',
                       background: 'linear-gradient(90deg, #7641C0, #9969E5)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -134,10 +149,11 @@ export function Header() {
 
                   <Text
                     fw={700}
-                    size="md" // Reduzindo ainda mais o tamanho
+                    size="xl" // Aumentando ainda mais o tamanho
                     style={{
                       letterSpacing: '-0.5px',
-                      marginLeft: '4px', // Reduzindo ainda mais o espaçamento
+                      marginLeft: '10px', // Aumentando ainda mais o espaçamento
+                      fontSize: '1.5rem',
                       background: 'linear-gradient(90deg, #6030A0, #9461FF, #B490FF)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -152,75 +168,73 @@ export function Header() {
             </Group>
 
             {/* Desktop navigation */}
-            <Group gap="xs" visibleFrom="md" style={{ flexGrow: 1, justifyContent: 'center' }}>
+            <Group gap="md" visibleFrom="md" style={{ flexGrow: 1, justifyContent: 'center' }}>
               {mainLinks.map((link) => (
-                <Link key={link.href} href={link.href} passHref>
-                  <Text
-                    component="a"
-                    c={isActive(link.href) ? 'white' : 'gray.3'}
-                    fw={500}
-                    size="xs"
-                    sx={(theme) => ({
-                      textDecoration: 'none',
-                      transition: 'all 0.2s ease',
-                      position: 'relative',
-                      padding: '4px 0',
-                      whiteSpace: 'nowrap',
-                      '&:hover': {
-                        color: 'white',
-                      },
-                    })}
-                  >
-                    {link.label}
+                <Box key={link.href} style={{ position: 'relative' }}>
+                  <Link href={link.href} style={{ textDecoration: 'none' }}>
+                    <Text
+                      c={isActive(link.href) ? 'white' : 'gray.3'}
+                      fw={500}
+                      size="sm"
+                      styles={{
+                        root: {
+                          textDecoration: 'none',
+                          transition: 'all 0.2s ease',
+                          position: 'relative',
+                          padding: '4px 0',
+                          whiteSpace: 'nowrap',
+                          fontSize: '15px',
+                          '&:hover': {
+                            color: 'white',
+                          },
+                        }
+                      }}
+                    >
+                      {link.label}
+                    </Text>
+                  </Link>
 
-                    {/* Linha inferior simples */}
-                    <Box
-                      sx={(theme) => ({
-                        position: 'absolute',
-                        bottom: '0',
-                        left: '0',
-                        width: isActive(link.href) ? '100%' : '0',
-                        height: '2px',
-                        background: 'white',
-                        transition: 'all 0.2s ease',
-                        opacity: isActive(link.href) ? 1 : 0,
-                        '&:hover': {
-                          width: '100%',
-                          opacity: 1,
-                        },
-                      })}
-                    />
-                  </Text>
-                </Link>
+                  {/* Linha inferior simples */}
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      bottom: '0',
+                      left: '0',
+                      width: isActive(link.href) ? '100%' : '0',
+                      height: '2px',
+                      background: 'white',
+                      transition: 'all 0.2s ease',
+                      opacity: isActive(link.href) ? 1 : 0,
+                    }}
+                  />
+                </Box>
               ))}
             </Group>
 
-            <Group gap="sm" visibleFrom="md" style={{ flexShrink: 0 }}>
+            <Group gap="md" visibleFrom="md" style={{ flexShrink: 0 }}>
               <LanguageSwitcher />
 
               <Button
                 component={Link}
-                href={`/${lang}/orcamento`}
+                href={getPathWithLocale('/orcamento')}
                 variant="gradient"
                 gradient={{ from: '#6030A0', to: '#B490FF', deg: 45 }}
                 radius="md"
-                size="xs"
-                sx={(theme) => ({
+                size="sm"
+                style={{
                   transition: 'all 0.3s ease',
                   boxShadow: '0 4px 15px rgba(118, 65, 192, 0.3)',
                   border: '1px solid rgba(153, 105, 229, 0.3)',
                   position: 'relative',
                   overflow: 'hidden',
-                  padding: '0 10px',
+                  padding: '0 16px',
+                  height: '38px',
                   fontWeight: 600,
+                  fontSize: '14px',
                   whiteSpace: 'nowrap',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 25px rgba(118, 65, 192, 0.4)',
-                  },
-                })}
+                }}
               >
-                {t('header.quote') || 'Solicitar Orçamento'}
+                {t.quote}
               </Button>
             </Group>
 
@@ -267,6 +281,7 @@ export function Header() {
                   size="xl"
                   style={{
                     fontFamily: 'monospace',
+                    fontSize: '2rem',
                     background: 'linear-gradient(90deg, #7641C0, #9969E5)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
@@ -281,7 +296,8 @@ export function Header() {
                   size="xl"
                   style={{
                     letterSpacing: '-0.5px',
-                    marginLeft: '8px',
+                    marginLeft: '12px',
+                    fontSize: '2rem',
                     background: 'linear-gradient(90deg, #7641C0, #9969E5)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
@@ -330,7 +346,7 @@ export function Header() {
           <Divider my="xl" color="dark.7" />
           <Button
             component={Link}
-            href={`/${lang}/orcamento`}
+            href={getPathWithLocale('/orcamento')}
             variant="outline"
             color="gray"
             fullWidth
@@ -346,12 +362,12 @@ export function Header() {
               },
             }}
           >
-            {t('header.quote') || 'Solicitar Orçamento'}
+            {t.quote}
           </Button>
 
           <Box mt="md">
             <Text fw={500} size="sm" mb="xs" c="gray.5">
-              {t('header.language') || 'Idioma'}:
+              Idioma:
             </Text>
             <LanguageSwitcher />
           </Box>

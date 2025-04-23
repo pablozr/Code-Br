@@ -1,18 +1,14 @@
 'use client';
 
 import { useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   Text,
-  Group,
   Stack,
   Box,
   SimpleGrid,
   rem,
   Container,
-  Badge,
-  Flex,
   ThemeIcon
 } from '@mantine/core';
 import { IconArrowRight, IconCheck, IconDeviceDesktop, IconShoppingCart, IconArticle } from '@tabler/icons-react';
@@ -24,17 +20,99 @@ import { BlackHoleEffect } from '@/app/_components/effects/BlackHoleEffect';
 import { WebsiteTransformationVisual } from './components/WebsiteTransformationVisual';
 
 // Define proper types for motion components
-const MotionBox = motion.create(Box);
-const MotionText = motion.create(Text);
-const MotionGroup = motion.create(Group);
-const MotionBadge = motion.create(Badge);
-const MotionFlex = motion.create(Flex);
+const MotionBox = motion.div;
+const MotionText = motion.p;
+const MotionGroup = motion.div;
+const MotionBadge = motion.div;
+const MotionFlex = motion.div;
 
 export function HeroSection() {
   const targetRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation('common');
-  const params = useParams();
-  const lang = (params?.lang as string) || 'pt-BR';
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Textos do hero
+  const heroTexts = {
+    'pt-BR': {
+      badge: 'Websites Profissionais',
+      title: 'Seu Site Profissional, Sem Complicação',
+      description: 'Criação de sites sob demanda com agilidade, design moderno e foco no seu negócio.',
+      cta: 'Solicitar Orçamento',
+      examples: 'Ver Exemplos',
+      projects: '+100 Projetos Entregues',
+      support: 'Suporte 24/7',
+      delivery: 'Entrega Rápida'
+    },
+    'en': {
+      badge: 'Professional Websites',
+      title: 'Your Professional Website, Without Complications',
+      description: 'On-demand website creation with agility, modern design and focus on your business.',
+      cta: 'Request Quote',
+      examples: 'See Examples',
+      projects: '+100 Delivered Projects',
+      support: '24/7 Support',
+      delivery: 'Fast Delivery'
+    },
+    'fr': {
+      badge: 'Sites Web Professionnels',
+      title: 'Votre Site Web Professionnel, Sans Complications',
+      description: 'Création de sites web à la demande avec agilité, design moderne et focus sur votre entreprise.',
+      cta: 'Demander un Devis',
+      examples: 'Voir Exemples',
+      projects: '+100 Projets Livrés',
+      support: 'Support 24/7',
+      delivery: 'Livraison Rapide'
+    }
+  };
+
+  // Textos dos serviços
+  const servicesTexts = {
+    'pt-BR': {
+      landing: {
+        title: 'Landing Pages',
+        description: 'Páginas de alta conversão para captar leads e clientes.'
+      },
+      ecommerce: {
+        title: 'E-commerce',
+        description: 'Lojas online completas com pagamento integrado.'
+      },
+      corporate: {
+        title: 'Sites Corporativos',
+        description: 'Websites profissionais para empresas de todos os tamanhos.'
+      }
+    },
+    'en': {
+      landing: {
+        title: 'Landing Pages',
+        description: 'High-conversion pages to capture leads and customers.'
+      },
+      ecommerce: {
+        title: 'E-commerce',
+        description: 'Complete online stores with integrated payment.'
+      },
+      corporate: {
+        title: 'Corporate Websites',
+        description: 'Professional websites for companies of all sizes.'
+      }
+    },
+    'fr': {
+      landing: {
+        title: 'Pages d\'Atterrissage',
+        description: 'Pages à haute conversion pour capturer des leads et des clients.'
+      },
+      ecommerce: {
+        title: 'E-commerce',
+        description: 'Boutiques en ligne complètes avec paiement intégré.'
+      },
+      corporate: {
+        title: 'Sites Web d\'Entreprise',
+        description: 'Sites web professionnels pour entreprises de toutes tailles.'
+      }
+    }
+  };
+
+  const heroT = heroTexts[locale as keyof typeof heroTexts] || heroTexts['pt-BR'];
+  const servicesT = servicesTexts[locale as keyof typeof servicesTexts] || servicesTexts['pt-BR'];
 
   return (
     <Box
@@ -58,16 +136,20 @@ export function HeroSection() {
           {/* Left Column - Text Content */}
           <Stack justify="center" gap="xl" ref={targetRef}>
             <MotionBadge
-              variant="gradient"
-              gradient={{ from: 'rgba(118,65,192,0.8)', to: 'rgba(153,105,229,0.8)' }}
-              size="lg"
-              radius="sm"
-              style={{ width: 'fit-content' }}
+              style={{
+                width: 'fit-content',
+                background: 'linear-gradient(90deg, rgba(118,65,192,0.8), rgba(153,105,229,0.8))',
+                padding: '4px 12px',
+                borderRadius: '4px',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: 'white'
+              }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              {t('hero.badge') || 'Criação de Sites Profissionais'}
+              {heroT.badge}
             </MotionBadge>
 
             <MotionBox
@@ -76,7 +158,7 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               <GradientText
-                text={t('hero.title') || "Sites Profissionais que Convertem Visitantes em Clientes"}
+                text={heroT.title}
                 fontSize="3.5rem"
                 fontWeight={800}
                 gradientColors={['#C4A9FF', '#9969E5', '#7641C0', '#5D00FF']}
@@ -90,28 +172,33 @@ export function HeroSection() {
             </MotionBox>
 
             <MotionText
-              size="xl"
-              c="white"
-              fw={500}
               style={{
+                fontSize: '1.25rem',
+                color: 'white',
+                fontWeight: 500,
                 textShadow: '0 0 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6)',
               }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {t('hero.description') || "Do conceito ao site pronto em semanas, sem complicações. Desenvolvemos websites que impulsionam seu negócio com design impactante e tecnologia de ponta."}
+              {heroT.description}
             </MotionText>
 
             <MotionGroup
-              mt="md"
+              style={{
+                marginTop: '1rem',
+                display: 'flex',
+                gap: '1rem',
+                flexWrap: 'wrap'
+              }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <TechButton
                 component="a"
-                href={`/${lang}/orcamento`}
+                href="/orcamento"
                 size="xl"
                 radius="xl"
                 variant="gradient"
@@ -134,12 +221,12 @@ export function HeroSection() {
                   backdropFilter: 'blur(10px)',
                 }}
               >
-                {t('hero.cta') || 'Solicitar Orçamento'}
+                {heroT.cta}
               </TechButton>
 
               <TechButton
                 component="a"
-                href={`/${lang}/#portfolio`}
+                href="/#portfolio"
                 size="xl"
                 radius="xl"
                 variant="outline"
@@ -158,15 +245,18 @@ export function HeroSection() {
                   }
                 }}
               >
-                {t('hero.examples') || 'Ver Exemplos'}
+                {heroT.examples}
               </TechButton>
             </MotionGroup>
 
             {/* Trust Indicators */}
             <MotionFlex
-              gap="md"
-              mt="xl"
-              wrap="wrap"
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                marginTop: '2rem',
+                flexWrap: 'wrap'
+              }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -187,7 +277,7 @@ export function HeroSection() {
                 >
                   <IconCheck size={14} />
                 </ThemeIcon>
-                <Text size="sm" c="gray.3">{t('hero.projects') || '+100 Projetos Entregues'}</Text>
+                <Text size="sm" c="gray.3">{heroT.projects}</Text>
               </Box>
 
               <Box style={{
@@ -206,7 +296,7 @@ export function HeroSection() {
                 >
                   <IconCheck size={14} />
                 </ThemeIcon>
-                <Text size="sm" c="gray.3">{t('hero.support') || 'Suporte Contínuo'}</Text>
+                <Text size="sm" c="gray.3">{heroT.support}</Text>
               </Box>
 
               <Box style={{
@@ -225,7 +315,7 @@ export function HeroSection() {
                 >
                   <IconCheck size={14} />
                 </ThemeIcon>
-                <Text size="sm" c="gray.3">{t('hero.delivery') || 'Entrega em até 4 Semanas'}</Text>
+                <Text size="sm" c="gray.3">{heroT.delivery}</Text>
               </Box>
             </MotionFlex>
           </Stack>
@@ -248,7 +338,7 @@ export function HeroSection() {
 
         {/* Service Types */}
         <MotionBox
-          mt={80}
+          style={{ marginTop: '80px' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
@@ -276,9 +366,9 @@ export function HeroSection() {
               >
                 <IconDeviceDesktop size={30} />
               </ThemeIcon>
-              <Text fw={700} size="lg" c="white" mb="xs">{t('services.landing.title') || 'Landing Pages'}</Text>
+              <Text fw={700} size="lg" c="white" mb="xs">{servicesT.landing.title}</Text>
               <Text c="gray.4" size="sm">
-                {t('services.landing.description') || 'Páginas otimizadas para conversão, ideais para campanhas e lançamentos.'}
+                {servicesT.landing.description}
               </Text>
             </Box>
 
@@ -304,9 +394,9 @@ export function HeroSection() {
               >
                 <IconShoppingCart size={30} />
               </ThemeIcon>
-              <Text fw={700} size="lg" c="white" mb="xs">{t('services.ecommerce.title') || 'E-commerce'}</Text>
+              <Text fw={700} size="lg" c="white" mb="xs">{servicesT.ecommerce.title}</Text>
               <Text c="gray.4" size="sm">
-                {t('services.ecommerce.description') || 'Lojas online completas com gestão de produtos e pagamentos integrados.'}
+                {servicesT.ecommerce.description}
               </Text>
             </Box>
 
@@ -332,9 +422,9 @@ export function HeroSection() {
               >
                 <IconArticle size={30} />
               </ThemeIcon>
-              <Text fw={700} size="lg" c="white" mb="xs">{t('services.corporate.title') || 'Sites Institucionais'}</Text>
+              <Text fw={700} size="lg" c="white" mb="xs">{servicesT.corporate.title}</Text>
               <Text c="gray.4" size="sm">
-                {t('services.corporate.description') || 'Presença digital profissional para empresas com foco em credibilidade.'}
+                {servicesT.corporate.description}
               </Text>
             </Box>
           </SimpleGrid>

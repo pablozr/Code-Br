@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import {
   Box,
   Title,
@@ -96,6 +97,534 @@ const MotionActionIcon = motion.create(ActionIcon);
 const MotionDivider = motion.create(Divider);
 const MotionProgress = motion.create(Progress);
 
+// Traduções para a seção de workflow
+const workflowTexts = {
+  'pt-BR': {
+    sectionTitle: 'Nosso Processo de Trabalho',
+    sectionDescription: 'Desenvolvemos websites com um processo estruturado e transparente, garantindo resultados excepcionais em cada etapa do projeto.',
+    processDetails: 'Detalhes do Processo',
+    toolsTech: 'Ferramentas & Tecnologias',
+    successMetrics: 'Métricas de Sucesso'
+  },
+  'en': {
+    sectionTitle: 'Our Work Process',
+    sectionDescription: 'We develop websites with a structured and transparent process, ensuring exceptional results at every stage of the project.',
+    processDetails: 'Process Details',
+    toolsTech: 'Tools & Technologies',
+    successMetrics: 'Success Metrics'
+  },
+  'fr': {
+    sectionTitle: 'Notre Processus de Travail',
+    sectionDescription: 'Nous développons des sites web avec un processus structuré et transparent, garantissant des résultats exceptionnels à chaque étape du projet.',
+    processDetails: 'Détails du Processus',
+    toolsTech: 'Outils & Technologies',
+    successMetrics: 'Métriques de Succès'
+  }
+};
+
+// Traduções para as etapas do workflow
+const stepsTexts = {
+  'pt-BR': {
+    discovery: {
+      title: 'Descoberta e Estratégia',
+      description: 'Mergulhamos profundamente no seu negócio para entender seus objetivos, desafios e oportunidades digitais.',
+      details: [
+        { title: 'Análise de Requisitos', icon: <IconInfoCircle size={16} />, progress: 100 },
+        { title: 'Definição de Objetivos', icon: <IconCircleCheck size={16} />, progress: 100 },
+        { title: 'Pesquisa de Mercado', icon: <IconUsers size={16} />, progress: 100 },
+        { title: 'Planejamento Estratégico', icon: <IconArrowsShuffle size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Análise Estratégica',
+      metrics: [
+        { label: 'Precisão', value: 98 },
+        { label: 'Eficiência', value: 95 },
+        { label: 'Satisfação', value: 100 }
+      ]
+    },
+    design: {
+      title: 'Design e Prototipagem',
+      description: 'Transformamos conceitos em experiências visuais interativas que encantam e engajam seus usuários.',
+      details: [
+        { title: 'Design System', icon: <IconCircleSquare size={16} />, progress: 100 },
+        { title: 'UI/UX Design', icon: <IconDeviceDesktop size={16} />, progress: 100 },
+        { title: 'Protótipos Interativos', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Testes de Usabilidade', icon: <IconUsers size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Design System',
+      metrics: [
+        { label: 'Inovação', value: 95 },
+        { label: 'Usabilidade', value: 98 },
+        { label: 'Conversão', value: 92 }
+      ]
+    },
+    development: {
+      title: 'Desenvolvimento',
+      description: 'Codificamos seu projeto com as tecnologias mais avançadas, garantindo performance, segurança e escalabilidade.',
+      details: [
+        { title: 'Arquitetura', icon: <IconServer size={16} />, progress: 100 },
+        { title: 'Frontend', icon: <IconBrandReact size={16} />, progress: 100 },
+        { title: 'Backend', icon: <IconBrandNodejs size={16} />, progress: 100 },
+        { title: 'Testes Automatizados', icon: <IconCircleCheck size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Desenvolvimento',
+      metrics: [
+        { label: 'Performance', value: 96 },
+        { label: 'Qualidade', value: 98 },
+        { label: 'Segurança', value: 99 }
+      ]
+    },
+    launch: {
+      title: 'Lançamento',
+      description: 'Implementamos seu projeto em ambiente de produção com monitoramento contínuo para garantir uma transição suave.',
+      details: [
+        { title: 'CI/CD Pipeline', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Infraestrutura', icon: <IconServer size={16} />, progress: 100 },
+        { title: 'Monitoramento', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+        { title: 'Otimização', icon: <IconSettings size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Lançamento',
+      metrics: [
+        { label: 'Uptime', value: 99.9 },
+        { label: 'Velocidade', value: 97 },
+        { label: 'Segurança', value: 100 }
+      ]
+    },
+    growth: {
+      title: 'Crescimento e Otimização',
+      description: 'Analisamos dados e implementamos melhorias contínuas para maximizar o ROI e impulsionar o crescimento do seu negócio.',
+      details: [
+        { title: 'Análise de Dados', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+        { title: 'SEO Avançado', icon: <IconBrandGoogle size={16} />, progress: 100 },
+        { title: 'Otimização de Conversão', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Escalabilidade', icon: <IconArrowsMaximize size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Crescimento',
+      metrics: [
+        { label: 'Crescimento', value: 35 },
+        { label: 'Retenção', value: 92 },
+        { label: 'ROI', value: 320 }
+      ]
+    }
+  },
+  'en': {
+    discovery: {
+      title: 'Discovery & Strategy',
+      description: 'We dive deep into your business to understand your goals, challenges, and digital opportunities.',
+      details: [
+        { title: 'Requirements Analysis', icon: <IconInfoCircle size={16} />, progress: 100 },
+        { title: 'Goal Definition', icon: <IconCircleCheck size={16} />, progress: 100 },
+        { title: 'Market Research', icon: <IconUsers size={16} />, progress: 100 },
+        { title: 'Strategic Planning', icon: <IconArrowsShuffle size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Strategic Analysis',
+      metrics: [
+        { label: 'Accuracy', value: 98 },
+        { label: 'Efficiency', value: 95 },
+        { label: 'Satisfaction', value: 100 }
+      ]
+    },
+    design: {
+      title: 'Design & Prototyping',
+      description: 'We transform concepts into interactive visual experiences that delight and engage your users.',
+      details: [
+        { title: 'Design System', icon: <IconCircleSquare size={16} />, progress: 100 },
+        { title: 'UI/UX Design', icon: <IconDeviceDesktop size={16} />, progress: 100 },
+        { title: 'Interactive Prototypes', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Usability Testing', icon: <IconUsers size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Design System',
+      metrics: [
+        { label: 'Innovation', value: 95 },
+        { label: 'Usability', value: 98 },
+        { label: 'Conversion', value: 92 }
+      ]
+    },
+    development: {
+      title: 'Development',
+      description: 'We code your project with the most advanced technologies, ensuring performance, security, and scalability.',
+      details: [
+        { title: 'Architecture', icon: <IconServer size={16} />, progress: 100 },
+        { title: 'Frontend', icon: <IconBrandReact size={16} />, progress: 100 },
+        { title: 'Backend', icon: <IconBrandNodejs size={16} />, progress: 100 },
+        { title: 'Automated Tests', icon: <IconCircleCheck size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Development',
+      metrics: [
+        { label: 'Performance', value: 96 },
+        { label: 'Quality', value: 98 },
+        { label: 'Security', value: 99 }
+      ]
+    },
+    launch: {
+      title: 'Launch',
+      description: 'We implement your project in a production environment with continuous monitoring to ensure a smooth transition.',
+      details: [
+        { title: 'CI/CD Pipeline', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Infrastructure', icon: <IconServer size={16} />, progress: 100 },
+        { title: 'Monitoring', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+        { title: 'Optimization', icon: <IconSettings size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Launch',
+      metrics: [
+        { label: 'Uptime', value: 99.9 },
+        { label: 'Speed', value: 97 },
+        { label: 'Security', value: 100 }
+      ]
+    },
+    growth: {
+      title: 'Growth & Optimization',
+      description: 'We analyze data and implement continuous improvements to maximize ROI and drive your business growth.',
+      details: [
+        { title: 'Data Analysis', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+        { title: 'Advanced SEO', icon: <IconBrandGoogle size={16} />, progress: 100 },
+        { title: 'Conversion Optimization', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Scalability', icon: <IconArrowsMaximize size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Growth',
+      metrics: [
+        { label: 'Growth', value: 35 },
+        { label: 'Retention', value: 92 },
+        { label: 'ROI', value: 320 }
+      ]
+    }
+  },
+  'fr': {
+    discovery: {
+      title: 'Découverte et Stratégie',
+      description: 'Nous plongeons profondément dans votre entreprise pour comprendre vos objectifs, défis et opportunités numériques.',
+      details: [
+        { title: 'Analyse des Besoins', icon: <IconInfoCircle size={16} />, progress: 100 },
+        { title: 'Définition des Objectifs', icon: <IconCircleCheck size={16} />, progress: 100 },
+        { title: 'Étude de Marché', icon: <IconUsers size={16} />, progress: 100 },
+        { title: 'Planification Stratégique', icon: <IconArrowsShuffle size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Analyse Stratégique',
+      metrics: [
+        { label: 'Précision', value: 98 },
+        { label: 'Efficacité', value: 95 },
+        { label: 'Satisfaction', value: 100 }
+      ]
+    },
+    design: {
+      title: 'Design et Prototypage',
+      description: 'Nous transformons les concepts en expériences visuelles interactives qui enchantent et engagent vos utilisateurs.',
+      details: [
+        { title: 'Système de Design', icon: <IconCircleSquare size={16} />, progress: 100 },
+        { title: 'Design UI/UX', icon: <IconDeviceDesktop size={16} />, progress: 100 },
+        { title: 'Prototypes Interactifs', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Tests d\'Utilisabilité', icon: <IconUsers size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Système de Design',
+      metrics: [
+        { label: 'Innovation', value: 95 },
+        { label: 'Utilisabilité', value: 98 },
+        { label: 'Conversion', value: 92 }
+      ]
+    },
+    development: {
+      title: 'Développement',
+      description: 'Nous codons votre projet avec les technologies les plus avancées, garantissant performance, sécurité et évolutivité.',
+      details: [
+        { title: 'Architecture', icon: <IconServer size={16} />, progress: 100 },
+        { title: 'Frontend', icon: <IconBrandReact size={16} />, progress: 100 },
+        { title: 'Backend', icon: <IconBrandNodejs size={16} />, progress: 100 },
+        { title: 'Tests Automatisés', icon: <IconCircleCheck size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Développement',
+      metrics: [
+        { label: 'Performance', value: 96 },
+        { label: 'Qualité', value: 98 },
+        { label: 'Sécurité', value: 99 }
+      ]
+    },
+    launch: {
+      title: 'Lancement',
+      description: 'Nous implémentons votre projet dans un environnement de production avec une surveillance continue pour assurer une transition en douceur.',
+      details: [
+        { title: 'Pipeline CI/CD', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Infrastructure', icon: <IconServer size={16} />, progress: 100 },
+        { title: 'Surveillance', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+        { title: 'Optimisation', icon: <IconSettings size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Lancement',
+      metrics: [
+        { label: 'Disponibilité', value: 99.9 },
+        { label: 'Vitesse', value: 97 },
+        { label: 'Sécurité', value: 100 }
+      ]
+    },
+    growth: {
+      title: 'Croissance et Optimisation',
+      description: 'Nous analysons les données et mettons en œuvre des améliorations continues pour maximiser le ROI et stimuler la croissance de votre entreprise.',
+      details: [
+        { title: 'Analyse de Données', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+        { title: 'SEO Avancé', icon: <IconBrandGoogle size={16} />, progress: 100 },
+        { title: 'Optimisation de Conversion', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+        { title: 'Évolutivité', icon: <IconArrowsMaximize size={16} />, progress: 100 }
+      ],
+      visualTitle: 'Croissance',
+      metrics: [
+        { label: 'Croissance', value: 35 },
+        { label: 'Rétention', value: 92 },
+        { label: 'ROI', value: 320 }
+      ]
+    }
+  }
+};
+
+// Traduções para os componentes visuais
+const visualTexts = {
+  'pt-BR': {
+    // Discovery Visual
+    marketResearch: 'Pesquisa de Mercado',
+    marketResearchDesc: 'Análise competitiva e identificação de oportunidades',
+    objectiveDefinition: 'Definição de Objetivos',
+    objectiveDefinitionDesc: 'Estabelecimento de metas claras e mensuráveis',
+    result: 'Resultado',
+    resultDesc: 'Plano estratégico detalhado com roadmap de implementação',
+    strategy: 'Estratégia',
+    planning: 'Planejamento',
+    analysis: 'Análise',
+    // Design Visual
+    primaryColors: 'Cores Primárias',
+    typography: 'Tipografia',
+    uiComponents: 'Componentes UI',
+    button: 'Botão',
+    outlineButton: 'Botão Outline',
+    uiUx: 'UI/UX',
+    designSystem: 'Design System',
+    prototypes: 'Protótipos',
+    // Development Visual
+    frontend: 'Frontend',
+    backend: 'Backend',
+    database: 'Database',
+    cleanCode: 'Clean Code',
+    tests: 'Testes',
+    cicd: 'CI/CD',
+    performance: 'Performance',
+    // Launch Visual
+    infrastructure: 'Infraestrutura',
+    online: 'Online',
+    server: 'Servidor',
+    monitoring: 'Monitoramento',
+    finalTests: 'Testes Finais',
+    functionality: 'Funcionalidade',
+    security: 'Segurança',
+    firewall: 'Firewall',
+    backups: 'Backups',
+    launchProject: 'Lançar Projeto',
+    // Growth Visual
+    seoAdvanced: 'SEO Avançado',
+    conversionOptimization: 'Otimização de Conversão',
+    scalability: 'Escalabilidade',
+    analytics: 'Analytics',
+    metrics: 'Métricas',
+    growth: 'Crescimento',
+    retention: 'Retenção',
+    roi: 'ROI',
+    // Process details
+    processDetails: 'Detalhes do Processo',
+    requirementsAnalysis: 'Análise de Requisitos',
+    objectivesDefinition: 'Definição de Objetivos',
+    marketResearchProcess: 'Pesquisa de Mercado',
+    strategicPlanning: 'Planejamento Estratégico',
+    toolsAndTechnologies: 'Ferramentas e Tecnologias',
+    successMetrics: 'Métricas de Sucesso',
+    precision: 'Precisão',
+    efficiency: 'Eficiência',
+    satisfaction: 'Satisfação',
+    // Other metrics
+    innovation: 'Inovação',
+    usability: 'Usabilidade',
+    conversion: 'Conversão',
+    performance: 'Performance',
+    quality: 'Qualidade',
+    security: 'Segurança',
+    uptime: 'Uptime',
+    speed: 'Velocidade',
+    // Design details
+    designSystemDetail: 'Design System',
+    uiUxDesign: 'UI/UX Design',
+    interactivePrototypes: 'Protótipos Interativos',
+    usabilityTests: 'Testes de Usabilidade',
+    // Development details
+    architecture: 'Arquitetura',
+    automatedTests: 'Testes Automatizados',
+    // Launch details
+    cicdPipeline: 'CI/CD Pipeline',
+    infrastructureDetail: 'Infraestrutura',
+    optimizationDetail: 'Otimização',
+    // Growth details
+    dataAnalysis: 'Análise de Dados'
+  },
+  'en': {
+    // Discovery Visual
+    marketResearch: 'Market Research',
+    marketResearchDesc: 'Competitive analysis and opportunity identification',
+    objectiveDefinition: 'Objective Definition',
+    objectiveDefinitionDesc: 'Establishment of clear and measurable goals',
+    result: 'Result',
+    resultDesc: 'Detailed strategic plan with implementation roadmap',
+    strategy: 'Strategy',
+    planning: 'Planning',
+    analysis: 'Analysis',
+    // Design Visual
+    primaryColors: 'Primary Colors',
+    typography: 'Typography',
+    uiComponents: 'UI Components',
+    button: 'Button',
+    outlineButton: 'Outline Button',
+    uiUx: 'UI/UX',
+    designSystem: 'Design System',
+    prototypes: 'Prototypes',
+    // Development Visual
+    frontend: 'Frontend',
+    backend: 'Backend',
+    database: 'Database',
+    cleanCode: 'Clean Code',
+    tests: 'Tests',
+    cicd: 'CI/CD',
+    performance: 'Performance',
+    // Launch Visual
+    infrastructure: 'Infrastructure',
+    online: 'Online',
+    server: 'Server',
+    monitoring: 'Monitoring',
+    finalTests: 'Final Tests',
+    functionality: 'Functionality',
+    security: 'Security',
+    firewall: 'Firewall',
+    backups: 'Backups',
+    launchProject: 'Launch Project',
+    // Growth Visual
+    seoAdvanced: 'Advanced SEO',
+    conversionOptimization: 'Conversion Optimization',
+    scalability: 'Scalability',
+    analytics: 'Analytics',
+    metrics: 'Metrics',
+    growth: 'Growth',
+    retention: 'Retention',
+    roi: 'ROI',
+    // Process details
+    processDetails: 'Process Details',
+    requirementsAnalysis: 'Requirements Analysis',
+    objectivesDefinition: 'Objectives Definition',
+    marketResearchProcess: 'Market Research',
+    strategicPlanning: 'Strategic Planning',
+    toolsAndTechnologies: 'Tools & Technologies',
+    successMetrics: 'Success Metrics',
+    precision: 'Precision',
+    efficiency: 'Efficiency',
+    satisfaction: 'Satisfaction',
+    // Other metrics
+    innovation: 'Innovation',
+    usability: 'Usability',
+    conversion: 'Conversion',
+    performance: 'Performance',
+    quality: 'Quality',
+    security: 'Security',
+    uptime: 'Uptime',
+    speed: 'Speed',
+    // Design details
+    designSystemDetail: 'Design System',
+    uiUxDesign: 'UI/UX Design',
+    interactivePrototypes: 'Interactive Prototypes',
+    usabilityTests: 'Usability Tests',
+    // Development details
+    architecture: 'Architecture',
+    automatedTests: 'Automated Tests',
+    // Launch details
+    cicdPipeline: 'CI/CD Pipeline',
+    infrastructureDetail: 'Infrastructure',
+    optimizationDetail: 'Optimization',
+    // Growth details
+    dataAnalysis: 'Data Analysis'
+  },
+  'fr': {
+    // Discovery Visual
+    marketResearch: 'Étude de Marché',
+    marketResearchDesc: 'Analyse concurrentielle et identification des opportunités',
+    objectiveDefinition: 'Définition des Objectifs',
+    objectiveDefinitionDesc: 'Établissement d\'objectifs clairs et mesurables',
+    result: 'Résultat',
+    resultDesc: 'Plan stratégique détaillé avec feuille de route de mise en œuvre',
+    strategy: 'Stratégie',
+    planning: 'Planification',
+    analysis: 'Analyse',
+    // Design Visual
+    primaryColors: 'Couleurs Primaires',
+    typography: 'Typographie',
+    uiComponents: 'Composants UI',
+    button: 'Bouton',
+    outlineButton: 'Bouton Contour',
+    uiUx: 'UI/UX',
+    designSystem: 'Système de Design',
+    prototypes: 'Prototypes',
+    // Development Visual
+    frontend: 'Frontend',
+    backend: 'Backend',
+    database: 'Base de Données',
+    cleanCode: 'Code Propre',
+    tests: 'Tests',
+    cicd: 'CI/CD',
+    performance: 'Performance',
+    // Launch Visual
+    infrastructure: 'Infrastructure',
+    online: 'En Ligne',
+    server: 'Serveur',
+    monitoring: 'Surveillance',
+    finalTests: 'Tests Finaux',
+    functionality: 'Fonctionnalité',
+    security: 'Sécurité',
+    firewall: 'Pare-feu',
+    backups: 'Sauvegardes',
+    launchProject: 'Lancer le Projet',
+    // Growth Visual
+    seoAdvanced: 'SEO Avancé',
+    conversionOptimization: 'Optimisation de Conversion',
+    scalability: 'Évolutivité',
+    analytics: 'Analytique',
+    metrics: 'Métriques',
+    growth: 'Croissance',
+    retention: 'Rétention',
+    roi: 'ROI',
+    // Process details
+    processDetails: 'Détails du Processus',
+    requirementsAnalysis: 'Analyse de Besoins',
+    objectivesDefinition: 'Définition des Objectifs',
+    marketResearchProcess: 'Étude de Marché',
+    strategicPlanning: 'Planification Stratégique',
+    toolsAndTechnologies: 'Outils et Technologies',
+    successMetrics: 'Métriques de Succès',
+    precision: 'Précision',
+    efficiency: 'Efficacité',
+    satisfaction: 'Satisfaction',
+    // Other metrics
+    innovation: 'Innovation',
+    usability: 'Utilisabilité',
+    conversion: 'Conversion',
+    performance: 'Performance',
+    quality: 'Qualité',
+    security: 'Sécurité',
+    uptime: 'Disponibilité',
+    speed: 'Vitesse',
+    // Design details
+    designSystemDetail: 'Système de Design',
+    uiUxDesign: 'Design UI/UX',
+    interactivePrototypes: 'Prototypes Interactifs',
+    usabilityTests: 'Tests d\'Utilisabilité',
+    // Development details
+    architecture: 'Architecture',
+    automatedTests: 'Tests Automatisés',
+    // Launch details
+    cicdPipeline: 'Pipeline CI/CD',
+    infrastructureDetail: 'Infrastructure',
+    optimizationDetail: 'Optimisation',
+    // Growth details
+    dataAnalysis: 'Analyse de Données'
+  }
+};
+
 // Dados do processo de trabalho
 const workflowSteps = [
   {
@@ -104,10 +633,10 @@ const workflowSteps = [
     description: 'Mergulhamos profundamente no seu negócio para entender seus objetivos, desafios e oportunidades digitais.',
     icon: <IconBulb size={rem(24)} stroke={1.5} />,
     details: [
-      { title: 'Análise de Requisitos', icon: <IconInfoCircle size={16} />, progress: 100 },
-      { title: 'Definição de Objetivos', icon: <IconCircleCheck size={16} />, progress: 100 },
-      { title: 'Pesquisa de Mercado', icon: <IconUsers size={16} />, progress: 100 },
-      { title: 'Planejamento Estratégico', icon: <IconArrowsShuffle size={16} />, progress: 100 }
+      { id: 'requirementsAnalysis', icon: <IconInfoCircle size={16} />, progress: 100 },
+      { id: 'objectivesDefinition', icon: <IconCircleCheck size={16} />, progress: 100 },
+      { id: 'marketResearchProcess', icon: <IconUsers size={16} />, progress: 100 },
+      { id: 'strategicPlanning', icon: <IconArrowsShuffle size={16} />, progress: 100 }
     ],
     tools: [
       { name: 'Figma', icon: <IconBrandFigma size={18} /> },
@@ -118,9 +647,9 @@ const workflowSteps = [
     gradient: 'linear-gradient(135deg, #7641C0, #9969E5)',
     badge: '01',
     metrics: [
-      { label: 'Precisão', value: 98 },
-      { label: 'Eficiência', value: 95 },
-      { label: 'Satisfação', value: 100 }
+      { id: 'precision', value: 98 },
+      { id: 'efficiency', value: 95 },
+      { id: 'satisfaction', value: 100 }
     ],
     visual: 'discovery'
   },
@@ -130,10 +659,10 @@ const workflowSteps = [
     description: 'Transformamos conceitos em experiências visuais interativas que encantam e engajam seus usuários.',
     icon: <IconBrandFigma size={rem(24)} stroke={1.5} />,
     details: [
-      { title: 'Design System', icon: <IconCircleSquare size={16} />, progress: 100 },
-      { title: 'UI/UX Design', icon: <IconDeviceDesktop size={16} />, progress: 100 },
-      { title: 'Protótipos Interativos', icon: <IconArrowsShuffle size={16} />, progress: 100 },
-      { title: 'Testes de Usabilidade', icon: <IconUsers size={16} />, progress: 100 }
+      { id: 'designSystemDetail', icon: <IconCircleSquare size={16} />, progress: 100 },
+      { id: 'uiUxDesign', icon: <IconDeviceDesktop size={16} />, progress: 100 },
+      { id: 'interactivePrototypes', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+      { id: 'usabilityTests', icon: <IconUsers size={16} />, progress: 100 }
     ],
     tools: [
       { name: 'Figma', icon: <IconBrandFigma size={18} /> },
@@ -144,9 +673,9 @@ const workflowSteps = [
     gradient: 'linear-gradient(135deg, #9969E5, #B490FF)',
     badge: '02',
     metrics: [
-      { label: 'Inovação', value: 95 },
-      { label: 'Usabilidade', value: 98 },
-      { label: 'Conversão', value: 92 }
+      { id: 'innovation', value: 95 },
+      { id: 'usability', value: 98 },
+      { id: 'conversion', value: 92 }
     ],
     visual: 'design'
   },
@@ -156,10 +685,10 @@ const workflowSteps = [
     description: 'Codificamos seu projeto com as tecnologias mais avançadas, garantindo performance, segurança e escalabilidade.',
     icon: <IconCode size={rem(24)} stroke={1.5} />,
     details: [
-      { title: 'Arquitetura', icon: <IconServer size={16} />, progress: 100 },
-      { title: 'Frontend', icon: <IconBrandReact size={16} />, progress: 100 },
-      { title: 'Backend', icon: <IconBrandNodejs size={16} />, progress: 100 },
-      { title: 'Testes Automatizados', icon: <IconCircleCheck size={16} />, progress: 100 }
+      { id: 'architecture', icon: <IconServer size={16} />, progress: 100 },
+      { id: 'frontend', icon: <IconBrandReact size={16} />, progress: 100 },
+      { id: 'backend', icon: <IconBrandNodejs size={16} />, progress: 100 },
+      { id: 'automatedTests', icon: <IconCircleCheck size={16} />, progress: 100 }
     ],
     tools: [
       { name: 'React', icon: <IconBrandReact size={18} /> },
@@ -172,9 +701,9 @@ const workflowSteps = [
     gradient: 'linear-gradient(135deg, #6030A0, #7641C0)',
     badge: '03',
     metrics: [
-      { label: 'Performance', value: 96 },
-      { label: 'Qualidade', value: 98 },
-      { label: 'Segurança', value: 99 }
+      { id: 'performance', value: 96 },
+      { id: 'quality', value: 98 },
+      { id: 'security', value: 99 }
     ],
     visual: 'development'
   },
@@ -184,10 +713,10 @@ const workflowSteps = [
     description: 'Implementamos seu projeto em ambiente de produção com monitoramento contínuo para garantir uma transição suave.',
     icon: <IconRocket size={rem(24)} stroke={1.5} />,
     details: [
-      { title: 'CI/CD Pipeline', icon: <IconArrowsShuffle size={16} />, progress: 100 },
-      { title: 'Infraestrutura', icon: <IconServer size={16} />, progress: 100 },
-      { title: 'Monitoramento', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
-      { title: 'Otimização', icon: <IconSettings size={16} />, progress: 100 }
+      { id: 'cicdPipeline', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+      { id: 'infrastructureDetail', icon: <IconServer size={16} />, progress: 100 },
+      { id: 'monitoring', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+      { id: 'optimizationDetail', icon: <IconSettings size={16} />, progress: 100 }
     ],
     tools: [
       { name: 'Vercel', icon: <IconBrandVercel size={18} /> },
@@ -198,9 +727,9 @@ const workflowSteps = [
     gradient: 'linear-gradient(135deg, #B490FF, #9969E5)',
     badge: '04',
     metrics: [
-      { label: 'Uptime', value: 99.9 },
-      { label: 'Velocidade', value: 97 },
-      { label: 'Segurança', value: 100 }
+      { id: 'uptime', value: 99.9 },
+      { id: 'speed', value: 97 },
+      { id: 'security', value: 100 }
     ],
     visual: 'launch'
   },
@@ -210,10 +739,10 @@ const workflowSteps = [
     description: 'Analisamos dados e implementamos melhorias contínuas para maximizar o ROI e impulsionar o crescimento do seu negócio.',
     icon: <IconChartBar size={rem(24)} stroke={1.5} />,
     details: [
-      { title: 'Análise de Dados', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
-      { title: 'SEO Avançado', icon: <IconBrandGoogle size={16} />, progress: 100 },
-      { title: 'Otimização de Conversão', icon: <IconArrowsShuffle size={16} />, progress: 100 },
-      { title: 'Escalabilidade', icon: <IconArrowsMaximize size={16} />, progress: 100 }
+      { id: 'dataAnalysis', icon: <IconDeviceAnalytics size={16} />, progress: 100 },
+      { id: 'seoAdvanced', icon: <IconBrandGoogle size={16} />, progress: 100 },
+      { id: 'conversionOptimization', icon: <IconArrowsShuffle size={16} />, progress: 100 },
+      { id: 'scalability', icon: <IconArrowsMaximize size={16} />, progress: 100 }
     ],
     tools: [
       { name: 'Google Analytics', icon: <IconBrandGoogle size={18} /> },
@@ -224,9 +753,9 @@ const workflowSteps = [
     gradient: 'linear-gradient(135deg, #9461FF, #B490FF)',
     badge: '05',
     metrics: [
-      { label: 'Crescimento', value: 35 },
-      { label: 'Retenção', value: 92 },
-      { label: 'ROI', value: 320 }
+      { id: 'growth', value: 35 },
+      { id: 'retention', value: 92 },
+      { id: 'roi', value: 320 }
     ],
     visual: 'growth'
   }
@@ -444,54 +973,81 @@ function ToolsDisplay({ tools }: { tools: { name: string, icon: React.ReactNode 
 }
 
 // Componente para exibir métricas
-function MetricsDisplay({ metrics }: { metrics: { label: string, value: number }[] }) {
+function MetricsDisplay({ metrics }: { metrics: { id?: string, label?: string, value: number }[] }) {
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const vt = visualTexts[locale as keyof typeof visualTexts] || visualTexts['pt-BR'];
+
   return (
     <SimpleGrid cols={3} spacing="xs">
-      {metrics.map((metric, index) => (
-        <MotionBox
-          key={index}
-          style={{
-            background: 'rgba(30,30,30,0.4)',
-            borderRadius: '12px',
-            padding: '10px',
-            border: '1px solid rgba(153,105,229,0.1)',
-            textAlign: 'center',
-          }}
-          whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
-          transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-        >
-          <Text size="xl" fw={700} c="white" style={{ lineHeight: 1 }}>
-            {metric.value}{metric.label === 'ROI' ? '%' : ''}
-          </Text>
-          <Text size="xs" c="gray.5">
-            {metric.label}
-          </Text>
-        </MotionBox>
-      ))}
+      {metrics.map((metric, index) => {
+        // Determinar o rótulo a ser exibido
+        const label = metric.id ? vt[metric.id as keyof typeof vt] || metric.id : metric.label || '';
+        const isROI = metric.id === 'roi' || label === 'ROI';
+
+        return (
+          <MotionBox
+            key={index}
+            style={{
+              background: 'rgba(30,30,30,0.4)',
+              borderRadius: '12px',
+              padding: '10px',
+              border: '1px solid rgba(153,105,229,0.1)',
+              textAlign: 'center',
+            }}
+            whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+          >
+            <Text size="xl" fw={700} c="white" style={{ lineHeight: 1 }}>
+              {metric.value}{isROI ? '%' : ''}
+            </Text>
+            <Text size="xs" c="gray.5">
+              {label}
+            </Text>
+          </MotionBox>
+        );
+      })}
     </SimpleGrid>
   );
 }
 
 // Componentes de visualização para cada etapa do workflow
 function StepVisual({ type }: { type: string }) {
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const st = stepsTexts[locale as keyof typeof stepsTexts] || stepsTexts['pt-BR'];
+
   switch (type) {
     case 'discovery':
-      return <DiscoveryVisual />;
+      return <DiscoveryVisual title={st.discovery.visualTitle} />;
     case 'design':
-      return <DesignVisual />;
+      return <DesignVisual title={st.design.visualTitle} />;
     case 'development':
-      return <DevelopmentVisual />;
+      return <DevelopmentVisual title={st.development.visualTitle} />;
     case 'launch':
-      return <LaunchVisual />;
+      return <LaunchVisual title={st.launch.visualTitle} />;
     case 'growth':
-      return <GrowthVisual />;
+      return <GrowthVisual title={st.growth.visualTitle} />;
     default:
-      return <DiscoveryVisual />;
+      return <DiscoveryVisual title={st.discovery.visualTitle} />;
   }
 }
 
 // Visualização para a etapa de Descoberta
-function DiscoveryVisual() {
+function DiscoveryVisual({ title }: { title: string }) {
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const vt = visualTexts[locale as keyof typeof visualTexts] || visualTexts['pt-BR'];
+
   return (
     <MotionBox
       style={{
@@ -515,7 +1071,7 @@ function DiscoveryVisual() {
         <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
           <IconBulb size={24} />
         </ThemeIcon>
-        <Title order={4}>Análise Estratégica</Title>
+        <Title order={4}>{title}</Title>
       </Flex>
 
       <Box style={{ flex: 1 }}>
@@ -529,8 +1085,8 @@ function DiscoveryVisual() {
             }}
             whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
           >
-            <Text fw={600} mb={5}>Pesquisa de Mercado</Text>
-            <Text size="sm" c="gray.5">Análise competitiva e identificação de oportunidades</Text>
+            <Text fw={600} mb={5}>{vt.marketResearch}</Text>
+            <Text size="sm" c="gray.5">{vt.marketResearchDesc}</Text>
           </MotionBox>
 
           <MotionBox
@@ -542,8 +1098,8 @@ function DiscoveryVisual() {
             }}
             whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
           >
-            <Text fw={600} mb={5}>Definição de Objetivos</Text>
-            <Text size="sm" c="gray.5">Estabelecimento de metas claras e mensuráveis</Text>
+            <Text fw={600} mb={5}>{vt.objectiveDefinition}</Text>
+            <Text size="sm" c="gray.5">{vt.objectiveDefinitionDesc}</Text>
           </MotionBox>
         </SimpleGrid>
 
@@ -570,13 +1126,13 @@ function DiscoveryVisual() {
           />
 
           <Box style={{ position: 'relative', zIndex: 1 }}>
-            <Text fw={600} mb={5}>Resultado</Text>
-            <Text size="sm" c="gray.5" mb={10}>Plano estratégico detalhado com roadmap de implementação</Text>
+            <Text fw={600} mb={5}>{vt.result}</Text>
+            <Text size="sm" c="gray.5" mb={10}>{vt.resultDesc}</Text>
 
             <Group>
-              <Badge variant="light" color="purple">Estratégia</Badge>
-              <Badge variant="light" color="purple">Planejamento</Badge>
-              <Badge variant="light" color="purple">Análise</Badge>
+              <Badge variant="light" color="purple">{vt.strategy}</Badge>
+              <Badge variant="light" color="purple">{vt.planning}</Badge>
+              <Badge variant="light" color="purple">{vt.analysis}</Badge>
             </Group>
           </Box>
         </MotionBox>
@@ -586,7 +1142,14 @@ function DiscoveryVisual() {
 }
 
 // Visualização para a etapa de Design
-function DesignVisual() {
+function DesignVisual({ title }: { title: string }) {
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const vt = visualTexts[locale as keyof typeof visualTexts] || visualTexts['pt-BR'];
+
   return (
     <MotionBox
       style={{
@@ -610,7 +1173,7 @@ function DesignVisual() {
         <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
           <IconBrandFigma size={24} />
         </ThemeIcon>
-        <Title order={4}>Design System</Title>
+        <Title order={4}>{title}</Title>
       </Flex>
 
       <SimpleGrid cols={2} spacing="md" mb="md">
@@ -637,7 +1200,7 @@ function DesignVisual() {
               marginBottom: '10px',
             }}
           />
-          <Text size="sm" c="gray.5">Cores Primárias</Text>
+          <Text size="sm" c="gray.5">{vt.primaryColors}</Text>
         </MotionBox>
 
         <MotionBox
@@ -666,7 +1229,7 @@ function DesignVisual() {
             <Text size="md">Aa</Text>
             <Text size="sm">Aa</Text>
           </Box>
-          <Text size="sm" c="gray.5">Tipografia</Text>
+          <Text size="sm" c="gray.5">{vt.typography}</Text>
         </MotionBox>
       </SimpleGrid>
 
@@ -694,7 +1257,7 @@ function DesignVisual() {
         />
 
         <Box style={{ position: 'relative', zIndex: 1 }}>
-          <Text fw={600} mb={5}>Componentes UI</Text>
+          <Text fw={600} mb={5}>{vt.uiComponents}</Text>
           <Group mb={15}>
             <Box
               style={{
@@ -706,7 +1269,7 @@ function DesignVisual() {
                 fontWeight: 500,
               }}
             >
-              Botão
+              {vt.button}
             </Box>
 
             <Box
@@ -719,7 +1282,7 @@ function DesignVisual() {
                 fontWeight: 500,
               }}
             >
-              Botão Outline
+              {vt.outlineButton}
             </Box>
 
             <Box
@@ -740,9 +1303,9 @@ function DesignVisual() {
           </Group>
 
           <Group>
-            <Badge variant="filled" color="purple">UI/UX</Badge>
-            <Badge variant="filled" color="purple">Design System</Badge>
-            <Badge variant="filled" color="purple">Protótipos</Badge>
+            <Badge variant="filled" color="purple">{vt.uiUx}</Badge>
+            <Badge variant="filled" color="purple">{vt.designSystem}</Badge>
+            <Badge variant="filled" color="purple">{vt.prototypes}</Badge>
           </Group>
         </Box>
       </MotionBox>
@@ -751,7 +1314,14 @@ function DesignVisual() {
 }
 
 // Visualização para a etapa de Desenvolvimento
-function DevelopmentVisual() {
+function DevelopmentVisual({ title }: { title: string }) {
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const vt = visualTexts[locale as keyof typeof visualTexts] || visualTexts['pt-BR'];
+
   return (
     <MotionBox
       style={{
@@ -773,7 +1343,7 @@ function DevelopmentVisual() {
         <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
           <IconCode size={24} />
         </ThemeIcon>
-        <Title order={4}>Desenvolvimento</Title>
+        <Title order={4}>{title}</Title>
       </Flex>
 
       <Box
@@ -833,7 +1403,7 @@ function DevelopmentVisual() {
           whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
         >
           <IconBrandReact size={24} style={{ color: '#9969E5', marginBottom: '5px' }} />
-          <Text size="xs" c="gray.5">Frontend</Text>
+          <Text size="xs" c="gray.5">{vt.frontend}</Text>
         </MotionBox>
 
         <MotionBox
@@ -847,7 +1417,7 @@ function DevelopmentVisual() {
           whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
         >
           <IconBrandNodejs size={24} style={{ color: '#9969E5', marginBottom: '5px' }} />
-          <Text size="xs" c="gray.5">Backend</Text>
+          <Text size="xs" c="gray.5">{vt.backend}</Text>
         </MotionBox>
 
         <MotionBox
@@ -861,22 +1431,29 @@ function DevelopmentVisual() {
           whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
         >
           <IconDatabase size={24} style={{ color: '#9969E5', marginBottom: '5px' }} />
-          <Text size="xs" c="gray.5">Database</Text>
+          <Text size="xs" c="gray.5">{vt.database}</Text>
         </MotionBox>
       </SimpleGrid>
 
       <Group>
-        <Badge variant="dot" color="purple">Clean Code</Badge>
-        <Badge variant="dot" color="purple">Testes</Badge>
-        <Badge variant="dot" color="purple">CI/CD</Badge>
-        <Badge variant="dot" color="purple">Performance</Badge>
+        <Badge variant="dot" color="purple">{vt.cleanCode}</Badge>
+        <Badge variant="dot" color="purple">{vt.tests}</Badge>
+        <Badge variant="dot" color="purple">{vt.cicd}</Badge>
+        <Badge variant="dot" color="purple">{vt.performance}</Badge>
       </Group>
     </MotionBox>
   );
 }
 
 // Visualização para a etapa de Lançamento
-function LaunchVisual() {
+function LaunchVisual({ title }: { title: string }) {
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const vt = visualTexts[locale as keyof typeof visualTexts] || visualTexts['pt-BR'];
+
   return (
     <MotionBox
       style={{
@@ -898,7 +1475,7 @@ function LaunchVisual() {
         <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
           <IconRocket size={24} />
         </ThemeIcon>
-        <Title order={4}>Lançamento</Title>
+        <Title order={4}>{title}</Title>
       </Flex>
 
       <MotionBox
@@ -912,13 +1489,13 @@ function LaunchVisual() {
         whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
       >
         <Flex align="center" justify="space-between" mb={10}>
-          <Text fw={600}>Infraestrutura</Text>
-          <Badge color="green">Online</Badge>
+          <Text fw={600}>{vt.infrastructure}</Text>
+          <Badge color="green">{vt.online}</Badge>
         </Flex>
 
         <SimpleGrid cols={2} spacing="xs" mb={10}>
           <Box>
-            <Text size="xs" c="gray.5">Servidor</Text>
+            <Text size="xs" c="gray.5">{vt.server}</Text>
             <Text size="sm">Vercel</Text>
           </Box>
 
@@ -928,12 +1505,12 @@ function LaunchVisual() {
           </Box>
 
           <Box>
-            <Text size="xs" c="gray.5">Banco de Dados</Text>
+            <Text size="xs" c="gray.5">{vt.database}</Text>
             <Text size="sm">PlanetScale</Text>
           </Box>
 
           <Box>
-            <Text size="xs" c="gray.5">Monitoramento</Text>
+            <Text size="xs" c="gray.5">{vt.monitoring}</Text>
             <Text size="sm">Datadog</Text>
           </Box>
         </SimpleGrid>
@@ -953,13 +1530,13 @@ function LaunchVisual() {
         >
           <Flex align="center" mb={10}>
             <IconCircleCheck size={20} style={{ color: '#B490FF', marginRight: '8px' }} />
-            <Text fw={600}>Testes Finais</Text>
+            <Text fw={600}>{vt.finalTests}</Text>
           </Flex>
 
-          <Group spacing="xs">
+          <Group gap="xs">
             <Badge variant="light" color="green">UI</Badge>
-            <Badge variant="light" color="green">Funcionalidade</Badge>
-            <Badge variant="light" color="green">Performance</Badge>
+            <Badge variant="light" color="green">{vt.functionality}</Badge>
+            <Badge variant="light" color="green">{vt.performance}</Badge>
             <Badge variant="light" color="green">SEO</Badge>
           </Group>
         </MotionBox>
@@ -975,14 +1552,14 @@ function LaunchVisual() {
         >
           <Flex align="center" mb={10}>
             <IconCircleCheck size={20} style={{ color: '#B490FF', marginRight: '8px' }} />
-            <Text fw={600}>Segurança</Text>
+            <Text fw={600}>{vt.security}</Text>
           </Flex>
 
-          <Group spacing="xs">
+          <Group gap="xs">
             <Badge variant="light" color="green">SSL</Badge>
-            <Badge variant="light" color="green">Firewall</Badge>
+            <Badge variant="light" color="green">{vt.firewall}</Badge>
             <Badge variant="light" color="green">GDPR</Badge>
-            <Badge variant="light" color="green">Backups</Badge>
+            <Badge variant="light" color="green">{vt.backups}</Badge>
           </Group>
         </MotionBox>
       </SimpleGrid>
@@ -994,14 +1571,21 @@ function LaunchVisual() {
         leftSection={<IconRocket size={16} />}
         fullWidth
       >
-        Lançar Projeto
+        {vt.launchProject}
       </Button>
     </MotionBox>
   );
 }
 
 // Visualização para a etapa de Crescimento
-function GrowthVisual() {
+function GrowthVisual({ title }: { title: string }) {
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const vt = visualTexts[locale as keyof typeof visualTexts] || visualTexts['pt-BR'];
+
   return (
     <MotionBox
       style={{
@@ -1023,7 +1607,7 @@ function GrowthVisual() {
         <ThemeIcon radius="xl" size="xl" variant="light" color="purple" mr="md">
           <IconChartBar size={24} />
         </ThemeIcon>
-        <Title order={4}>Crescimento e Otimização</Title>
+        <Title order={4}>{title}</Title>
       </Flex>
 
       <MotionBox
@@ -1050,12 +1634,12 @@ function GrowthVisual() {
         />
 
         <Box style={{ position: 'relative', zIndex: 1 }}>
-          <Text fw={600} mb={10}>Métricas de Desempenho</Text>
+          <Text fw={600} mb={10}>{vt.metrics}</Text>
 
           <SimpleGrid cols={1} spacing="xs" mb={15}>
             <Box>
               <Flex justify="space-between" align="center" mb={5}>
-                <Text size="sm">Tráfego</Text>
+                <Text size="sm">{vt.analytics}</Text>
                 <Text size="sm" fw={600} c="#B490FF">+45%</Text>
               </Flex>
               <Progress value={45} color="purple" size="sm" mb={10} />
@@ -1063,7 +1647,7 @@ function GrowthVisual() {
 
             <Box>
               <Flex justify="space-between" align="center" mb={5}>
-                <Text size="sm">Conversão</Text>
+                <Text size="sm">{vt.conversionOptimization}</Text>
                 <Text size="sm" fw={600} c="#B490FF">+28%</Text>
               </Flex>
               <Progress value={28} color="purple" size="sm" mb={10} />
@@ -1071,7 +1655,7 @@ function GrowthVisual() {
 
             <Box>
               <Flex justify="space-between" align="center" mb={5}>
-                <Text size="sm">Retenção</Text>
+                <Text size="sm">{vt.retention}</Text>
                 <Text size="sm" fw={600} c="#B490FF">+92%</Text>
               </Flex>
               <Progress value={92} color="purple" size="sm" />
@@ -1092,12 +1676,12 @@ function GrowthVisual() {
         >
           <Flex align="center" mb={10}>
             <IconBrandGoogle size={20} style={{ color: '#9461FF', marginRight: '8px' }} />
-            <Text fw={600}>SEO Avançado</Text>
+            <Text fw={600}>{vt.seoAdvanced}</Text>
           </Flex>
 
-          <Text size="sm" c="gray.5" mb={10}>Otimização contínua para melhorar o posicionamento nos mecanismos de busca</Text>
+          <Text size="sm" c="gray.5" mb={10}>{locale === 'en' ? 'Continuous optimization to improve search engine positioning' : locale === 'fr' ? 'Optimisation continue pour améliorer le positionnement dans les moteurs de recherche' : 'Otimização contínua para melhorar o posicionamento nos mecanismos de busca'}</Text>
 
-          <Badge variant="light" color="purple">Palavras-chave</Badge>
+          <Badge variant="light" color="purple">{locale === 'en' ? 'Keywords' : locale === 'fr' ? 'Mots-clés' : 'Palavras-chave'}</Badge>
         </MotionBox>
 
         <MotionBox
@@ -1111,10 +1695,10 @@ function GrowthVisual() {
         >
           <Flex align="center" mb={10}>
             <IconArrowsShuffle size={20} style={{ color: '#9461FF', marginRight: '8px' }} />
-            <Text fw={600}>Otimização de Conversão</Text>
+            <Text fw={600}>{vt.conversionOptimization}</Text>
           </Flex>
 
-          <Text size="sm" c="gray.5" mb={10}>Testes A/B e melhorias baseadas em dados para aumentar as conversões</Text>
+          <Text size="sm" c="gray.5" mb={10}>{locale === 'en' ? 'A/B testing and data-driven improvements to increase conversions' : locale === 'fr' ? 'Tests A/B et améliorations basées sur les données pour augmenter les conversions' : 'Testes A/B e melhorias baseadas em dados para aumentar as conversões'}</Text>
 
           <Badge variant="light" color="purple">CRO</Badge>
         </MotionBox>
@@ -1128,6 +1712,14 @@ export function ModernWorkflowSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Obter o idioma atual
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'pt-BR';
+
+  // Obter os textos traduzidos
+  const t = workflowTexts[locale as keyof typeof workflowTexts] || workflowTexts['pt-BR'];
+  const st = stepsTexts[locale as keyof typeof stepsTexts] || stepsTexts['pt-BR'];
 
   // Função para alternar entre os passos
   const handleStepClick = (index: number) => {
@@ -1221,7 +1813,7 @@ export function ModernWorkflowSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Nosso Processo de Trabalho
+            {t.sectionTitle}
           </MotionTitle>
 
           <MotionText
@@ -1234,7 +1826,7 @@ export function ModernWorkflowSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Desenvolvemos websites com um processo estruturado e transparente, garantindo resultados excepcionais em cada etapa do projeto.
+            {t.sectionDescription}
           </MotionText>
         </Box>
 
@@ -1251,7 +1843,7 @@ export function ModernWorkflowSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {workflowSteps[activeStep].title}
+            {st[workflowSteps[activeStep].id as keyof typeof st].title}
           </MotionTitle>
 
           <Group>
@@ -1298,11 +1890,13 @@ export function ModernWorkflowSection() {
             overflowX: 'auto',
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
-            '&::-webkit-scrollbar': {
-              display: 'none',
-            },
             marginBottom: '30px',
             padding: '10px 0',
+          }}
+          sx={{
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            }
           }}
         >
           {workflowSteps.map((step, index) => (
@@ -1366,11 +1960,9 @@ export function ModernWorkflowSection() {
 
                 <Box>
                   <Text fw={600} c="white" size="sm">
-                    {step.title}
+                    {st[step.id as keyof typeof st]?.title || step.title}
                   </Text>
-                  <Text c="gray.5" size="xs">
-                    {step.timeframe}
-                  </Text>
+                  {/* Removido timeframe */}
                 </Box>
               </Flex>
             </MotionBox>
@@ -1416,20 +2008,9 @@ export function ModernWorkflowSection() {
                     animate={{ opacity: 1 }}
                     key={`title-${activeStep}`}
                   >
-                    {workflowSteps[activeStep].title}
+                    {st[workflowSteps[activeStep].id as keyof typeof st].title}
                   </MotionTitle>
-                  <MotionBadge
-                    variant="light"
-                    color="purple"
-                    size="lg"
-                    radius="sm"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 }}
-                    key={`timeframe-${activeStep}`}
-                  >
-                    {workflowSteps[activeStep].timeframe}
-                  </MotionBadge>
+                  {/* Removido timeframe */}
                 </Box>
               </Flex>
 
@@ -1442,7 +2023,7 @@ export function ModernWorkflowSection() {
                 transition={{ delay: 0.1 }}
                 key={`desc-${activeStep}`}
               >
-                {workflowSteps[activeStep].description}
+                {st[workflowSteps[activeStep].id as keyof typeof st].description}
               </MotionText>
 
               <MotionDivider
@@ -1454,7 +2035,7 @@ export function ModernWorkflowSection() {
               />
 
               <Text fw={600} c="white" mb={15}>
-                Detalhes do Processo
+                {visualTexts[locale as keyof typeof visualTexts]?.processDetails || t.processDetails}
               </Text>
 
               <Box mb={30}>
@@ -1477,7 +2058,10 @@ export function ModernWorkflowSection() {
                     </Box>
                     <Box style={{ flex: 1 }}>
                       <Text size="sm" fw={500} c="white">
-                        {detail.title}
+                        {(() => {
+                          const vt = visualTexts[locale as keyof typeof visualTexts] || visualTexts['pt-BR'];
+                          return vt[detail.id as keyof typeof vt] || detail.id;
+                        })()}
                       </Text>
                       <MotionProgress
                         value={detail.progress}
@@ -1494,14 +2078,14 @@ export function ModernWorkflowSection() {
               </Box>
 
               <Text fw={600} c="white" mb={15}>
-                Ferramentas & Tecnologias
+                {t.toolsTech}
               </Text>
 
               <ToolsDisplay tools={workflowSteps[activeStep].tools} />
 
               <Box mt={30}>
                 <Text fw={600} c="white" mb={15}>
-                  Métricas de Sucesso
+                  {t.successMetrics}
                 </Text>
 
                 <MetricsDisplay metrics={workflowSteps[activeStep].metrics} />

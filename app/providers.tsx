@@ -2,8 +2,6 @@
 
 import { MantineProvider, createTheme, MantineColorsTuple } from '@mantine/core';
 import '@mantine/core/styles.css';
-import { I18nProvider } from './_components/I18nProvider';
-import { useParams } from 'next/navigation';
 
 // Definindo nossa paleta de cores personalizada
 const purpleColors: MantineColorsTuple = [
@@ -80,15 +78,15 @@ const theme = createTheme({
   },
 });
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  const params = useParams();
-  const locale = (params?.lang as string) || 'pt-BR';
+interface ProvidersProps {
+  children: React.ReactNode;
+  locale: string;
+}
 
+export function Providers({ children, locale }: ProvidersProps) {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <I18nProvider locale={locale}>
-        {children}
-      </I18nProvider>
+      {children}
     </MantineProvider>
   );
 }
