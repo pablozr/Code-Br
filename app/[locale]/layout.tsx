@@ -25,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  // Usando uma abordagem mais simples para evitar o erro
-  const locale = 'pt-BR';
+  // Usar o locale dos parâmetros
+  const locale = params.locale;
   return (
     <html
       lang={locale}
