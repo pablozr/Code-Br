@@ -8,7 +8,6 @@ import { usePathname } from 'next/navigation';
 import { usePriceContext } from './PriceContext';
 import PriceDisplay from './PriceDisplay';
 
-const MotionPaper = motion(Paper);
 const MotionBox = motion.div;
 
 // Preços base por tipo de site (em BRL)
@@ -100,7 +99,7 @@ const calculatorTexts = {
     complexity: 'Complexidade',
     timeline: 'Prazo',
     totalEstimate: 'Estimativa Total',
-    disclaimer: 'Esta é apenas uma estimativa. O valor final pode variar conforme requisitos específicos.',
+    disclaimer: 'Esta é apenas uma estimativa. O valor final pode variar conforme requisitos específicos. Custos de hospedagem, domínio, serviços de terceiros (APIs pagas, plugins premium) e manutenção contínua não estão inclusos.',
     websiteType: 'Tipo de Website',
     featureCategories: {
       essential: 'Essenciais',
@@ -178,7 +177,7 @@ const calculatorTexts = {
     complexity: 'Complexity',
     timeline: 'Timeline',
     totalEstimate: 'Total Estimate',
-    disclaimer: 'This is just an estimate. The final price may vary according to specific requirements.',
+    disclaimer: 'This is just an estimate. The final price may vary according to specific requirements. Hosting, domain, third-party services (paid APIs, premium plugins) and ongoing maintenance costs are not included.',
     websiteType: 'Website Type',
     featureCategories: {
       essential: 'Essential',
@@ -256,7 +255,7 @@ const calculatorTexts = {
     complexity: 'Complexité',
     timeline: 'Délai',
     totalEstimate: 'Estimation Totale',
-    disclaimer: 'Ceci est seulement une estimation. Le prix final peut varier selon les exigences spécifiques.',
+    disclaimer: 'Ceci est seulement une estimation. Le prix final peut varier selon les exigences spécifiques. Les coûts d\'hébergement, de domaine, de services tiers (API payantes, plugins premium) et de maintenance continue ne sont pas inclus.',
     websiteType: 'Type de Site Web',
     featureCategories: {
       essential: 'Essentielles',
@@ -353,7 +352,7 @@ function PriceCalculatorComponent({
 }: PriceCalculatorProps) {
   // Obter o idioma atual
   const pathname = usePathname();
-  const locale = pathname.split('/')[1] || 'pt-BR';
+  const locale = pathname?.split('/')[1] || 'pt-BR';
 
   // Obter os textos traduzidos
   const t = calculatorTexts[locale as keyof typeof calculatorTexts] || calculatorTexts['pt-BR'];
@@ -438,14 +437,8 @@ function PriceCalculatorComponent({
     }
   }, [selectedFeatures, onFeaturesChange]);
 
-  useEffect(() => {
-    if (prevWebsiteType.current !== websiteType) {
-      prevWebsiteType.current = websiteType;
-      if (onWebsiteTypeChange) {
-        onWebsiteTypeChange(websiteType);
-      }
-    }
-  }, [websiteType, onWebsiteTypeChange]);
+  // Removemos o efeito que estava causando problemas
+  // A notificação agora é feita diretamente no manipulador de eventos onChange
 
   useEffect(() => {
     if (prevComplexity.current !== complexity) {
@@ -475,10 +468,7 @@ function PriceCalculatorComponent({
   }, []);
 
   return (
-    <MotionPaper
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+    <Paper
       shadow="md"
       radius="lg"
       p="xl"
@@ -490,6 +480,10 @@ function PriceCalculatorComponent({
         position: 'relative',
         overflow: 'hidden',
       }}
+      component={motion.div}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
     >
       {/* Subtle gradient overlay */}
       <Box
@@ -506,7 +500,7 @@ function PriceCalculatorComponent({
       />
 
       <Box style={{ position: 'relative', zIndex: 1 }}>
-        <Group position="apart" mb="md">
+        <Group justify="space-between" style={{ marginBottom: '1rem' }}>
           <Box>
             <Title order={3} fw={700} c="white" mb={5}>
               {t.title}
@@ -543,21 +537,21 @@ function PriceCalculatorComponent({
               { value: 'custom', label: locale === 'en' ? 'Custom Project' : (locale === 'fr' ? 'Projet Personnalisé' : 'Projeto Personalizado') },
             ]}
             value={websiteType}
-            onChange={(value) => setWebsiteType(value || '')}
+            onChange={(value) => {
+              const newValue = value || '';
+              setWebsiteType(newValue);
+              // Notificar o componente pai sobre a mudança de tipo de site
+              if (newValue !== prevWebsiteType.current && onWebsiteTypeChange) {
+                prevWebsiteType.current = newValue;
+                onWebsiteTypeChange(newValue);
+              }
+            }}
             placeholder={t.websiteType}
             styles={{
               input: {
                 backgroundColor: 'rgba(30, 30, 30, 0.6)',
                 borderColor: 'rgba(153, 105, 229, 0.3)',
                 color: 'white',
-              },
-              item: {
-                '&[data-selected]': {
-                  backgroundColor: 'rgba(118, 65, 192, 0.3)',
-                },
-                '&[data-hovered]': {
-                  backgroundColor: 'rgba(118, 65, 192, 0.2)',
-                },
               },
               dropdown: {
                 backgroundColor: 'rgba(25, 25, 25, 0.95)',
@@ -585,7 +579,7 @@ function PriceCalculatorComponent({
                     <Checkbox
                       key={feature}
                       label={
-                        <Group spacing="xs">
+                        <Group gap="xs">
                           <Text>{t.featureLabels[feature as keyof typeof t.featureLabels]}</Text>
                           <Badge
                             size="sm"
@@ -618,7 +612,7 @@ function PriceCalculatorComponent({
                     <Checkbox
                       key={feature}
                       label={
-                        <Group spacing="xs">
+                        <Group gap="xs">
                           <Text>{t.featureLabels[feature as keyof typeof t.featureLabels]}</Text>
                           <Badge
                             size="sm"
@@ -651,7 +645,7 @@ function PriceCalculatorComponent({
                     <Checkbox
                       key={feature}
                       label={
-                        <Group spacing="xs">
+                        <Group gap="xs">
                           <Text>{t.featureLabels[feature as keyof typeof t.featureLabels]}</Text>
                           <Badge
                             size="sm"
@@ -684,7 +678,7 @@ function PriceCalculatorComponent({
                     <Checkbox
                       key={feature}
                       label={
-                        <Group spacing="xs">
+                        <Group gap="xs">
                           <Text>{t.featureLabels[feature as keyof typeof t.featureLabels]}</Text>
                           <Badge
                             size="sm"
@@ -719,7 +713,7 @@ function PriceCalculatorComponent({
                       <Checkbox
                         key={feature}
                         label={
-                          <Group spacing="xs">
+                          <Group gap="xs">
                             <Text>{t.featureLabels[feature as keyof typeof t.featureLabels]}</Text>
                             <Badge
                               size="sm"
@@ -754,7 +748,7 @@ function PriceCalculatorComponent({
                     <Checkbox
                       key={feature}
                       label={
-                        <Group spacing="xs">
+                        <Group gap="xs">
                           <Text>{t.featureLabels[feature as keyof typeof t.featureLabels]}</Text>
                           <Badge
                             size="sm"
@@ -788,7 +782,7 @@ function PriceCalculatorComponent({
                     <Checkbox
                       key={feature}
                       label={
-                        <Group spacing="xs">
+                        <Group gap="xs">
                           <Text>{t.featureLabels[feature as keyof typeof t.featureLabels]}</Text>
                           <Badge
                             size="sm"
@@ -814,7 +808,7 @@ function PriceCalculatorComponent({
                     <Checkbox
                       key="ar"
                       label={
-                        <Group spacing="xs">
+                        <Group gap="xs">
                           <Text>{t.featureLabels['ar']}</Text>
                           <Badge
                             size="sm"
@@ -841,7 +835,7 @@ function PriceCalculatorComponent({
 
             {/* Complexidade */}
             <Box mb="xl">
-              <Group position="apart">
+              <Group justify="space-between">
                 <Text fw={600} size="sm" c="white">
                   {t.complexity}
                 </Text>
@@ -872,14 +866,6 @@ function PriceCalculatorComponent({
                     borderColor: 'rgba(153, 105, 229, 0.3)',
                     color: 'white',
                   },
-                  item: {
-                    '&[data-selected]': {
-                      backgroundColor: 'rgba(118, 65, 192, 0.3)',
-                    },
-                    '&[data-hovered]': {
-                      backgroundColor: 'rgba(118, 65, 192, 0.2)',
-                    },
-                  },
                   dropdown: {
                     backgroundColor: 'rgba(25, 25, 25, 0.95)',
                     borderColor: 'rgba(153, 105, 229, 0.3)',
@@ -890,7 +876,7 @@ function PriceCalculatorComponent({
 
             {/* Prazo */}
             <Box mb="xl">
-              <Group position="apart">
+              <Group justify="space-between">
                 <Text fw={600} size="sm" c="white">
                   {t.timeline}
                 </Text>
@@ -921,14 +907,6 @@ function PriceCalculatorComponent({
                     borderColor: 'rgba(153, 105, 229, 0.3)',
                     color: 'white',
                   },
-                  item: {
-                    '&[data-selected]': {
-                      backgroundColor: 'rgba(118, 65, 192, 0.3)',
-                    },
-                    '&[data-hovered]': {
-                      backgroundColor: 'rgba(118, 65, 192, 0.2)',
-                    },
-                  },
                   dropdown: {
                     backgroundColor: 'rgba(25, 25, 25, 0.95)',
                     borderColor: 'rgba(153, 105, 229, 0.3)',
@@ -940,7 +918,7 @@ function PriceCalculatorComponent({
             {/* Estimativa Total - Usando o componente isolado */}
             <PriceDisplay label={t.totalEstimate} />
 
-            <Group mt="md" spacing="xs">
+            <Group style={{ marginTop: '1rem' }} gap="xs">
               <IconInfoCircle size={16} color="rgba(153,105,229,0.8)" />
               <Text size="xs" c="gray.5" style={{ fontStyle: 'italic' }}>
                 {t.disclaimer}
@@ -949,7 +927,7 @@ function PriceCalculatorComponent({
           </>
         )}
       </Box>
-    </MotionPaper>
+    </Paper>
   );
 }
 

@@ -1,11 +1,9 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { Menu, UnstyledButton, Group, Text, rem } from '@mantine/core';
-import { IconChevronDown } from '@tabler/icons-react';
 import { useState } from 'react';
-import Link from 'next/link';
-import { locales } from '@/middleware';
+import { Menu, Button, Group, Text } from '@mantine/core';
+import { IconChevronDown, IconGlobe } from '@tabler/icons-react';
+import { useSafePathname, getLocaleFromPathname } from '@/app/_lib/utils/pathname';
 
 const languages = [
   { code: 'pt-BR', name: 'Português', flag: '🇧🇷' },
@@ -13,71 +11,65 @@ const languages = [
   { code: 'fr', name: 'Français', flag: '🇫🇷' }
 ];
 
-// Helper function to get the path with a new locale
-function getPathWithLocale(path: string, locale: string) {
-  // If the path already has a locale, replace it
-  const pathWithoutLocale = path.replace(/^\/[^\/]+/, '');
-  return `/${locale}${pathWithoutLocale || '/'}`;
+function getPathWithLocale(pathname: string, locale: string): string {
+  // Remove o locale atual da URL se existir
+  const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, '');
+  
+  // Adiciona o novo locale
+  return `/${locale}${pathWithoutLocale}`;
 }
 
 export function LanguageSwitcher() {
-  const pathname = usePathname();
-
   const [opened, setOpened] = useState(false);
-
-  // Determinar o idioma atual a partir do pathname
-  const currentLocale = pathname.split('/')[1] || 'pt-BR';
+  const pathname = useSafePathname();
+  
+  // Extrair o idioma atual da URL
+  const currentLocale = getLocaleFromPathname(pathname);
+  
+  // Encontrar o idioma atual
   const currentLanguage = languages.find(lang => lang.code === currentLocale) || languages[0];
 
   return (
-    <Menu
-      width={200}
+    <Menu 
+      opened={opened} 
+      onChange={setOpened}
       position="bottom-end"
-      transitionProps={{ transition: 'pop-top-right' }}
-      onClose={() => setOpened(false)}
-      onOpen={() => setOpened(true)}
-      opened={opened}
+      shadow="md"
+      width={200}
     >
       <Menu.Target>
-        <UnstyledButton
+        <Button
+          variant="subtle"
+          size="sm"
+          leftSection={<IconGlobe size={18} />}
+          rightSection={<IconChevronDown size={14} />}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            borderRadius: '8px',
-            padding: '4px 8px',
-            color: 'white',
-            transition: 'background-color 200ms ease',
-            fontSize: '14px',
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            },
+            color: 'var(--mantine-color-gray-6)',
+            fontWeight: 400,
           }}
         >
-          <Group gap={3} style={{ minWidth: 0 }}>
-            <Text size="xs">{currentLanguage.flag}</Text>
-            <Text size="xs" fw={500}>
-              {currentLanguage.name}
-            </Text>
+          <Group gap="xs">
+            <span>{currentLanguage.flag}</span>
+            <Text size="sm">{currentLanguage.name}</Text>
           </Group>
-          <IconChevronDown size={rem(16)} style={{ marginLeft: '2px', minWidth: 16, minHeight: 16, maxWidth: 16, maxHeight: 16 }} stroke={1.5} />
-        </UnstyledButton>
+        </Button>
       </Menu.Target>
+
       <Menu.Dropdown>
-        <Menu.Label>Idioma</Menu.Label>
+        <Menu.Label>Escolher idioma</Menu.Label>
         {languages.map((language) => (
           <Menu.Item
             key={language.code}
-            component={Link}
+            leftSection={<span style={{ fontSize: '16px' }}>{language.flag}</span>}
+            component="a"
             href={getPathWithLocale(pathname, language.code)}
             style={{
-              backgroundColor: currentLanguage.code === language.code ? 'rgba(153, 105, 229, 0.1)' : undefined,
-              fontWeight: currentLanguage.code === language.code ? 600 : 400,
+              backgroundColor: language.code === currentLocale ? 'var(--mantine-color-purple-1)' : 'transparent',
+              color: language.code === currentLocale ? 'var(--mantine-color-purple-7)' : 'inherit',
             }}
+            onClick={() => setOpened(false)}
           >
-            <Group gap={6}>
-              <Text>{language.flag}</Text>
-              <Text>{language.name}</Text>
-            </Group>
+            {language.name}
           </Menu.Item>
         ))}
       </Menu.Dropdown>

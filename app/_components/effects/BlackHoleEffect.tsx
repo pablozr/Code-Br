@@ -1,11 +1,12 @@
 'use client';
 
-import { useRef, useEffect, useMemo } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Box } from '@mantine/core';
 import * as THREE from 'three';
 import { useFrame, Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom, ChromaticAberration, Vignette } from '@react-three/postprocessing';
 import { BlendFunction, KernelSize } from 'postprocessing';
+import { useIntersection } from '@mantine/hooks';
 
 function PostProcessing() {
   return (
@@ -39,7 +40,10 @@ function PostProcessing() {
 
 function Particles() {
   const particlesRef = useRef<THREE.Points>(null);
-  const particleCount = 12000; // Aumentado para preencher toda a tela
+  // Usar o particleCount passado como prop ou o valor padrão
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const defaultCount = isMobile ? 6000 : 12000;
+  const particleCount = defaultCount; // Ajustado com base no dispositivo
   const positions = useRef<Float32Array>(new Float32Array(particleCount * 3));
   const orbitalSpeeds = useRef<Float32Array>(new Float32Array(particleCount));
   const particleSizes = useRef<Float32Array>(new Float32Array(particleCount));
@@ -789,9 +793,31 @@ function SpaceDistortion() {
   );
 }
 
+// Versão otimizada do BlackHoleEffect com carregamento condicional
 export function BlackHoleEffect() {
+  const [loaded, setLoaded] = useState(false);
+  const { ref, entry } = useIntersection({
+    threshold: 0.1,
+    rootMargin: '200px',
+  });
+
+  // Carregar o efeito apenas quando estiver visível
+  useEffect(() => {
+    if (entry?.isIntersecting && !loaded) {
+      // Pequeno atraso para evitar jank na renderização
+      const timer = setTimeout(() => {
+        setLoaded(true);
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [entry, loaded]);
+
+  // Removido código não utilizado
+
   return (
     <Box
+      ref={ref}
       style={{
         width: '100%',
         height: '100%',
@@ -802,14 +828,17 @@ export function BlackHoleEffect() {
         overflow: 'hidden', // Evita scroll indesejado
       }}
     >
-      <Canvas
-        camera={{
-          position: [0, 0, 20], // Afastei mais a câmera para uma melhor visualização
-          fov: 70, // Ajustado o campo de visão para melhor enquadramento
-          near: 0.1,
-          far: 1000,
-        }}
-      >
+      {loaded && (
+        <Canvas
+          camera={{
+            position: [0, 0, 20],
+            fov: 70,
+            near: 0.1,
+            far: 1000,
+          }}
+          dpr={[1, 2]} // Valores fixos para evitar problemas de tipo
+          performance={{ min: 0.5 }} // Limita a performance mínima
+        >
         {/* Iluminação */}
         <ambientLight intensity={0.3} />
         <pointLight
@@ -859,6 +888,7 @@ export function BlackHoleEffect() {
         {/* Efeitos de pós-processamento */}
         <PostProcessing />
       </Canvas>
+      )}
     </Box>
   );
 }

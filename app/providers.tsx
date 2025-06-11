@@ -1,7 +1,10 @@
 'use client';
 
 import { MantineProvider, createTheme, MantineColorsTuple } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
+import { CsrfProvider } from './_components/ui/form/CsrfToken';
 
 // Definindo nossa paleta de cores personalizada
 const purpleColors: MantineColorsTuple = [
@@ -44,8 +47,6 @@ const theme = createTheme({
     fontWeight: '600',
   },
   defaultRadius: 'md',
-  // Configuração para tema escuro por padrão
-  colorScheme: 'dark',
   black: '#0d0d0d',
   white: '#ffffff',
   defaultGradient: {
@@ -86,7 +87,10 @@ interface ProvidersProps {
 export function Providers({ children, locale }: ProvidersProps) {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      {children}
+      <Notifications position="top-right" zIndex={1000} />
+      <CsrfProvider>
+        {children}
+      </CsrfProvider>
     </MantineProvider>
   );
 }

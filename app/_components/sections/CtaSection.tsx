@@ -2,21 +2,19 @@
 
 import {
   Container,
-  Title,
   Text,
   Button,
-  Group,
   Box,
   Stack
 } from '@mantine/core';
-import { usePathname } from 'next/navigation';
+import { useSafePathname, getLocaleFromPathname } from '@/app/_lib/utils/pathname';
 import { IconArrowRight, IconBrandWhatsapp } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 
-const MotionBox = motion.create(Box);
-const MotionTitle = motion.create(Title);
-const MotionText = motion.create(Text);
-const MotionGroup = motion.create(Group);
+const MotionBox = motion.div;
+const MotionTitle = motion.h2;
+const MotionText = motion.p;
+const MotionGroup = motion.div;
 
 // Traduções para a seção CTA
 const ctaTexts = {
@@ -51,8 +49,8 @@ const ctaTexts = {
 
 export function CtaSection() {
   // Obter o idioma atual
-  const pathname = usePathname();
-  const locale = pathname.split('/')[1] || 'pt-BR';
+  const pathname = useSafePathname();
+  const locale = getLocaleFromPathname(pathname);
 
   // Obter os textos traduzidos
   const t = ctaTexts[locale as keyof typeof ctaTexts] || ctaTexts['pt-BR'];
@@ -143,7 +141,7 @@ export function CtaSection() {
       })}
 
       <Container size="lg" style={{ position: 'relative', zIndex: 1 }}>
-        <Stack spacing="xl" align="center">
+        <Stack gap="xl" align="center">
           <Box
             style={{
               display: 'inline-block',
@@ -156,10 +154,13 @@ export function CtaSection() {
             }}
           >
             <MotionText
-              size="sm"
-              fw={600}
-              c="white"
-              style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
+              style={{
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                color: 'white'
+              }}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
@@ -170,14 +171,13 @@ export function CtaSection() {
           </Box>
 
           <MotionTitle
-            order={2}
-            ta="center"
-            size="3.5rem"
-            fw={800}
-            mb="md"
             style={{
               letterSpacing: '-0.5px',
               lineHeight: 1.2,
+              fontSize: '3.5rem',
+              fontWeight: 800,
+              marginBottom: '1rem',
+              textAlign: 'center'
             }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -192,11 +192,13 @@ export function CtaSection() {
           </MotionTitle>
 
           <MotionText
-            size="xl"
-            c="gray.3"
-            maw={700}
-            ta="center"
-            lh={1.7}
+            style={{
+              fontSize: '1.25rem',
+              color: '#ADB5BD',
+              maxWidth: '700px',
+              textAlign: 'center',
+              lineHeight: 1.7
+            }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -206,8 +208,13 @@ export function CtaSection() {
           </MotionText>
 
           <MotionGroup
-            mt={40}
-            gap="xl"
+            style={{
+              marginTop: '40px',
+              display: 'flex',
+              gap: '1.5rem',
+              flexWrap: 'wrap',
+              justifyContent: 'center'
+            }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -215,22 +222,22 @@ export function CtaSection() {
           >
             <Button
               component="a"
-              href="/contact"
+              href={`/${locale}/orcamento`}
               size="xl"
               radius="md"
               variant="gradient"
               gradient={{ from: 'rgba(118,65,192,0.9)', to: 'rgba(153,105,229,0.9)', deg: 135 }}
               rightSection={<IconArrowRight size={20} />}
-              style={{
-                boxShadow: '0 10px 20px -10px rgba(118,65,192,0.5)',
-                transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
-                padding: '0 2rem',
-                height: '3.5rem',
-              }}
-              sx={{
-                '&:hover': {
-                  transform: 'translateY(-3px)',
-                  boxShadow: '0 15px 25px -10px rgba(118,65,192,0.6)',
+              styles={{
+                root: {
+                  boxShadow: '0 10px 20px -10px rgba(118,65,192,0.5)',
+                  transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+                  padding: '0 2rem',
+                  height: '3.5rem',
+                  '&:hover': {
+                    transform: 'translateY(-3px)',
+                    boxShadow: '0 15px 25px -10px rgba(118,65,192,0.6)',
+                  }
                 }
               }}
             >
@@ -239,7 +246,7 @@ export function CtaSection() {
 
             <Button
               component="a"
-              href="https://wa.me/5511999999999"
+              href="https://wa.me/5521991767182"
               target="_blank"
               rel="noopener noreferrer"
               size="xl"
@@ -247,17 +254,17 @@ export function CtaSection() {
               variant="outline"
               color="gray.0"
               leftSection={<IconBrandWhatsapp size={20} />}
-              style={{
-                transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
-                padding: '0 2rem',
-                height: '3.5rem',
-                borderColor: 'rgba(153,105,229,0.3)',
-              }}
-              sx={{
-                '&:hover': {
-                  transform: 'translateY(-3px)',
-                  backgroundColor: 'rgba(153,105,229,0.1)',
-                  borderColor: 'rgba(153,105,229,0.5)',
+              styles={{
+                root: {
+                  transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+                  padding: '0 2rem',
+                  height: '3.5rem',
+                  borderColor: 'rgba(153,105,229,0.3)',
+                  '&:hover': {
+                    transform: 'translateY(-3px)',
+                    backgroundColor: 'rgba(153,105,229,0.1)',
+                    borderColor: 'rgba(153,105,229,0.5)',
+                  }
                 }
               }}
             >

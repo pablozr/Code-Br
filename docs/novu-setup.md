@@ -54,18 +54,64 @@ Este guia explica como configurar o Novu para enviar notificações por email e 
    - Assunto: "Nova Solicitação de Orçamento - {{name}}"
    - Conteúdo:
    ```html
-   <h2>Nova Solicitação de Orçamento</h2>
-   <p><strong>Nome:</strong> {{name}}</p>
-   <p><strong>Email:</strong> {{email}}</p>
-   <p><strong>Telefone:</strong> {{phone}}</p>
-   <p><strong>Empresa:</strong> {{company}}</p>
-   <p><strong>Tipo de Site:</strong> {{websiteType}}</p>
-   <p><strong>Descrição:</strong> {{message}}</p>
-   <p><strong>Orçamento:</strong> {{budget}}</p>
-   <p><strong>Prazo:</strong> {{timeline}}</p>
-   <p><strong>Newsletter:</strong> {{newsletter}}</p>
-   <p><strong>WhatsApp:</strong> {{whatsapp}}</p>
-   <p><strong>Data:</strong> {{requestDate}}</p>
+   <!DOCTYPE html>
+   <html>
+   <head>
+       <style>
+           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+           .header { background: #7641C0; color: white; padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }
+           .content { background: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; }
+           .section { margin-bottom: 20px; }
+           .label { font-weight: bold; color: #7641C0; }
+           .value { margin-left: 10px; }
+           .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+           .price { font-size: 18px; color: #7641C0; font-weight: bold; }
+       </style>
+   </head>
+   <body>
+       <div class="container">
+           <div class="header">
+               <h2>Nova Solicitação de Orçamento</h2>
+               <p>Recebida em {{requestDate}}</p>
+           </div>
+           
+           <div class="content">
+               <div class="section">
+                   <h3>Informações do Cliente</h3>
+                   <p><span class="label">Nome:</span> <span class="value">{{name}}</span></p>
+                   <p><span class="label">Email:</span> <span class="value">{{email}}</span></p>
+                   <p><span class="label">Telefone:</span> <span class="value">{{phone}}</span></p>
+                   <p><span class="label">Empresa:</span> <span class="value">{{company}}</span></p>
+               </div>
+
+               <div class="section">
+                   <h3>Detalhes do Projeto</h3>
+                   <p><span class="label">Tipo de Site:</span> <span class="value">{{websiteType}}</span></p>
+                   <p><span class="label">Funcionalidades:</span> <span class="value">{{features}}</span></p>
+                   <p><span class="label">Complexidade:</span> <span class="value">{{complexity}}</span></p>
+                   <p><span class="label">Prazo Desejado:</span> <span class="value">{{timeline}}</span></p>
+                   <p><span class="label">Preço Estimado:</span> <span class="value price">{{estimatedPrice}}</span></p>
+               </div>
+
+               <div class="section">
+                   <h3>Mensagem do Cliente</h3>
+                   <p>{{message}}</p>
+               </div>
+
+               <div class="section">
+                   <h3>Preferências de Contato</h3>
+                   <p><span class="label">Newsletter:</span> <span class="value">{{newsletter}}</span></p>
+                   <p><span class="label">WhatsApp:</span> <span class="value">{{whatsapp}}</span></p>
+               </div>
+           </div>
+
+           <div class="footer">
+               <p>Esta solicitação foi enviada através do formulário de orçamento do site.</p>
+           </div>
+       </div>
+   </body>
+   </html>
    ```
 
    **Para WhatsApp:**
@@ -147,3 +193,4 @@ Se as notificações não estiverem funcionando:
 
 - [Documentação oficial do Novu](https://docs.novu.co/)
 - [Exemplos de integração com Next.js](https://docs.novu.co/guides/next-js/)
+

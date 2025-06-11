@@ -11,7 +11,9 @@ import {
   ThemeIcon,
   Divider,
   ActionIcon,
-  rem
+  rem,
+  Button,
+  Anchor
 } from '@mantine/core';
 import {
   IconBrandGithub,
@@ -20,10 +22,14 @@ import {
   IconBrandLinkedin,
   IconGlobe,
   IconArrowUp,
-  IconCode
+  IconCode,
+  IconHeart,
+  IconMail,
+  IconPhone,
+  IconMapPin
 } from '@tabler/icons-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useSafePathname, getLocaleFromPathname } from '@/app/_lib/utils/pathname';
 import { useState, useEffect } from 'react';
 
 // Traduções para o Footer
@@ -91,9 +97,9 @@ const footerTexts = {
 };
 
 export function Footer() {
-  const pathname = usePathname();
+  const pathname = useSafePathname();
+  const locale = getLocaleFromPathname(pathname);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const locale = pathname.split('/')[1] || 'pt-BR';
 
   // Obter os textos traduzidos
   const t = footerTexts[locale as keyof typeof footerTexts] || footerTexts['pt-BR'];
@@ -198,18 +204,18 @@ export function Footer() {
           gradient={{ from: 'rgba(118,65,192,0.8)', to: 'rgba(153,105,229,0.8)', deg: 45 }}
           size="xl"
           radius="xl"
-          style={{
-            position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
-            zIndex: 10,
-            boxShadow: '0 5px 15px rgba(0,0,0,0.3), 0 0 10px rgba(153,105,229,0.3)',
-            transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
-          }}
-          sx={{
-            '&:hover': {
-              transform: 'translateY(-3px)',
-              boxShadow: '0 8px 20px rgba(0,0,0,0.3), 0 0 15px rgba(153,105,229,0.4)',
+          styles={{
+            root: {
+              position: 'fixed',
+              bottom: '2rem',
+              right: '2rem',
+              zIndex: 10,
+              boxShadow: '0 5px 15px rgba(0,0,0,0.3), 0 0 10px rgba(153,105,229,0.3)',
+              transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+              '&:hover': {
+                transform: 'translateY(-3px)',
+                boxShadow: '0 8px 20px rgba(0,0,0,0.3), 0 0 15px rgba(153,105,229,0.4)',
+              }
             }
           }}
           onClick={scrollToTop}
@@ -219,9 +225,9 @@ export function Footer() {
       )}
 
       <Container size="xl" py={80} style={{ position: 'relative', zIndex: 1 }}>
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing={50}>
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="50px">
           {/* Brand column */}
-          <Stack spacing="md">
+          <Stack gap="md">
             <Group>
               <ThemeIcon
                 size="xl"
@@ -248,11 +254,13 @@ export function Footer() {
                 color="gray"
                 radius="xl"
                 size="lg"
-                sx={{
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    backgroundColor: 'rgba(153,105,229,0.15)',
-                    transform: 'translateY(-2px)',
+                styles={{
+                  root: {
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(153,105,229,0.15)',
+                      transform: 'translateY(-2px)',
+                    }
                   }
                 }}
               >
@@ -263,11 +271,13 @@ export function Footer() {
                 color="gray"
                 radius="xl"
                 size="lg"
-                sx={{
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    backgroundColor: 'rgba(153,105,229,0.15)',
-                    transform: 'translateY(-2px)',
+                styles={{
+                  root: {
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(153,105,229,0.15)',
+                      transform: 'translateY(-2px)',
+                    }
                   }
                 }}
               >
@@ -278,11 +288,13 @@ export function Footer() {
                 color="gray"
                 radius="xl"
                 size="lg"
-                sx={{
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    backgroundColor: 'rgba(153,105,229,0.15)',
-                    transform: 'translateY(-2px)',
+                styles={{
+                  root: {
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(153,105,229,0.15)',
+                      transform: 'translateY(-2px)',
+                    }
                   }
                 }}
               >
@@ -293,11 +305,13 @@ export function Footer() {
                 color="gray"
                 radius="xl"
                 size="lg"
-                sx={{
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    backgroundColor: 'rgba(153,105,229,0.15)',
-                    transform: 'translateY(-2px)',
+                styles={{
+                  root: {
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(153,105,229,0.15)',
+                      transform: 'translateY(-2px)',
+                    }
                   }
                 }}
               >
@@ -308,7 +322,7 @@ export function Footer() {
 
           {/* Links columns */}
           {footerLinks.map((group) => (
-            <Stack key={group.title} spacing="xs">
+            <Stack key={group.title} gap="xs">
               <Text
                 fw={700}
                 c="white"

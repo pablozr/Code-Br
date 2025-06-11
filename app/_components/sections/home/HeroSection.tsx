@@ -28,7 +28,7 @@ const MotionFlex = motion.div;
 
 export function HeroSection() {
   const targetRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '/pt-BR';
   const locale = pathname.split('/')[1] || 'pt-BR';
 
   // Textos do hero
@@ -198,7 +198,7 @@ export function HeroSection() {
             >
               <TechButton
                 component="a"
-                href="/orcamento"
+                href={`/${locale}/orcamento`}
                 size="xl"
                 radius="xl"
                 variant="gradient"
@@ -226,7 +226,7 @@ export function HeroSection() {
 
               <TechButton
                 component="a"
-                href="/#portfolio"
+                href={`/${locale}/#portfolio`}
                 size="xl"
                 radius="xl"
                 variant="outline"
@@ -344,13 +344,18 @@ export function HeroSection() {
           transition={{ duration: 0.5, delay: 0.5 }}
         >
           <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
-            <Box style={{
+            <Box
+              component="a"
+              href={`/${locale}/orcamento?type=landing`}
+              style={{
               background: 'rgba(255,255,255,0.03)',
               borderRadius: '16px',
               padding: '24px',
               border: '1px solid rgba(118,65,192,0.2)',
               backdropFilter: 'blur(10px)',
               transition: 'all 0.3s ease',
+              textDecoration: 'none',
+              display: 'block',
               '&:hover': {
                 transform: 'translateY(-5px)',
                 boxShadow: '0 10px 30px rgba(118,65,192,0.2)',
@@ -372,13 +377,18 @@ export function HeroSection() {
               </Text>
             </Box>
 
-            <Box style={{
+            <Box
+              component="a"
+              href={`/${locale}/orcamento?type=ecommerce`}
+              style={{
               background: 'rgba(255,255,255,0.03)',
               borderRadius: '16px',
               padding: '24px',
               border: '1px solid rgba(118,65,192,0.2)',
               backdropFilter: 'blur(10px)',
               transition: 'all 0.3s ease',
+              textDecoration: 'none',
+              display: 'block',
               '&:hover': {
                 transform: 'translateY(-5px)',
                 boxShadow: '0 10px 30px rgba(118,65,192,0.2)',
@@ -400,13 +410,18 @@ export function HeroSection() {
               </Text>
             </Box>
 
-            <Box style={{
+            <Box
+              component="a"
+              href={`/${locale}/orcamento?type=corporate`}
+              style={{
               background: 'rgba(255,255,255,0.03)',
               borderRadius: '16px',
               padding: '24px',
               border: '1px solid rgba(118,65,192,0.2)',
               backdropFilter: 'blur(10px)',
               transition: 'all 0.3s ease',
+              textDecoration: 'none',
+              display: 'block',
               '&:hover': {
                 transform: 'translateY(-5px)',
                 boxShadow: '0 10px 30px rgba(118,65,192,0.2)',

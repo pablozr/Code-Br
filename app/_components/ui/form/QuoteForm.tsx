@@ -52,14 +52,55 @@ export function QuoteForm() {
       orcamento: '',
       newsletter: true,
       whatsapp: false,
+      features: [],
+      selectedFeatures: [],
     },
     validate: zodResolver(quoteFormSchema),
     validateInputOnBlur: true,
     validateInputOnChange: true,
   });
 
+  // Validar campos quando os valores mudarem
+  useEffect(() => {
+    if (form.values.telefone) {
+      form.validateField('telefone');
+    }
+    if (form.values.email) {
+      form.validateField('email');
+    }
+    if (form.values.nome) {
+      form.validateField('nome');
+    }
+    if (form.values.descricao) {
+      form.validateField('descricao');
+    }
+  }, [form.values.telefone, form.values.email, form.values.nome, form.values.descricao]);
+
   // Função para verificar se a etapa atual é válida
   const isStepValid = (step: number) => {
+    // Forçar validação dos campos da etapa atual
+    const validateCurrentStep = () => {
+      switch (step) {
+        case 0: // Informações Pessoais
+          form.validateField('nome');
+          form.validateField('email');
+          form.validateField('telefone');
+          break;
+        case 1: // Detalhes do Projeto
+          form.validateField('tipoSite');
+          form.validateField('descricao');
+          break;
+        case 2: // Preferências
+          // Campos opcionais, mas validar se preenchidos
+          if (form.values.prazo) form.validateField('prazo');
+          if (form.values.orcamento) form.validateField('orcamento');
+          break;
+      }
+    };
+
+    // Validar campos ao verificar se a etapa é válida
+    validateCurrentStep();
+
     switch (step) {
       case 0: // Informações Pessoais
         return (
@@ -106,11 +147,14 @@ export function QuoteForm() {
 
     // Atualizar validação da etapa atual
     setFormValid(isStepValid(activeStep));
-  }, [form.values, activeStep]);
+  }, [form.values, form.errors, activeStep]);
 
   // Funções para navegar entre as etapas
   const nextStep = () => {
-    if (activeStep < steps.length - 1) {
+    // Validar todos os campos da etapa atual antes de avançar
+    const isValid = isStepValid(activeStep);
+
+    if (isValid && activeStep < steps.length - 1) {
       setAnimateIn(false);
       setTimeout(() => {
         setActiveStep((current) => current + 1);
@@ -118,6 +162,27 @@ export function QuoteForm() {
         // Rolar suavemente para o topo do formulário
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 200);
+    } else {
+      // Mostrar notificação se houver erros
+      if (!isValid) {
+        notifications.show({
+          title: 'Formulário incompleto',
+          message: 'Por favor, preencha todos os campos obrigatórios corretamente.',
+          color: 'red',
+          icon: <IconInfoCircle size="1.1rem" />,
+          autoClose: 3000,
+        });
+
+        // Destacar campos com erro
+        if (activeStep === 0) {
+          if (form.errors.nome) form.setFieldError('nome', form.errors.nome);
+          if (form.errors.email) form.setFieldError('email', form.errors.email);
+          if (form.errors.telefone) form.setFieldError('telefone', form.errors.telefone);
+        } else if (activeStep === 1) {
+          if (form.errors.tipoSite) form.setFieldError('tipoSite', form.errors.tipoSite);
+          if (form.errors.descricao) form.setFieldError('descricao', form.errors.descricao);
+        }
+      }
     }
   };
 

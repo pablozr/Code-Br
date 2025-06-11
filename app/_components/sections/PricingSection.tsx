@@ -1,8 +1,10 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { Box, Container, Group, Text, ThemeIcon, SimpleGrid, Title, Flex, Badge, Button, Switch, Card, List } from '@mantine/core';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { ParticlesWrapper } from '@/app/_components/effects/ParticlesWrapper';
+import { useOptimizedAnimation } from '@/app/_hooks/useOptimizedAnimation';
 import {
   IconCheck,
   IconX,
@@ -238,14 +240,45 @@ const hoverStyles = `
 export function PricingSection() {
   // Obter o idioma atual
   const pathname = usePathname();
-  const locale = pathname.split('/')[1] || 'pt-BR';
+  const locale = pathname ? pathname.split('/')[1] || 'pt-BR' : 'pt-BR';
 
   // Obter os textos traduzidos
   const t = pricingTexts[locale as keyof typeof pricingTexts] || pricingTexts['pt-BR'];
 
+  // Hooks de animação otimizada
+  const headerAnimation = useOptimizedAnimation({ threshold: 0.1 });
+  const plansAnimation = useOptimizedAnimation({ threshold: 0.05 });
+
+  // Variantes de animação para otimizar performance
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+        when: "beforeChildren"
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 25,
+        stiffness: 100
+      }
+    }
+  };
+
   // Dados dos serviços com traduções
   const services = [
     {
+      id: 'landing',
       title: t.landingPageTitle,
       description: t.landingPageDescription,
       features: t.landingPageFeatures.map(feature => ({ title: feature, included: true, highlight: true })),
@@ -254,6 +287,7 @@ export function PricingSection() {
       color: 'rgba(118, 65, 192, 0.7)'
     },
     {
+      id: 'corporate',
       title: t.corporateSiteTitle,
       description: t.corporateSiteDescription,
       badge: t.corporateSiteBadge,
@@ -264,6 +298,7 @@ export function PricingSection() {
       color: 'rgba(153, 105, 229, 0.8)'
     },
     {
+      id: 'ecommerce',
       title: t.ecommerceTitle,
       description: t.ecommerceDescription,
       features: t.ecommerceFeatures.map(feature => ({ title: feature, included: true, highlight: true })),
@@ -683,37 +718,24 @@ export function PricingSection() {
                     </Box>
 
                     {/* CTA Button */}
-                    <MotionButton
-                      style={{
-                        width: '100%',
-                        padding: '0.75rem 1rem',
-                        fontSize: '1rem',
-                        fontWeight: 500,
-                        borderRadius: '0.5rem',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        background: service.popular
-                          ? 'linear-gradient(135deg, rgba(118,65,192,0.9), rgba(153,105,229,0.9))'
-                          : 'transparent',
-                        color: service.popular ? 'white' : '#9969E5',
-                        border: service.popular
-                          ? 'none'
-                          : '1px solid rgba(153,105,229,0.5)',
-                        boxShadow: service.popular
-                          ? '0 5px 15px rgba(118,65,192,0.3)'
-                          : 'none',
-                      }}
-                      initial={{ scale: 1 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.2 }}
+                    <Button
+                      component="a"
+                      href={`/${locale}/orcamento?type=${service.id}`}
+                      rightSection={<IconArrowRight size={18} />}
                       className="button-hover"
+                      fullWidth
+                      size="md"
+                      radius="md"
+                      variant={service.popular ? "gradient" : "outline"}
+                      gradient={service.popular ? { from: 'rgba(118,65,192,0.9)', to: 'rgba(153,105,229,0.9)', deg: 135 } : undefined}
+                      color={service.popular ? undefined : "purple.4"}
+                      style={{
+                        boxShadow: service.popular ? '0 5px 15px rgba(118,65,192,0.3)' : 'none',
+                        border: service.popular ? 'none' : '1px solid rgba(153,105,229,0.5)',
+                      }}
                     >
                       {service.cta}
-                      <IconArrowRight size={18} />
-                    </MotionButton>
+                    </Button>
                   </Box>
                 </MotionBox>
               </MotionCard>
@@ -789,3 +811,5 @@ export function PricingSection() {
     </Box>
   );
 }
+
+export default PricingSection;

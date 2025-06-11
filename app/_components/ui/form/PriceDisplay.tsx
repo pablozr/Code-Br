@@ -13,7 +13,7 @@ interface PriceDisplayProps {
 const PriceDisplay: React.FC<PriceDisplayProps> = memo(({ label }) => {
   const { totalPrice, formatPrice } = usePriceContext();
   const pathname = usePathname();
-  const locale = pathname.split('/')[1] || 'pt-BR';
+  const locale = pathname?.split('/')[1] || 'pt-BR';
   
   return (
     <Paper
@@ -24,7 +24,7 @@ const PriceDisplay: React.FC<PriceDisplayProps> = memo(({ label }) => {
         border: '1px solid rgba(153,105,229,0.3)',
       }}
     >
-      <Group position="apart">
+      <Group justify="space-between">
         <Text fw={600} size="md" c="white">
           {label}
         </Text>

@@ -25,43 +25,108 @@ export function PersonalInfoStep({ form, animateIn }: StepProps) {
             </Text>
 
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-              <TextInput
-                label="Nome"
-                placeholder="Seu nome completo"
-                withAsterisk
-                leftSection={<IconUser size={16} />}
-                {...form.getInputProps('nome')}
-                styles={formFieldStyles}
-              />
+              <Box style={{ minHeight: '90px' }}>
+                <TextInput
+                  label="Nome"
+                  placeholder="Seu nome completo"
+                  withAsterisk
+                  leftSection={<IconUser size={16} />}
+                  {...form.getInputProps('nome')}
+                  styles={{
+                    ...formFieldStyles,
+                    error: {
+                      ...formFieldStyles.error,
+                      display: 'block',
+                    },
+                    input: {
+                      ...formFieldStyles.input,
+                      borderColor: form.errors.nome ? '#ff6b6b !important' : formFieldStyles.input.borderColor,
+                    }
+                  }}
+                  error={form.errors.nome}
+                />
+                {!form.errors.nome && form.values.nome && (
+                  <Text size="xs" c="teal.4" mt={5} style={{ fontSize: '0.7rem' }}>
+                    ✓ Nome válido
+                  </Text>
+                )}
+              </Box>
 
-              <TextInput
-                label="Email"
-                placeholder="seu.email@exemplo.com"
-                withAsterisk
-                leftSection={<IconMail size={16} />}
-                {...form.getInputProps('email')}
-                styles={formFieldStyles}
-              />
+              <Box style={{ minHeight: '90px' }}>
+                <TextInput
+                  label="Email"
+                  placeholder="seu.email@exemplo.com"
+                  withAsterisk
+                  leftSection={<IconMail size={16} />}
+                  {...form.getInputProps('email')}
+                  styles={{
+                    ...formFieldStyles,
+                    error: {
+                      ...formFieldStyles.error,
+                      display: 'block',
+                    },
+                    input: {
+                      ...formFieldStyles.input,
+                      borderColor: form.errors.email ? '#ff6b6b !important' : formFieldStyles.input.borderColor,
+                    }
+                  }}
+                  error={form.errors.email}
+                />
+                {!form.errors.email && form.values.email && (
+                  <Text size="xs" c="teal.4" mt={5} style={{ fontSize: '0.7rem' }}>
+                    ✓ Email válido
+                  </Text>
+                )}
+              </Box>
             </SimpleGrid>
 
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-              <TextInput
-                label="Telefone"
-                placeholder="+55 (00) 00000-0000"
-                description="Inclua o código do país (ex: +55 para Brasil)"
-                withAsterisk
-                leftSection={<IconPhone size={16} />}
-                {...form.getInputProps('telefone')}
-                styles={formFieldStyles}
-              />
+              <Box style={{ minHeight: '90px' }}>
+                <TextInput
+                  label="Telefone"
+                  placeholder="+55 (00) 00000-0000"
+                  description="Formato internacional: +DD (XX) XXXXX-XXXX"
+                  withAsterisk
+                  leftSection={<IconPhone size={16} />}
+                  {...form.getInputProps('telefone')}
+                  styles={{
+                    ...formFieldStyles,
+                    error: {
+                      ...formFieldStyles.error,
+                      display: 'block',
+                    },
+                    input: {
+                      ...formFieldStyles.input,
+                      borderColor: form.errors.telefone ? '#ff6b6b !important' : formFieldStyles.input.borderColor,
+                    },
+                    description: {
+                      ...formFieldStyles.description,
+                      fontSize: '0.75rem',
+                    }
+                  }}
+                  error={form.errors.telefone}
+                />
+                {!form.errors.telefone && form.values.telefone && (
+                  <Text size="xs" c="teal.4" mt={5} style={{ fontSize: '0.7rem' }}>
+                    ✓ Formato válido
+                  </Text>
+                )}
+                {!form.errors.telefone && !form.values.telefone && (
+                  <Text size="xs" c="dimmed" mt={5} style={{ fontSize: '0.7rem' }}>
+                    Exemplo: +55 (11) 98765-4321 (Brasil)
+                  </Text>
+                )}
+              </Box>
 
-              <TextInput
-                label="Empresa"
-                placeholder="Nome da sua empresa (opcional)"
-                leftSection={<IconBuildingStore size={16} />}
-                {...form.getInputProps('empresa')}
-                styles={formFieldStyles}
-              />
+              <Box style={{ minHeight: '90px' }}>
+                <TextInput
+                  label="Empresa"
+                  placeholder="Nome da sua empresa (opcional)"
+                  leftSection={<IconBuildingStore size={16} />}
+                  {...form.getInputProps('empresa')}
+                  styles={formFieldStyles}
+                />
+              </Box>
             </SimpleGrid>
 
             <Checkbox
@@ -102,31 +167,65 @@ export function ProjectDetailsStep({ form, animateIn }: StepProps) {
               Conte-nos mais sobre o site que você precisa.
             </Text>
 
-            <Select
-              label="Tipo de Site"
-              placeholder="Selecione o tipo de site"
-              withAsterisk
-              leftSection={<IconDeviceDesktop size={16} />}
-              data={[
-                { value: 'landing', label: 'Landing Page' },
-                { value: 'institucional', label: 'Site Institucional' },
-                { value: 'ecommerce', label: 'E-commerce' },
-                { value: 'blog', label: 'Blog' },
-                { value: 'personalizado', label: 'Personalizado' },
-              ]}
-              {...form.getInputProps('tipoSite')}
-              styles={formFieldStyles}
-            />
+            <Box style={{ position: 'relative' }}>
+              <Select
+                label="Tipo de Site"
+                placeholder="Selecione o tipo de site"
+                withAsterisk
+                leftSection={<IconDeviceDesktop size={16} />}
+                data={[
+                  { value: 'landing', label: 'Landing Page' },
+                  { value: 'institucional', label: 'Site Institucional' },
+                  { value: 'ecommerce', label: 'E-commerce' },
+                  { value: 'blog', label: 'Blog' },
+                  { value: 'personalizado', label: 'Personalizado' },
+                ]}
+                {...form.getInputProps('tipoSite')}
+                styles={{
+                  ...formFieldStyles,
+                  error: {
+                    ...formFieldStyles.error,
+                    display: 'block',
+                  },
+                  input: {
+                    ...formFieldStyles.input,
+                    borderColor: form.errors.tipoSite ? '#ff6b6b !important' : formFieldStyles.input.borderColor,
+                  }
+                }}
+              />
+              {!form.errors.tipoSite && form.values.tipoSite && (
+                <Text size="xs" c="teal.4" mt={5} style={{ fontSize: '0.7rem' }}>
+                  ✓ Tipo de site selecionado
+                </Text>
+              )}
+            </Box>
 
-            <Textarea
-              label="Descrição do Projeto"
-              placeholder="Descreva o que você precisa para o seu site..."
-              withAsterisk
-              minRows={4}
-              leftSection={<IconPencil size={16} />}
-              {...form.getInputProps('descricao')}
-              styles={formFieldStyles}
-            />
+            <Box style={{ position: 'relative' }}>
+              <Textarea
+                label="Descrição do Projeto"
+                placeholder="Descreva o que você precisa para o seu site..."
+                withAsterisk
+                minRows={4}
+                leftSection={<IconPencil size={16} />}
+                {...form.getInputProps('descricao')}
+                styles={{
+                  ...formFieldStyles,
+                  error: {
+                    ...formFieldStyles.error,
+                    display: 'block',
+                  },
+                  input: {
+                    ...formFieldStyles.input,
+                    borderColor: form.errors.descricao ? '#ff6b6b !important' : formFieldStyles.input.borderColor,
+                  }
+                }}
+              />
+              {!form.errors.descricao && form.values.descricao && form.values.descricao.length >= 10 && (
+                <Text size="xs" c="teal.4" mt={5} style={{ fontSize: '0.7rem' }}>
+                  ✓ Descrição válida
+                </Text>
+              )}
+            </Box>
           </Stack>
         </div>
       )}

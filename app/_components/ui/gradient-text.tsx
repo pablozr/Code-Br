@@ -63,7 +63,7 @@ export default function GradientText({
           style={{
             position: 'absolute',
             top: 0,
-            left: 0,
+            left: '-10%',
             right: 0,
             bottom: 0,
             background: `radial-gradient(ellipse, ${glowColor} 0%, rgba(255,255,255,0) 70%)`,
@@ -74,7 +74,6 @@ export default function GradientText({
             pointerEvents: 'none',
             width: '120%',
             height: '150%',
-            left: '-10%',
           }}
           animate={{
             opacity: [0.5, 0.8, 0.5],

@@ -74,14 +74,7 @@ import {
 import { motion } from 'framer-motion';
 
 // Componentes com motion
-const MotionBox = motion.create(Box);
-const MotionCard = motion.create(Card);
-const MotionTitle = motion.create(Title);
-const MotionThemeIcon = motion.create(ThemeIcon);
-const MotionFlex = motion.create(Flex);
-const MotionGroup = motion.create(Group);
-const MotionBadge = motion.create(Badge);
-const MotionButton = motion.create(Button);
+const MotionBox = motion.div;
 
 // Componente para o efeito de circuit board
 function CircuitBackground({ color = 'rgba(153, 105, 229, 0.15)' }: { color?: string }) {
@@ -154,19 +147,7 @@ function CircuitBackground({ color = 'rgba(153, 105, 229, 0.15)' }: { color?: st
   );
 }
 
-// Componente para ícone animado
-function AnimatedIcon({ icon, color = 'rgba(153, 105, 229, 1)' }: { icon: React.ReactNode, color?: string }) {
-  return (
-    <MotionBox
-      initial={{ scale: 1 }}
-      whileHover={{ scale: 1.1, rotate: 5 }}
-      transition={{ duration: 0.3 }}
-      style={{ display: 'inline-flex' }}
-    >
-      {icon}
-    </MotionBox>
-  );
-}
+
 
 // Componente para indicador de nível técnico
 function TechLevelIndicator({ level = 3, maxLevel = 5 }: { level?: number, maxLevel?: number }) {
@@ -210,7 +191,7 @@ interface ServiceCategory {
 
 export function ServicesSection() {
   const pathname = usePathname();
-  const locale = pathname.split('/')[1] || 'pt-BR';
+  const locale = pathname?.split('/')[1] || 'pt-BR';
 
   // Textos da seção de serviços
   const servicesTexts = {
@@ -723,23 +704,27 @@ export function ServicesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
-          mb={60}
-          ta="center"
+          style={{ marginBottom: '60px', textAlign: 'center' }}
         >
-          <MotionBadge
+          <Badge
             variant="light"
             color="purple.5"
             size="lg"
             radius="sm"
-            mb="md"
             style={{
               background: 'linear-gradient(135deg, rgba(118,65,192,0.1), rgba(153,105,229,0.2))',
               border: '1px solid rgba(153,105,229,0.3)',
               backdropFilter: 'blur(10px)',
+              marginBottom: '1rem',
             }}
+            component={motion.div}
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            viewport={{ once: true }}
           >
             {t.badge}
-          </MotionBadge>
+          </Badge>
 
           <Title
             order={2}
@@ -794,10 +779,7 @@ export function ServicesSection() {
                 borderRadius: '30px',
                 transition: 'all 0.3s ease',
               },
-              tabActive: {
-                background: 'linear-gradient(135deg, rgba(118,65,192,0.8), rgba(153,105,229,0.8))',
-                color: 'white',
-              },
+
             }}
           >
             <Tabs.List>
@@ -820,15 +802,16 @@ export function ServicesSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          mb={60}
+          style={{ marginBottom: '60px' }}
         >
           <Flex gap="xl" direction={{ base: 'column', md: 'row' }}>
             {/* Service Overview */}
             <Box style={{ flex: '1' }}>
-              <MotionFlex
+              <Flex
                 align="center"
                 gap="md"
-                mb="lg"
+                style={{ marginBottom: '1.5rem' }}
+                component={motion.div}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -849,14 +832,14 @@ export function ServicesSection() {
                   <Title order={3} fw={700} size="h3" c="white">{activeService.title}</Title>
                   <Text size="md" c="gray.4">{activeService.description}</Text>
                 </Box>
-              </MotionFlex>
+              </Flex>
 
               {/* Tech Stack */}
               <MotionBox
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                mb="xl"
+                style={{ marginBottom: '2rem' }}
               >
                 <Text fw={600} size="sm" c="white" mb="sm">{t.techStack}</Text>
                 <Flex gap="md" wrap="wrap">
@@ -900,13 +883,15 @@ export function ServicesSection() {
               </MotionBox>
 
               {/* CTA Button */}
-              <MotionButton
+              <Button
+                component={motion.a}
+                href={`/${locale}/orcamento?type=${activeCategory}`}
                 size="lg"
                 radius="md"
                 variant="gradient"
                 gradient={{ from: 'rgba(118,65,192,0.9)', to: 'rgba(153,105,229,0.9)', deg: 135 }}
                 rightSection={<IconArrowUpRight size={18} />}
-                mt="xl"
+                style={{ marginTop: '2rem' }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
@@ -917,14 +902,14 @@ export function ServicesSection() {
                 whileTap={{ scale: 0.98 }}
               >
                 {t.cta}
-              </MotionButton>
+              </Button>
             </Box>
 
             {/* Features Grid */}
             <Box style={{ flex: '1.2' }}>
               <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
                 {activeService.features.map((feature, index) => (
-                  <MotionCard
+                  <Card
                     key={index}
                     p="md"
                     radius="md"
@@ -936,6 +921,7 @@ export function ServicesSection() {
                       overflow: 'hidden',
                       position: 'relative',
                     }}
+                    component={motion.div}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 + (index * 0.05) }}
@@ -962,25 +948,27 @@ export function ServicesSection() {
                     />
 
                     <Flex gap="md" style={{ position: 'relative', zIndex: 1 }}>
-                      <MotionThemeIcon
-                        size={40}
-                        radius="md"
-                        variant="light"
-                        color="purple.5"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(118,65,192,0.2), rgba(153,105,229,0.1))',
-                          border: '1px solid rgba(153,105,229,0.2)',
-                          boxShadow: '0 5px 15px rgba(118,65,192,0.1)',
-                        }}
+                      <motion.div
                         whileHover={{
                           scale: 1.1,
                           rotate: 5,
-                          boxShadow: '0 5px 20px rgba(118,65,192,0.2)',
                         }}
                         transition={{ duration: 0.3 }}
                       >
-                        {feature.icon}
-                      </MotionThemeIcon>
+                        <ThemeIcon
+                          size={40}
+                          radius="md"
+                          variant="light"
+                          color="purple.5"
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(118,65,192,0.2), rgba(153,105,229,0.1))',
+                            border: '1px solid rgba(153,105,229,0.2)',
+                            boxShadow: '0 5px 15px rgba(118,65,192,0.1)',
+                          }}
+                        >
+                          {feature.icon}
+                        </ThemeIcon>
+                      </motion.div>
                       <Box style={{ flex: 1 }}>
                         <Flex justify="space-between" align="center" mb="xs">
                           <Text fw={600} size="md" c="white">{feature.title}</Text>
@@ -989,7 +977,7 @@ export function ServicesSection() {
                         <Text size="sm" c="gray.5" lh={1.6}>{feature.description}</Text>
                       </Box>
                     </Flex>
-                  </MotionCard>
+                  </Card>
                 ))}
               </SimpleGrid>
             </Box>
@@ -1002,8 +990,7 @@ export function ServicesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true, margin: "-100px" }}
-          mt={40}
-          ta="center"
+          style={{ marginTop: '40px', textAlign: 'center' }}
         >
           <Text fw={600} size="sm" c="gray.5" mb="xs">
             {t.techNote}
@@ -1013,3 +1000,5 @@ export function ServicesSection() {
     </Box>
   );
 }
+
+export default ServicesSection;

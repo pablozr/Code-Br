@@ -1,6 +1,6 @@
-import { HomeUI } from '@/app/(routes)/(marketing)/home-ui';
-import { useTranslation } from 'next-intl';
+import { HomeUI } from './(marketing)/components/home-ui';
 
-export default function HomePage() {
-  return <HomeUI />;
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const resolvedParams = await params;
+  return <HomeUI locale={resolvedParams?.locale || 'pt-BR'} />;
 }

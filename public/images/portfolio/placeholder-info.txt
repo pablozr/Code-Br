@@ -1,0 +1,11 @@
+Esta pasta contém imagens de placeholder para a seção de portfólio.
+
+Para cada template, você deve adicionar:
+1. Uma imagem principal - tamanho recomendado: 800x600px
+
+Nomeie as imagens de forma consistente, por exemplo:
+- placeholder-1.jpg (para o primeiro template)
+- placeholder-2.jpg (para o segundo template)
+- placeholder-3.jpg (para o terceiro template)
+
+Substitua os placeholders por imagens reais dos seus templates quando disponíveis.

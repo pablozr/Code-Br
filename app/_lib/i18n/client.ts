@@ -103,8 +103,6 @@ i18next
       lookupCookie: 'i18next',
       lookupFromPathIndex: 1, // Usar o segundo segmento da URL (após o idioma)
       caches: ['cookie'],
-      // Desativar redirecionamento automático no cliente
-      cookieExpirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 30 dias
     },
     interpolation: {
       escapeValue: false,

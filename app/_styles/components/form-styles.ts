@@ -19,6 +19,13 @@ export const formFieldStyles = {
       borderColor: 'rgba(153, 105, 229, 0.5)',
       backgroundColor: 'rgba(35, 35, 35, 0.6)',
     },
+    '&[data-invalid="true"]': {
+      borderColor: '#ff6b6b !important',
+      color: 'white',
+      '&:focus': {
+        borderColor: '#ff6b6b !important',
+      },
+    },
   },
   label: {
     color: 'white',
@@ -34,6 +41,8 @@ export const formFieldStyles = {
     fontSize: '0.8rem',
     fontWeight: 500,
     marginTop: 5,
+    animation: 'fadeIn 0.3s ease',
+    display: 'block', // Garantir que o erro seja sempre exibido
   },
   description: {
     color: 'rgba(255, 255, 255, 0.6)',
@@ -100,14 +109,25 @@ export const dividerStyles = (theme: MantineTheme) => ({
   },
 });
 
-// Animação de brilho para o botão
-export const shineAnimation = `
+// Animações para os componentes
+export const animations = `
 @keyframes shine {
   0% {
     transform: translateX(-100%);
   }
   20%, 100% {
     transform: translateX(100%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 `;

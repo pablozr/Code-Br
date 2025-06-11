@@ -34,15 +34,18 @@ export async function sendQuoteRequestNotification(data: QuoteFormValues) {
     const websiteType = (() => {
       switch (data.tipoSite) {
         case 'landing': return 'Landing Page';
-        case 'institucional': return 'Site Institucional';
+        case 'corporate': return 'Site Corporativo';
         case 'ecommerce': return 'E-commerce';
-        case 'blog': return 'Blog';
-        case 'personalizado': return 'Personalizado';
+        case 'custom': return 'Projeto Personalizado';
         default: return data.tipoSite;
       }
     })();
 
     const budget = (() => {
+      if (data.estimatedPrice) {
+        return `Estimativa: ${data.orcamento}`;
+      }
+
       switch (data.orcamento) {
         case 'ate2k': return 'Até R$ 2.000';
         case '2k-5k': return 'R$ 2.000 - R$ 5.000';
@@ -56,10 +59,26 @@ export async function sendQuoteRequestNotification(data: QuoteFormValues) {
 
     const timeline = (() => {
       switch (data.prazo) {
-        case 'urgente': return 'Urgente (até 15 dias)';
-        case 'normal': return 'Normal (15-30 dias)';
-        case 'flexivel': return 'Flexível (mais de 30 dias)';
+        case 'urgent': return 'Urgente (1-2 semanas)';
+        case 'normal': return 'Normal (3-4 semanas)';
+        case 'relaxed': return 'Relaxado (1-2 meses)';
+        case 'flexible': return 'Flexível';
         default: return data.prazo || 'Não especificado';
+      }
+    })();
+
+    // Formatar as funcionalidades selecionadas
+    const featuresFormatted = data.selectedFeatures && data.selectedFeatures.length > 0
+      ? data.selectedFeatures.join(', ')
+      : 'Nenhuma funcionalidade específica selecionada';
+
+    const complexity = (() => {
+      switch (data.complexity) {
+        case 'low': return 'Baixa';
+        case 'medium': return 'Média';
+        case 'high': return 'Alta';
+        case 'enterprise': return 'Empresarial';
+        default: return data.complexity || 'Média';
       }
     })();
 
@@ -80,6 +99,9 @@ export async function sendQuoteRequestNotification(data: QuoteFormValues) {
         newsletter: data.newsletter ? 'Sim' : 'Não',
         whatsapp: data.whatsapp ? 'Sim' : 'Não',
         requestDate: new Date().toLocaleString('pt-BR'),
+        features: featuresFormatted,
+        complexity: complexity,
+        estimatedPrice: data.estimatedPrice ? `${data.estimatedPrice}` : 'Não calculado',
       },
     });
 
@@ -102,6 +124,22 @@ export async function sendClientConfirmation(data: QuoteFormValues) {
       lastName: data.nome.split(' ').slice(1).join(' '),
     });
 
+    // Mapear os dados para formatos mais legíveis
+    const websiteType = (() => {
+      switch (data.tipoSite) {
+        case 'landing': return 'Landing Page';
+        case 'corporate': return 'Site Corporativo';
+        case 'ecommerce': return 'E-commerce';
+        case 'custom': return 'Projeto Personalizado';
+        default: return data.tipoSite;
+      }
+    })();
+
+    // Formatar as funcionalidades selecionadas
+    const featuresFormatted = data.selectedFeatures && data.selectedFeatures.length > 0
+      ? data.selectedFeatures.join(', ')
+      : 'Nenhuma funcionalidade específica selecionada';
+
     // Enviar a notificação de confirmação
     const result = await novu.trigger('quote-request-confirmation', {
       to: {
@@ -110,6 +148,9 @@ export async function sendClientConfirmation(data: QuoteFormValues) {
       payload: {
         name: data.nome,
         requestDate: new Date().toLocaleString('pt-BR'),
+        websiteType,
+        features: featuresFormatted,
+        estimatedPrice: data.estimatedPrice ? `${data.orcamento}` : 'Não calculado',
       },
     });
 

@@ -1,6 +1,6 @@
-import { HomeUI } from '@/app/(routes)/(marketing)/home-ui';
+import { HomeUI } from './components/home-ui';
 
-// The locale param is handled by the middleware
-export default function HomePage() {
-  return <HomeUI />;
-}
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const resolvedParams = await params;
+  return <HomeUI locale={resolvedParams?.locale || 'pt-BR'} />;
+} 

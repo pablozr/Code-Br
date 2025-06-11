@@ -20,28 +20,35 @@ CodeBR é uma plataforma especializada em serviços de criação de websites de 
 ```
 codebr-website/
 ├── app/                      # Diretório principal do Next.js App Router
-│   ├── (dashboard)/          # Grupo de rotas para o site principal
+│   ├── [locale]/             # Rotas internacionalizadas
+│   │   ├── (marketing)/       # Grupo de rotas de marketing
 │   │   ├── contact/           # Página de contato
-│   │   ├── home-ui.tsx        # Componente principal da página inicial
+│   │   ├── orcamento/         # Página de orçamento
 │   │   └── page.tsx           # Página inicial
 │   ├── _components/          # Componentes organizados
 │   │   ├── effects/           # Efeitos visuais (partículas, animações)
 │   │   ├── layout/            # Componentes de layout (Header, Footer)
 │   │   ├── sections/          # Seções da página principal
+│   │   ├── seo/               # Componentes de SEO
 │   │   └── ui/                # Componentes de UI reutilizáveis
 │   ├── _actions/             # Ações do servidor
-│   ├── _data/                # Dados estáticos
+│   ├── _lib/                 # Bibliotecas e utilitários
+│   │   ├── i18n/              # Configuração de internacionalização
+│   │   ├── notifications/     # Sistema de notificações
+│   │   ├── security/          # Configurações de segurança
+│   │   ├── utils/             # Funções utilitárias
+│   │   └── validation/        # Schemas de validação
+│   ├── _styles/              # Estilos organizados
+│   │   ├── components/        # Estilos de componentes
+│   │   └── effects/           # Estilos de efeitos
 │   ├── api/                  # Rotas de API
 │   ├── globals.css           # Estilos globais
 │   └── layout.tsx            # Layout principal da aplicação
 │
-├── lib/                      # Utilitários e configurações
-│   ├── db/                   # Configuração do banco de dados
-│   └── utils.ts              # Funções utilitárias
+├── lib/                      # Configurações do banco de dados
+│   └── db/                   # Configuração do banco de dados
 │
 ├── public/                   # Arquivos estáticos
-│
-├── styles/                   # Estilos adicionais
 │
 ├── .env                      # Variáveis de ambiente (não versionado)
 ├── .env.example              # Exemplo de variáveis de ambiente
@@ -80,11 +87,11 @@ A página inicial é composta pelos seguintes componentes principais:
 O projeto utiliza diversos efeitos visuais para criar uma experiência imersiva:
 
 1. **BlackHoleEffect** - Efeito visual de buraco negro com distorção gravitacional
-2. **BlackHoleAnimation** - Animação otimizada do buraco negro
-3. **ParticlesBackground** - Animação de partículas que orbitam e interagem
-4. **AnimatedText** - Texto com animações de entrada
-5. **Tilt3DEffect** - Efeito 3D de inclinação para elementos interativos
-6. **GlowEffect** - Efeito de brilho para elementos UI
+2. **ParallaxEffect** - Efeito de paralaxe para elementos em movimento
+3. **TechButton** - Botões com efeitos visuais avançados
+4. **LazyEffect** - Carregamento otimizado de efeitos visuais
+5. **ParticlesWrapper** - Sistema de partículas otimizado
+6. **GradientText** - Texto com gradientes animados
 
 ## 📝 Formulário de Contato
 

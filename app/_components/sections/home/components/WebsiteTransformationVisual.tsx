@@ -2,9 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import { keyframes } from '@emotion/react';
-import { Box, Text, Group, Badge, Button, Title } from '@mantine/core';
+import { Box, Text, Group, Badge, Button, Title, Avatar, Card, Progress } from '@mantine/core';
 import { motion } from 'framer-motion';
-import { IconArrowRight, IconDeviceDesktop, IconRocket } from '@tabler/icons-react';
+import { 
+  IconArrowRight, 
+  IconDeviceDesktop, 
+  IconRocket, 
+  IconStar, 
+  IconTrendingUp,
+  IconShoppingCart,
+  IconCheck,
+  IconPlayerPlay,
+  IconHeart,
+  IconUsers,
+  IconChartLine
+} from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
 
 // Use motion.div instead of motion(Box) to avoid type errors
@@ -17,9 +29,19 @@ const pulseAnimation = keyframes`
   100% { opacity: 0.3; }
 `;
 
+const floatAnimation = keyframes`
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+`;
+
+const shimmerAnimation = keyframes`
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+`;
+
 export function WebsiteTransformationVisual() {
   const pathname = usePathname();
-  const locale = pathname.split('/')[1] || 'pt-BR';
+  const locale = pathname?.split('/')[1] || 'pt-BR';
 
   // Textos de transformação
   const transformationTexts = {
@@ -46,13 +68,32 @@ export function WebsiteTransformationVisual() {
         home: 'Início',
         services: 'Serviços',
         about: 'Sobre',
-        contact: 'Contato'
+        contact: 'Contato',
+        portfolio: 'Portfolio',
+        blog: 'Blog'
       },
       hero: {
-        welcome: 'Bem-vindo',
-        title: 'Seu Site Profissional',
-        subtitle: 'Pronto para impulsionar seu negócio e conquistar novos clientes',
-        cta: 'Saiba Mais'
+        welcome: 'Bem-vindo ao Futuro',
+        title: 'Sua Empresa Digital',
+        subtitle: 'Transforme sua visão em realidade com nossa plataforma inovadora',
+        cta: 'Começar Agora',
+        stats: {
+          customers: '10k+ Clientes',
+          projects: '500+ Projetos',
+          satisfaction: '99% Satisfação'
+        }
+      },
+      products: {
+        featured: 'Produto em Destaque',
+        price: 'R$ 299',
+        oldPrice: 'R$ 399',
+        rating: '4.9 (2.3k reviews)',
+        buyNow: 'Comprar Agora'
+      },
+      testimonial: {
+        quote: '"Resultados incríveis! Nossa conversão aumentou 300%"',
+        author: 'Maria Silva',
+        company: 'CEO, TechCorp'
       }
     },
     'en': {
@@ -78,13 +119,32 @@ export function WebsiteTransformationVisual() {
         home: 'Home',
         services: 'Services',
         about: 'About',
-        contact: 'Contact'
+        contact: 'Contact',
+        portfolio: 'Portfolio',
+        blog: 'Blog'
       },
       hero: {
-        welcome: 'Welcome',
-        title: 'Your Professional Website',
-        subtitle: 'Ready to boost your business and win new customers',
-        cta: 'Learn More'
+        welcome: 'Welcome to the Future',
+        title: 'Your Digital Company',
+        subtitle: 'Transform your vision into reality with our innovative platform',
+        cta: 'Get Started',
+        stats: {
+          customers: '10k+ Customers',
+          projects: '500+ Projects',
+          satisfaction: '99% Satisfaction'
+        }
+      },
+      products: {
+        featured: 'Featured Product',
+        price: '$299',
+        oldPrice: '$399',
+        rating: '4.9 (2.3k reviews)',
+        buyNow: 'Buy Now'
+      },
+      testimonial: {
+        quote: '"Amazing results! Our conversion increased by 300%"',
+        author: 'Maria Silva',
+        company: 'CEO, TechCorp'
       }
     },
     'fr': {
@@ -110,13 +170,32 @@ export function WebsiteTransformationVisual() {
         home: 'Accueil',
         services: 'Services',
         about: 'À Propos',
-        contact: 'Contact'
+        contact: 'Contact',
+        portfolio: 'Portfolio',
+        blog: 'Blog'
       },
       hero: {
-        welcome: 'Bienvenue',
-        title: 'Votre Site Web Professionnel',
-        subtitle: 'Prêt à booster votre entreprise et à gagner de nouveaux clients',
-        cta: 'En Savoir Plus'
+        welcome: 'Bienvenue dans le Futur',
+        title: 'Votre Entreprise Digitale',
+        subtitle: 'Transformez votre vision en réalité avec notre plateforme innovante',
+        cta: 'Commencer',
+        stats: {
+          customers: '10k+ Clients',
+          projects: '500+ Projets',
+          satisfaction: '99% Satisfaction'
+        }
+      },
+      products: {
+        featured: 'Produit Vedette',
+        price: '299€',
+        oldPrice: '399€',
+        rating: '4.9 (2.3k avis)',
+        buyNow: 'Acheter'
+      },
+      testimonial: {
+        quote: '"Résultats incroyables ! Notre conversion a augmenté de 300%"',
+        author: 'Maria Silva',
+        company: 'PDG, TechCorp'
       }
     }
   };
@@ -139,8 +218,6 @@ export function WebsiteTransformationVisual() {
   // Stop auto-play on hover
   const handleMouseEnter = () => setIsAutoPlaying(false);
   const handleMouseLeave = () => setIsAutoPlaying(true);
-
-  // Os passos foram removidos pois não são mais necessários
 
   return (
     <MotionBox
@@ -244,7 +321,7 @@ export function WebsiteTransformationVisual() {
                 <IconDeviceDesktop size={10} color="white" />
               </Box>
               <Text size="xs" fw={500} c="gray.4">
-                {locale === 'en' ? 'www.yoursite.com' : locale === 'fr' ? 'www.votresite.com' : 'www.seusite.com.br'}
+                {locale === 'en' ? 'www.yourcompany.com' : locale === 'fr' ? 'www.votreentreprise.com' : 'www.suaempresa.com.br'}
               </Text>
             </MotionBox>
           </Box>
@@ -253,7 +330,7 @@ export function WebsiteTransformationVisual() {
         {/* Browser Content */}
         <Box
           style={{
-            height: '350px',
+            height: '450px',
             position: 'relative',
             overflow: 'hidden',
             background: 'linear-gradient(135deg, #0A0A0A, #111111)',
@@ -510,7 +587,7 @@ export function WebsiteTransformationVisual() {
             </Box>
           </MotionBox>
 
-          {/* Step 3: Launch */}
+          {/* Step 3: Launch - Versão Sofisticada */}
           <MotionBox
             style={{
               position: 'absolute',
@@ -518,7 +595,7 @@ export function WebsiteTransformationVisual() {
               left: 0,
               width: '100%',
               height: '100%',
-              padding: '20px',
+              padding: '12px',
             }}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{
@@ -537,7 +614,7 @@ export function WebsiteTransformationVisual() {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '15px',
+                gap: '12px',
                 background: 'linear-gradient(135deg, rgba(118, 65, 192, 0.1), rgba(93, 0, 255, 0.05))',
                 borderRadius: '8px',
                 overflow: 'hidden',
@@ -554,47 +631,48 @@ export function WebsiteTransformationVisual() {
                   height: '100%',
                   opacity: 0.4,
                   background: 'radial-gradient(circle at 50% 50%, rgba(118, 65, 192, 0.3), transparent 70%)',
-                animation: `${pulseAnimation} 8s infinite ease-in-out`,
+                  animation: `${pulseAnimation} 8s infinite ease-in-out`,
                   zIndex: 0,
                 }}
               />
 
-              {/* Header */}
+              {/* Header Moderno */}
               <Box
                 style={{
-                  height: '60px',
+                  height: '50px',
                   background: 'rgba(118, 65, 192, 0.2)',
-                  backdropFilter: 'blur(5px)',
+                  backdropFilter: 'blur(10px)',
                   display: 'flex',
                   alignItems: 'center',
-                  padding: '0 20px',
+                  padding: '0 16px',
                   justifyContent: 'space-between',
                   zIndex: 1,
+                  borderBottom: '1px solid rgba(118, 65, 192, 0.1)',
                 }}
               >
-                <Group align="center" gap="md">
+                <Group align="center" gap="sm">
                   <Box
                     style={{
-                      width: '30px',
-                      height: '30px',
+                      width: '28px',
+                      height: '28px',
                       background: 'linear-gradient(135deg, #7641C0, #9969E5)',
-                      borderRadius: '6px',
+                      borderRadius: '8px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      boxShadow: '0 4px 10px rgba(118, 65, 192, 0.3)',
                     }}
                   >
-                    <Text size="xs" fw={700} c="white">
-                      S
-                    </Text>
+                    <Text size="xs" fw={700} c="white">D</Text>
                   </Box>
                   <Text fw={700} c="white" size="sm">
-                    {locale === 'en' ? 'YourSite.com' : locale === 'fr' ? 'VotreSite.com' : 'SeuSite.com.br'}
+                    DigitalPro
                   </Text>
                 </Group>
-                <Group gap="20px">
-                  {[t.menu.home, t.menu.services, t.menu.about, t.menu.contact].map((item) => (
-                    <Text key={item} size="xs" c="white" fw={500}>
+                
+                <Group gap="12px" style={{ fontSize: '10px' }}>
+                  {[t.menu.home, t.menu.services, t.menu.portfolio, t.menu.blog].map((item, idx) => (
+                    <Text key={item} size="xs" c={idx === 0 ? "white" : "gray.4"} fw={idx === 0 ? 600 : 400}>
                       {item}
                     </Text>
                   ))}
@@ -603,59 +681,280 @@ export function WebsiteTransformationVisual() {
                     variant="gradient"
                     gradient={{ from: '#7641C0', to: '#9969E5' }}
                     radius="md"
+                    style={{ fontSize: '9px', height: '24px', padding: '0 12px' }}
                   >
                     {t.menu.contact}
                   </Button>
                 </Group>
               </Box>
 
-              {/* Hero */}
+              {/* Hero Section Avançado */}
               <Box
                 style={{
-                  flex: 1,
+                  height: '140px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '0 40px',
+                  padding: '0 20px',
                   zIndex: 1,
+                  background: 'linear-gradient(135deg, rgba(118, 65, 192, 0.05), transparent)',
                 }}
               >
-                <Box style={{ width: '50%' }}>
+                <Box style={{ width: '55%' }}>
                   <Badge
                     variant="gradient"
                     gradient={{ from: '#7641C0', to: '#9969E5' }}
-                    mb="md"
+                    mb="xs"
+                    size="xs"
+                    style={{ fontSize: '8px' }}
                   >
                     {t.hero.welcome}
                   </Badge>
-                  <Title order={1} c="white" mb="xs">
+                  <Title order={4} c="white" mb="xs" style={{ fontSize: '16px', lineHeight: 1.3 }}>
                     {t.hero.title}
                   </Title>
-                  <Text c="gray.3" mb="md">
+                  <Text c="gray.3" mb="sm" style={{ fontSize: '9px', lineHeight: 1.4 }}>
                     {t.hero.subtitle}
                   </Text>
+                  
+                  {/* Stats Row */}
+                  <Group gap="lg" mb="sm">
+                    {Object.values(t.hero.stats).map((stat, idx) => (
+                      <Box key={idx} style={{ textAlign: 'center' }}>
+                        <Text fw={700} c="white" style={{ fontSize: '10px' }}>
+                          {stat.split(' ')[0]}
+                        </Text>
+                        <Text c="gray.4" style={{ fontSize: '8px' }}>
+                          {stat.split(' ').slice(1).join(' ')}
+                        </Text>
+                      </Box>
+                    ))}
+                  </Group>
+
                   <Button
                     variant="gradient"
                     gradient={{ from: '#7641C0', to: '#9969E5' }}
-                    rightSection={<IconArrowRight size={16} />}
+                    rightSection={<IconArrowRight size={12} />}
+                    size="xs"
+                    style={{ fontSize: '9px', height: '28px' }}
                   >
                     {t.hero.cta}
                   </Button>
                 </Box>
+
+                {/* Interactive Dashboard Preview */}
                 <Box
                   style={{
                     width: '40%',
-                    height: '200px',
-                    background: 'linear-gradient(135deg, rgba(118, 65, 192, 0.3), rgba(93, 0, 255, 0.2))',
+                    height: '120px',
+                    background: 'linear-gradient(135deg, rgba(118, 65, 192, 0.2), rgba(93, 0, 255, 0.1))',
                     borderRadius: '12px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    padding: '12px',
+                    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(118, 65, 192, 0.2)',
+                    border: '1px solid rgba(118, 65, 192, 0.3)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {/* Mini Chart */}
+                  <Group justify="space-between" align="flex-start" mb="xs">
+                    <Box>
+                      <Text size="xs" c="white" fw={600} style={{ fontSize: '8px' }}>Performance</Text>
+                      <Group gap="xs" align="center">
+                        <IconTrendingUp size={12} color="#9969E5" />
+                        <Text size="xs" c="green" fw={700} style={{ fontSize: '9px' }}>+24%</Text>
+                      </Group>
+                    </Box>
+                    <IconChartLine size={16} color="#9969E5" style={{ opacity: 0.8 }} />
+                  </Group>
+                  
+                  {/* Progress Bars */}
+                  <Box style={{ flex: 1 }}>
+                    <Progress 
+                      value={85} 
+                      size="xs" 
+                      color="violet" 
+                      mb="xs"
+                      style={{ opacity: 0.8 }}
+                    />
+                    <Progress 
+                      value={65} 
+                      size="xs" 
+                      color="violet" 
+                      mb="xs"
+                      style={{ opacity: 0.6 }}
+                    />
+                    <Progress 
+                      value={92} 
+                      size="xs" 
+                      color="violet"
+                      style={{ opacity: 0.9 }}
+                    />
+                  </Box>
+
+                  {/* Floating Elements */}
+                  <MotionBox
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      right: '10px',
+                      width: '20px',
+                      height: '20px',
+                      background: 'rgba(153, 105, 229, 0.3)',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    <IconRocket size={10} color="#9969E5" />
+                  </MotionBox>
+                </Box>
+              </Box>
+
+              {/* Products/Services Section */}
+              <Box
+                style={{
+                  display: 'flex',
+                  gap: '12px',
+                  padding: '0 20px',
+                  zIndex: 1,
+                  flex: 1,
+                }}
+              >
+                {/* Featured Product Card */}
+                <Card
+                  style={{
+                    flex: 1,
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(118, 65, 192, 0.2)',
+                    borderRadius: '8px',
+                    padding: '12px',
+                  }}
+                >
+                  <Group justify="space-between" align="flex-start" mb="xs">
+                    <Box>
+                      <Text size="xs" c="gray.4" style={{ fontSize: '7px' }}>{t.products.featured}</Text>
+                      <Text fw={600} c="white" style={{ fontSize: '10px' }}>Premium Plan</Text>
+                    </Box>
+                    <IconHeart size={12} color="#FF6B6B" />
+                  </Group>
+                  
+                  <Group align="baseline" gap="xs" mb="xs">
+                    <Text fw={700} c="white" style={{ fontSize: '12px' }}>{t.products.price}</Text>
+                    <Text td="line-through" c="gray.5" style={{ fontSize: '9px' }}>{t.products.oldPrice}</Text>
+                  </Group>
+                  
+                  <Group align="center" gap="xs" mb="xs">
+                    <Group gap="2px">
+                      {[1,2,3,4,5].map(i => (
+                        <IconStar key={i} size={8} fill="#FFD700" color="#FFD700" />
+                      ))}
+                    </Group>
+                    <Text size="xs" c="gray.4" style={{ fontSize: '7px' }}>{t.products.rating}</Text>
+                  </Group>
+                  
+                  <Button
+                    size="xs"
+                    variant="gradient"
+                    gradient={{ from: '#7641C0', to: '#9969E5' }}
+                    fullWidth
+                    rightSection={<IconShoppingCart size={10} />}
+                    style={{ fontSize: '8px', height: '24px' }}
+                  >
+                    {t.products.buyNow}
+                  </Button>
+                </Card>
+
+                {/* Testimonial Card */}
+                <Card
+                  style={{
+                    flex: 1,
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(118, 65, 192, 0.2)',
+                    borderRadius: '8px',
+                    padding: '12px',
+                  }}
+                >
+                  <Group gap="xs" mb="xs">
+                    <Avatar size="xs" src={null} color="violet">M</Avatar>
+                    <Box>
+                      <Text fw={600} c="white" style={{ fontSize: '8px' }}>{t.testimonial.author}</Text>
+                      <Text c="gray.4" style={{ fontSize: '7px' }}>{t.testimonial.company}</Text>
+                    </Box>
+                  </Group>
+                  
+                  <Text c="gray.3" style={{ fontSize: '8px', lineHeight: 1.3, fontStyle: 'italic' }}>
+                    {t.testimonial.quote}
+                  </Text>
+                  
+                  <Group gap="xs" mt="xs">
+                    {[1,2,3,4,5].map(i => (
+                      <IconStar key={i} size={8} fill="#FFD700" color="#FFD700" />
+                    ))}
+                  </Group>
+                </Card>
+
+                {/* Video/Media Card */}
+                <Box
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    background: 'linear-gradient(135deg, rgba(118, 65, 192, 0.3), rgba(93, 0, 255, 0.2))',
+                    borderRadius: '8px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2), 0 0 10px rgba(118, 65, 192, 0.3)',
+                    border: '1px solid rgba(118, 65, 192, 0.3)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
                   }}
                 >
-                  <IconRocket size={60} color="#9969E5" />
+                  <MotionBox
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                                         <IconPlayerPlay size={20} color="#9969E5" />
+                  </MotionBox>
                 </Box>
+              </Box>
+
+              {/* Bottom Stats Bar */}
+              <Box
+                style={{
+                  height: '30px',
+                  background: 'rgba(118, 65, 192, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-around',
+                  padding: '0 20px',
+                  borderTop: '1px solid rgba(118, 65, 192, 0.1)',
+                }}
+              >
+                <Group gap="xs" align="center">
+                  <IconUsers size={12} color="#9969E5" />
+                  <Text size="xs" c="white" style={{ fontSize: '8px' }}>12.5k Online</Text>
+                </Group>
+                <Group gap="xs" align="center">
+                  <IconCheck size={12} color="#4ECDC4" />
+                  <Text size="xs" c="white" style={{ fontSize: '8px' }}>Live Support</Text>
+                </Group>
+                <Group gap="xs" align="center">
+                  <Box
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      background: '#4ECDC4',
+                      borderRadius: '50%',
+                      animation: `${pulseAnimation} 2s infinite`,
+                    }}
+                  />
+                  <Text size="xs" c="white" style={{ fontSize: '8px' }}>All Systems OK</Text>
+                </Group>
               </Box>
             </Box>
           </MotionBox>
