@@ -43,6 +43,24 @@ function getLocale(request: NextRequest) {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  // Skip middleware para arquivos estáticos e recursos que não precisam de processamento
+  if (
+    pathname.startsWith('/_next/static/') ||
+    pathname.startsWith('/_next/image/') ||
+    pathname.startsWith('/static/') ||
+    pathname.includes('.') ||
+    pathname.startsWith('/favicon') ||
+    pathname.startsWith('/robots') ||
+    pathname.startsWith('/sitemap') ||
+    pathname.startsWith('/sw.js') ||
+    pathname.startsWith('/workbox-')
+  ) {
+    const response = NextResponse.next();
+    // Cache headers para recursos estáticos
+    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+    return response;
+  }
+
   // Aplicar proteção CSRF para rotas de API
   if (pathname.startsWith('/api/')) {
     // Pular a rota /api/csrf para evitar loop infinito
@@ -69,6 +87,10 @@ export function middleware(request: NextRequest) {
     // sem mudar a URL no navegador
     const response = NextResponse.rewrite(newUrl);
 
+    // Headers de performance para página inicial
+    response.headers.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    response.headers.set('X-DNS-Prefetch-Control', 'on');
+
     return addSecurityHeaders(request, response);
   }
 
@@ -76,6 +98,9 @@ export function middleware(request: NextRequest) {
   if (pathname === '/contact' || pathname === '/orcamento') {
     // Apenas adicionar cabeçalhos de segurança sem redirecionar
     const response = NextResponse.next();
+    // Headers específicos para páginas de formulário
+    response.headers.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    response.headers.set('X-DNS-Prefetch-Control', 'on');
     return addSecurityHeaders(request, response);
   }
 
@@ -87,6 +112,15 @@ export function middleware(request: NextRequest) {
   if (pathnameHasLocale) {
     // Adicionar cabeçalhos de segurança à resposta
     const response = NextResponse.next();
+
+    // Headers de performance baseado na rota
+    if (pathname.includes('/orcamento') || pathname.includes('/contact')) {
+      response.headers.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    } else {
+      response.headers.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    }
+
+    response.headers.set('X-DNS-Prefetch-Control', 'on');
     return addSecurityHeaders(request, response);
   }
 

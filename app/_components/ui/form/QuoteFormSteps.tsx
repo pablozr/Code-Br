@@ -1,10 +1,12 @@
 'use client';
 
 import { Transition, Stack, Title, Text, TextInput, SimpleGrid, Checkbox, Select, Textarea, Card, Group, Box, Divider } from '@mantine/core';
-import { IconUser, IconMail, IconPhone, IconBuildingStore, IconDeviceDesktop, IconPencil, IconCalendar, IconCoin, IconBrandWhatsapp, IconInfoCircle } from '@tabler/icons-react';
+import { IconUser, IconMail, IconPhone, IconBuildingStore, IconDeviceDesktop, IconPencil, IconCalendar, IconCoin, IconBrandWhatsapp, IconInfoCircle, IconCalculator } from '@tabler/icons-react';
 import { formFieldStyles } from '@/app/_styles/components/form-styles';
 import { QuoteFormValues } from '@/app/_lib/validation/forms/quote-form-schema';
 import { UseFormReturnType } from '@mantine/form';
+import { usePriceContext } from './PriceContext';
+import { usePathname } from 'next/navigation';
 
 interface StepProps {
   form: UseFormReturnType<QuoteFormValues>;
@@ -302,6 +304,10 @@ export function PreferencesStep({ form, animateIn }: StepProps) {
 }
 
 export function ReviewStep({ form, animateIn }: StepProps) {
+  const { totalPrice, formatPrice } = usePriceContext();
+  const pathname = usePathname();
+  const locale = pathname?.split('/')[1] || 'pt-BR';
+
   return (
     <Transition mounted={animateIn} transition="fade" duration={200}>
       {(styles) => (
@@ -313,6 +319,32 @@ export function ReviewStep({ form, animateIn }: StepProps) {
             <Text size="sm" c="gray.4" mb="xs">
               Verifique se todas as informações estão corretas antes de enviar.
             </Text>
+
+            {/* Exibir preço calculado se disponível */}
+            {totalPrice > 0 && (
+              <Card
+                withBorder
+                p="md"
+                radius="md"
+                style={{
+                  backgroundColor: 'rgba(118, 65, 192, 0.1)',
+                  borderColor: 'rgba(153, 105, 229, 0.3)',
+                  marginBottom: '1rem',
+                }}
+              >
+                <Group gap="md" align="center">
+                  <IconCalculator size={24} color="rgba(153, 105, 229, 0.8)" />
+                  <Box>
+                    <Text fw={600} c="white" size="sm">
+                      Preço Estimado pela Calculadora
+                    </Text>
+                    <Text fw={700} c="purple.4" size="lg">
+                      {formatPrice(totalPrice, locale)}
+                    </Text>
+                  </Box>
+                </Group>
+              </Card>
+            )}
 
             <Group gap={5} mb="xs" style={{ color: 'rgba(153, 105, 229, 0.8)' }}>
               <IconInfoCircle size={14} />

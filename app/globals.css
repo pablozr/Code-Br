@@ -378,3 +378,99 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Otimizações de Performance */
+
+/* Prevenção de CLS (Cumulative Layout Shift) */
+img, video, iframe, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Otimizações para animações e transições */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Reduzir animações para usuários que preferem movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Otimizações para scroll */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Skeleton loading para evitar CLS */
+.loading-skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Otimizações para header fixo */
+header {
+  contain: layout style paint;
+  will-change: transform;
+}
+
+/* Otimizações para elementos que fazem animações */
+.animated-element {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Otimizações para imagens lazy */
+.lazy-image {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px 200px;
+}
+
+/* Otimizações para componentes pesados */
+.heavy-component {
+  content-visibility: auto;
+  contain-intrinsic-size: 500px;
+}
+
+/* Preload de fontes críticas */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Manrope'), url('/fonts/manrope-variable.woff2') format('woff2');
+}
+
+/* Otimizações para formulários */
+input, textarea, select {
+  contain: layout style;
+}
+
+/* Otimizações para botões */
+button {
+  contain: layout style;
+  cursor: pointer;
+}
+
+/* Evitar reflow em elementos de layout */
+.layout-stable {
+  contain: layout;
+}

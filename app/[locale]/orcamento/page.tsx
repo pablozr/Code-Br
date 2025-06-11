@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { Box, Container, Title, Text, Paper } from '@mantine/core';
 import { motion } from 'framer-motion';
 import { PriceProvider } from '@/app/_components/ui/form/PriceContext';
-import { QuoteForm } from '@/app/_components/ui/form/QuoteForm';
+import { CompleteQuoteFormLazy } from '@/app/_components/ui/LazyComponents';
 
 export default function OrcamentoPage() {
   // Obter o idioma atual
@@ -162,7 +162,7 @@ export default function OrcamentoPage() {
 
           {/* Usar o PriceProvider para isolar as atualizações de preço */}
           <PriceProvider>
-            <QuoteForm />
+            <CompleteQuoteFormLazy />
           </PriceProvider>
           </Paper>
         </MotionPaper>
