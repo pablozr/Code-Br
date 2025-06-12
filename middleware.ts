@@ -41,7 +41,7 @@ export function middleware(request: NextRequest) {
   if (pathname.startsWith('/api/')) {
     // Pular a rota /api/csrf para evitar loop infinito
     if (pathname === '/api/csrf') {
-      return;
+      return NextResponse.next();
     }
 
     // Verificar CSRF - agora sem await
@@ -50,7 +50,7 @@ export function middleware(request: NextRequest) {
       return csrfResult;
     }
     // Se não houver erro de CSRF, continuar com o processamento normal
-    return;
+    return NextResponse.next();
   }
 
   // Use next-intl middleware for internationalization
