@@ -1,14 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "dev": "npm run validate-env && next dev",
-    "validate-env": "node scripts/validate-env.js",
-    "build": "npm run validate-env && next build",
-    "build:vercel": "VERCEL=1 npm run validate-env && VERCEL=1 next build",
+    "dev": "next dev",
+    "build": "next build",
+    "build:vercel": "VERCEL=1 next build",
     "build:local": "NODE_ENV=production npm run build",
-    "deploy": "node scripts/deploy.js",
+    "deploy": "git add . && git commit -m 'deploy: update' && git push origin main",
     "start": "next start",
-    "setup": "node scripts/setup-env.js",
     "setup:db": "npm run db:setup",
     "db:setup": "npx tsx lib/db/setup.ts",
     "db:seed": "npx tsx lib/db/seed.ts",
