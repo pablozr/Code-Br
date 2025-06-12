@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image, { ImageProps } from 'next/image';
-import { Box, Skeleton } from '@mantine/core';
+import { Box, Skeleton, Text } from '@mantine/core';
 
 interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError'> {
   fallback?: React.ReactNode;
@@ -115,7 +115,7 @@ export function OptimizedImage({
         {showErrorInDev && process.env.NODE_ENV === 'development' ? (
           <Text size="xs" c="dimmed" ta="center" p="sm">
             Imagem não encontrada:<br />
-            {src}
+            {String(src)}
           </Text>
         ) : (
           <Text size="sm" c="dimmed">
