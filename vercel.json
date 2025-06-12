@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm run build:vercel",
+  "buildCommand": "pnpm build",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "framework": "nextjs",
   "regions": ["iad1"],
@@ -94,6 +94,11 @@
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1",
       "VERCEL": "1"
+    }
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true
     }
   }
 }

@@ -14,9 +14,10 @@ const nextConfig = {
       },
     },
     // Configurações específicas para resolver problemas de manifest
-    serverComponentsExternalPackages: [],
-    esmExternals: 'loose',
   },
+
+  // Configurações de pacotes externos do servidor
+  serverExternalPackages: [],
 
   // Otimizações de bundle
   webpack: (config, { dev, isServer, webpack }) => {
@@ -32,20 +33,25 @@ const nextConfig = {
       // Plugin personalizado para garantir a geração do client reference manifest
       config.plugins.push({
         apply: (compiler) => {
-          compiler.hooks.afterEmit.tap('ClientReferenceManifestPlugin', () => {
-            // Garantir que o diretório de manifests existe
+          compiler.hooks.beforeCompile.tap('ClientReferenceManifestPlugin', () => {
+            // Garantir que o diretório de manifests existe antes da compilação
             const fs = require('fs');
             const path = require('path');
 
             const manifestDir = path.join(process.cwd(), '.next/server/app/[locale]/(marketing)');
-            if (!fs.existsSync(manifestDir)) {
-              fs.mkdirSync(manifestDir, { recursive: true });
-            }
+            try {
+              if (!fs.existsSync(manifestDir)) {
+                fs.mkdirSync(manifestDir, { recursive: true });
+              }
 
-            // Criar um manifest vazio se não existir
-            const manifestPath = path.join(manifestDir, 'page_client-reference-manifest.js');
-            if (!fs.existsSync(manifestPath)) {
-              fs.writeFileSync(manifestPath, 'module.exports = {};');
+              // Criar um manifest vazio se não existir
+              const manifestPath = path.join(manifestDir, 'page_client-reference-manifest.js');
+              if (!fs.existsSync(manifestPath)) {
+                fs.writeFileSync(manifestPath, 'module.exports = {};');
+              }
+            } catch (error) {
+              // Ignorar erros de criação de arquivo em desenvolvimento
+              console.warn('Aviso: Não foi possível criar manifest:', error.message);
             }
           });
         }
@@ -158,7 +164,8 @@ const nextConfig = {
 
 
   // Configurações de build - ajustadas para Vercel
-  output: process.env.VERCEL ? undefined : 'standalone',
+  // Remover standalone para evitar problemas de permissão no Windows
+  // output: process.env.VERCEL ? undefined : 'standalone',
   generateEtags: false,
 
   // Configurações específicas para resolver problemas de manifest no Vercel
