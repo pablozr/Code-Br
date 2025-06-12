@@ -2,8 +2,9 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { defaultLanguage } from './_lib/i18n/settings';
 import Head from 'next/head';
+
+const defaultLanguage = 'pt-BR';
 
 export default function NotFound() {
   const router = useRouter();

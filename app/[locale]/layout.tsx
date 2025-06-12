@@ -12,6 +12,8 @@ import { OptimizedScripts } from '../_components/OptimizedScripts';
 import { ResourcePreloader } from '../_components/ui/ResourcePreloader';
 import { ServiceWorkerRegistration } from '../_components/ui/ServiceWorkerRegistration';
 import { Suspense } from 'react';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 
 // Viewport é independente dos metadados dinâmicos
 export const viewport: Viewport = {
@@ -194,6 +196,9 @@ export default async function RootLayout({
   const resolvedParams = await params;
   const validLocale = resolvedParams?.locale || 'pt-BR';
 
+  // Get messages for the locale
+  const messages = await getMessages();
+
   return (
     <html
       lang={validLocale}
@@ -265,42 +270,44 @@ export default async function RootLayout({
         }} />
       </head>
       <body style={{ minHeight: '100dvh' }}>
-        <Providers locale={validLocale}>
-          {/* Preloader de recursos críticos */}
-          <ResourcePreloader />
+        <NextIntlClientProvider locale={validLocale} messages={messages}>
+          <Providers locale={validLocale}>
+            {/* Preloader de recursos críticos */}
+            <ResourcePreloader />
 
-          {/* Service Worker para cache e performance */}
-          <ServiceWorkerRegistration />
+            {/* Service Worker para cache e performance */}
+            <ServiceWorkerRegistration />
 
-          {/* JSON-LD para SEO */}
-          <JsonLd type="Organization" data={{}} />
-          <JsonLd type="WebSite" data={{}} />
+            {/* JSON-LD para SEO */}
+            <JsonLd type="Organization" data={{}} />
+            <JsonLd type="WebSite" data={{}} />
 
-          {/* Otimização de fontes */}
-          <OptimizedFonts />
+            {/* Otimização de fontes */}
+            <OptimizedFonts />
 
-          {/* Otimização de scripts e performance */}
-          <OptimizedScripts />
+            {/* Otimização de scripts e performance */}
+            <OptimizedScripts />
 
-          {/* Header com Suspense para evitar blocking */}
-          <Suspense fallback={
-            <header style={{ height: '80px', background: 'rgba(10, 10, 10, 0.95)' }} className="loading-skeleton" />
-          }>
-            <Header />
-          </Suspense>
+            {/* Header com Suspense para evitar blocking */}
+            <Suspense fallback={
+              <header style={{ height: '80px', background: 'rgba(10, 10, 10, 0.95)' }} className="loading-skeleton" />
+            }>
+              <Header />
+            </Suspense>
 
-          {/* Main content */}
-          <main>
-            {children}
-          </main>
+            {/* Main content */}
+            <main>
+              {children}
+            </main>
 
-          {/* Footer com lazy loading */}
-          <Suspense fallback={
-            <footer style={{ height: '200px', background: 'rgba(15, 15, 15, 0.8)' }} className="loading-skeleton" />
-          }>
-            <Footer />
-          </Suspense>
-        </Providers>
+            {/* Footer com lazy loading */}
+            <Suspense fallback={
+              <footer style={{ height: '200px', background: 'rgba(15, 15, 15, 0.8)' }} className="loading-skeleton" />
+            }>
+              <Footer />
+            </Suspense>
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

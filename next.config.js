@@ -1,3 +1,5 @@
+const withNextIntl = require('next-intl/plugin')('./i18n.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Configurações de performance
@@ -5,15 +7,17 @@ const nextConfig = {
     // Desabilitar PPR temporariamente para resolver problemas de manifest no Vercel
     // ppr: true,
     optimizePackageImports: ['@mantine/core', '@mantine/hooks', '@tabler/icons-react', 'framer-motion'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+    // Configurações específicas para resolver problemas de manifest
+  },
+
+  // Configurações do Turbopack (movido de experimental.turbo)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
-    // Configurações específicas para resolver problemas de manifest
   },
 
   // Configurações de pacotes externos do servidor
@@ -188,4 +192,4 @@ const nextConfig = {
   }),
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);
