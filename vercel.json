@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "pnpm run build:vercel",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "framework": "nextjs",
   "regions": ["iad1"],
@@ -8,6 +8,7 @@
       "maxDuration": 30
     }
   },
+  "outputDirectory": ".next",
   "headers": [
     {
       "source": "/(.*)",
@@ -86,11 +87,13 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "VERCEL": "1"
   },
   "build": {
     "env": {
-      "NEXT_TELEMETRY_DISABLED": "1"
+      "NEXT_TELEMETRY_DISABLED": "1",
+      "VERCEL": "1"
     }
   }
 }
