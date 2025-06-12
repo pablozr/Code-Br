@@ -53,6 +53,25 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Redirecionamento manual para a rota raiz na Vercel
+  if (pathname === '/') {
+    // Detectar idioma preferido do usuário ou usar o padrão
+    const acceptLanguage = request.headers.get('accept-language');
+    let preferredLocale = defaultLocale;
+
+    if (acceptLanguage) {
+      // Verificar se algum dos idiomas suportados está nas preferências do usuário
+      for (const locale of locales) {
+        if (acceptLanguage.includes(locale) || acceptLanguage.includes(locale.split('-')[0])) {
+          preferredLocale = locale;
+          break;
+        }
+      }
+    }
+
+    return NextResponse.redirect(new URL(`/${preferredLocale}`, request.url));
+  }
+
   // Use next-intl middleware for internationalization
   const response = intlMiddleware(request);
 
