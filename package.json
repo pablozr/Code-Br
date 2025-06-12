@@ -13,7 +13,9 @@
     "db:seed": "npx tsx lib/db/seed.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "check:images": "node scripts/check-images.js",
+    "prebuild": "npm run check:images"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -35,7 +35,7 @@ function getMetadataForLocale(locale: string): Metadata {
   // Metadados específicos para cada idioma
   if (locale === 'en') {
     return {
-      title: 'Swiss Websites | Professional Website Creation',
+      title: 'CodeBR - Transforming your digital business',
       description: 'We create professional websites with hosting in Switzerland. We offer landing pages, e-commerce, online stores and custom projects.',
       keywords: 'website creation, professional websites, landing pages, e-commerce, Switzerland, web development',
       authors: [{ name: 'CodeBR', url: baseUrl }],
@@ -56,7 +56,7 @@ function getMetadataForLocale(locale: string): Metadata {
         },
       },
       openGraph: {
-        title: 'Swiss Websites | Professional Website Creation',
+        title: 'CodeBR - Transforming your digital business',
         description: 'We create professional websites with hosting in Switzerland. We offer landing pages, e-commerce, online stores and custom projects.',
         url: baseUrl,
         siteName: 'CodeBR',
@@ -73,14 +73,14 @@ function getMetadataForLocale(locale: string): Metadata {
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'Swiss Websites | Professional Website Creation',
+        title: 'CodeBR - Transforming your digital business',
         description: 'We create professional websites with hosting in Switzerland. We offer landing pages, e-commerce, online stores and custom projects.',
         images: [`${baseUrl}/images/og-image.jpg`],
       },
     };
   } else if (locale === 'fr') {
     return {
-      title: 'Sites Web Suisses | Création de Sites Web Professionnels',
+      title: 'CodeBR - Transformant votre entreprise numérique',
       description: 'Nous créons des sites web professionnels avec hébergement en Suisse. Nous proposons des landing pages, e-commerce, boutiques en ligne et projets personnalisés.',
       keywords: 'création de sites web, sites web professionnels, landing pages, e-commerce, Suisse, développement web',
       authors: [{ name: 'CodeBR', url: baseUrl }],
@@ -101,7 +101,7 @@ function getMetadataForLocale(locale: string): Metadata {
         },
       },
       openGraph: {
-        title: 'Sites Web Suisses | Création de Sites Web Professionnels',
+        title: 'CodeBR - Transformant votre entreprise numérique',
         description: 'Nous créons des sites web professionnels avec hébergement en Suisse. Nous proposons des landing pages, e-commerce, boutiques en ligne et projets personnalisés.',
         url: baseUrl,
         siteName: 'CodeBR',
@@ -118,7 +118,7 @@ function getMetadataForLocale(locale: string): Metadata {
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'Sites Web Suisses | Création de Sites Web Professionnels',
+        title: 'CodeBR - Transformant votre entreprise numérique',
         description: 'Nous créons des sites web professionnels avec hébergement en Suisse. Nous proposons des landing pages, e-commerce, boutiques en ligne et projets personnalisés.',
         images: [`${baseUrl}/images/og-image.jpg`],
       },
@@ -126,7 +126,7 @@ function getMetadataForLocale(locale: string): Metadata {
   } else {
     // Português (padrão)
     return {
-      title: 'Websites Suíços | Criação de Sites Profissionais',
+      title: 'CodeBR - Transformando seu negócio digital',
       description: 'Criamos websites profissionais com hospedagem na Suíça. Oferecemos landing pages, e-commerce, lojas online e projetos personalizados.',
       keywords: 'criação de sites, websites profissionais, landing pages, e-commerce, Suíça, desenvolvimento web',
       authors: [{ name: 'CodeBR', url: baseUrl }],
@@ -147,7 +147,7 @@ function getMetadataForLocale(locale: string): Metadata {
         },
       },
       openGraph: {
-        title: 'Websites Suíços | Criação de Sites Profissionais',
+        title: 'CodeBR - Transformando seu negócio digital',
         description: 'Criamos websites profissionais com hospedagem na Suíça. Oferecemos landing pages, e-commerce, lojas online e projetos personalizados.',
         url: baseUrl,
         siteName: 'CodeBR',
@@ -164,7 +164,7 @@ function getMetadataForLocale(locale: string): Metadata {
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'Websites Suíços | Criação de Sites Profissionais',
+        title: 'CodeBR - Transformando seu negócio digital',
         description: 'Criamos websites profissionais com hospedagem na Suíça. Oferecemos landing pages, e-commerce, lojas online e projetos personalizados.',
         images: [`${baseUrl}/images/og-image.jpg`],
       },

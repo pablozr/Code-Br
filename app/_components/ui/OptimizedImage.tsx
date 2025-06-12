@@ -11,6 +11,7 @@ interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError'> {
   lazyLoad?: boolean;
   preloadOnHover?: boolean;
   quality?: number;
+  showErrorInDev?: boolean; // Mostrar erros apenas em desenvolvimento
 }
 
 export function OptimizedImage({
@@ -25,6 +26,7 @@ export function OptimizedImage({
   lazyLoad = true,
   preloadOnHover = false,
   quality = 85,
+  showErrorInDev = false,
   ...props
 }: OptimizedImageProps) {
   const [isLoading, setIsLoading] = useState(!priority);
@@ -90,8 +92,38 @@ export function OptimizedImage({
     setIsLoading(true);
   }, [src]);
 
-  if (error && fallback) {
-    return <>{fallback}</>;
+  // Renderizar fallback ou placeholder em caso de erro
+  if (error) {
+    if (fallback) {
+      return <>{fallback}</>;
+    }
+
+    // Fallback padrão para imagens que falharam
+    return (
+      <Box
+        style={{
+          width: width || '100%',
+          height: calculatedHeight || height || '200px',
+          backgroundColor: 'rgba(25, 25, 25, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: '8px',
+          border: '1px solid rgba(153, 105, 229, 0.2)',
+        }}
+      >
+        {showErrorInDev && process.env.NODE_ENV === 'development' ? (
+          <Text size="xs" c="dimmed" ta="center" p="sm">
+            Imagem não encontrada:<br />
+            {src}
+          </Text>
+        ) : (
+          <Text size="sm" c="dimmed">
+            Imagem indisponível
+          </Text>
+        )}
+      </Box>
+    );
   }
 
   return (
@@ -112,9 +144,13 @@ export function OptimizedImage({
           width={width}
           height={calculatedHeight || height}
           onLoad={() => setIsLoading(false)}
-          onError={() => {
+          onError={(e) => {
             setIsLoading(false);
             setError(true);
+            // Log do erro apenas em desenvolvimento
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(`Falha ao carregar imagem: ${src}`, e);
+            }
           }}
           placeholder={blur ? 'blur' : undefined}
           blurDataURL={blurDataURL}

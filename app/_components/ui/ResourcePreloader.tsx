@@ -36,7 +36,7 @@ export function ResourcePreloader() {
       preconnect('https://fonts.gstatic.com');
     }
 
-    // Preload de imagens críticas
+    // Preload de imagens críticas com tratamento de erro
     const preloadCriticalImages = () => {
       const criticalImages = [
         '/images/hero-bg.webp',
@@ -44,10 +44,20 @@ export function ResourcePreloader() {
       ];
 
       criticalImages.forEach(src => {
-        const link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = src;
-        document.head.appendChild(link);
+        // Verificar se a imagem existe antes de fazer preload
+        const img = new Image();
+        img.onload = () => {
+          // Imagem carregou com sucesso, fazer prefetch
+          const link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.href = src;
+          document.head.appendChild(link);
+        };
+        img.onerror = () => {
+          // Imagem não existe ou falhou ao carregar, ignorar silenciosamente
+          console.warn(`Imagem crítica não encontrada: ${src}`);
+        };
+        img.src = src;
       });
     };
 

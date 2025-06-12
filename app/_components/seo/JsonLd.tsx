@@ -30,7 +30,7 @@ export function JsonLd({ type, data }: JsonLdProps) {
   const websiteData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'CodeBR - Websites Suíços',
+    name: 'CodeBR - Transformando seu negócio digital',
     url: baseUrl,
     potentialAction: {
       '@type': 'SearchAction',

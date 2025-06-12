@@ -163,6 +163,32 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 dias
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Configurações otimizadas para Vercel
+    unoptimized: false,
+    loader: 'default',
+    domains: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+    ],
+    // Configurações específicas para melhor performance na Vercel
+    ...(process.env.VERCEL && {
+      // Usar otimização padrão da Vercel
+      loader: 'default',
+      // Permitir todos os domínios para flexibilidade
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: '**',
+        },
+      ],
+    }),
   },
 
 
